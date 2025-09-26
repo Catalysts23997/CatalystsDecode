@@ -1,0 +1,39 @@
+package org.firstinspires.ftc.teamcode.Competition_Code.Tele.Testing//package org.firstinspires.ftc.teamcode.Kotlin_Bromine_Arya.Opmodes.`Testing$Tuning`.Auto.Localizer
+
+import com.acmerobotics.dashboard.FtcDashboard
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp
+
+import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Drivetrain
+import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localizer
+import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.DrivetrainNoOdo
+import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
+
+@TeleOp(name = "DriveTestNoOdo", group = "Linear OpMode")
+class DriveTestNoOdo : LinearOpMode(){
+    override fun runOpMode() {
+        telemetry = MultipleTelemetry(telemetry, FtcDashboard.getInstance().telemetry)
+
+        val drive = DrivetrainNoOdo(hardwareMap)
+
+        waitForStart()
+        while (opModeIsActive() && !isStopRequested) {
+
+
+            if(gamepad1.a){
+                drive.imu.resetYaw()
+            }
+
+            drive.update(arrayListOf(gamepad1.left_stick_x, -gamepad1.left_stick_y, gamepad1.right_stick_x))
+
+            telemetry.addData("x", gamepad1.left_stick_x)
+            telemetry.addData("y", gamepad1.left_stick_y)
+
+            telemetry.addData("Heading", Localizer.pose.heading)
+            telemetry.addData("X position", Localizer.pose.x)
+            telemetry.addData("Y position", Localizer.pose.y)
+            telemetry.update()
+        }
+    }
+}
