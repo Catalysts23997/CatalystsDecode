@@ -48,9 +48,15 @@ public class Intake {
     ///  Tick the intake system
     public void update() {
         switch (state) {
-            case INTAKING: doIntake();
-            case REVERSE: doReverse();
-            case STOPPED: stopIntake();
+            case INTAKING:
+                doIntake();
+                break;
+            case REVERSE:
+                doReverse();
+                break;
+            case STOPPED:
+                stopIntake();
+                break;
         }
     }
 

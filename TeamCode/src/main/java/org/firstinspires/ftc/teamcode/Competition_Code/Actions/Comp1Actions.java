@@ -6,6 +6,7 @@ import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.SequentialAction;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.AprilTag;
@@ -34,7 +35,6 @@ public class Comp1Actions {
         holder.update();
         intake.update();
         launcher.update();
-
     }
 
 
@@ -60,30 +60,41 @@ public class Comp1Actions {
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
             intake.state = State.INTAKING;
+            holder.state = Servo.State.HOLD;
 
-            return !outtake.checkForRecognition();
+            if(outtake.checkForRecognition()){
+                holder.state = Servo.State.LAUNCH;
+                intake.state = State.STOPPED;
+                return false;
+            }
+            else return true;
+
 
         }
     };
 
 
     public Action Shoot = new Action() {
+        final ElapsedTime timer = new ElapsedTime();
+        boolean initialized = false;
+
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-            holder.state = Servo.State.LAUNCH;
-            launcher.setSpeed(1.0);
+            if(!initialized){
+                timer.reset();
+                initialized = true;
+                holder.state = Servo.State.LAUNCH;
+                launcher.setSpeed(1.0);
+            }
 
-            return false;
-        }
-    };
+            if(timer.milliseconds() >= 500 && initialized){
+                holder.state = Servo.State.HOLD;
+                launcher.stop();
+                return false;
+            }
+            else return true;
 
-    public Action Reset = new Action() {
-        @Override
-        public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-            holder.state = Servo.State.HOLD;
-            launcher.stop();
 
-            return false;
         }
     };
 

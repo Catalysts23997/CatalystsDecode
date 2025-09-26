@@ -99,10 +99,10 @@ public class FinalActions {
     public Action ShootGreen = new Action() {
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-            //launch.state = Motor.State.Launch
-            greenLaunch.state= Servo.State.LAUNCHG;
-            //wait for ball to go out
-            greenLaunch.state= Servo.State.HOLDG;
+//            //launch.state = Motor.State.Launch
+//            greenLaunch.state= Servo.State.LAUNCHG;
+//            //wait for ball to go out
+//            greenLaunch.state= Servo.State.HOLDG;
             //launch.state = Motor.State.Stop
             return false;
         }
@@ -111,10 +111,10 @@ public class FinalActions {
     public Action ShootPurple = new Action() {
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-            //launch.state = Motor.State.Launch
-            purpleLaunch.state= Servo.State.LAUNCHP;
-            //wait for ball to go out
-            purpleLaunch.state= Servo.State.HOLDP;
+//            //launch.state = Motor.State.Launch
+//            purpleLaunch.state= Servo.State.LAUNCHP;
+//            //wait for ball to go out
+//            purpleLaunch.state= Servo.State.HOLDP;
             //launch.state = Motor.State.Stop
             return false;
         }

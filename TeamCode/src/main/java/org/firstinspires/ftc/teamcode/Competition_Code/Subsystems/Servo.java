@@ -18,12 +18,6 @@ public class Servo {
 
     public enum State {
         HOLD(1.0),
-        PURPLE(.85),
-        GREEN(0.0),
-        LAUNCHP(0.0),
-        LAUNCHG(0.0),
-        HOLDP(0.0),
-        HOLDG(0.0),
         LAUNCH(0.0);
         public final double servoPos;
         State(double servoPos) {
