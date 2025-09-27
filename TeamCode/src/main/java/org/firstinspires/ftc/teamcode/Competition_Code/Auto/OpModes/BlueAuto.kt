@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Competition_Code.Auto.OpModes;
 import com.acmerobotics.dashboard.FtcDashboard
 import com.acmerobotics.roadrunner.ParallelAction
 import com.acmerobotics.roadrunner.SequentialAction
+import com.acmerobotics.roadrunner.SleepAction
 import com.acmerobotics.roadrunner.ftc.runBlocking
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
@@ -61,52 +62,42 @@ class BlueAuto : LinearOpMode() {
                         1 -> {
                             SequentialAction(
                                 AutoPoints.PreIntakeGPP.runToExact,
-                                ParallelAction(
-                                    robot.Intake,
-                                    AutoPoints.GPPIntake1.runToExact
-                                ),
-                                ParallelAction(
-                                    robot.Intake,
-                                    AutoPoints.GPPIntake2.runToExact
-                                ),
-                                ParallelAction(
-                                    robot.Intake,
-                                    AutoPoints.GPPIntake3.runToExact
-                                ),
+                                robot.StartIntake,
+                                AutoPoints.GPPIntake1.runToExact,
+                                robot.CheckColor,
+                                AutoPoints.GPPIntake2.runToExact,
+                                robot.CheckColor,
+                                AutoPoints.GPPIntake3.runToExact,
+                                robot.CheckColor,
+                                robot.StopIntake,
+                                AutoPoints.PreIntakePGP.runToExact
                             )
                         }
                         2 -> {
                             SequentialAction(
                                 AutoPoints.PreIntakePGP.runToExact,
-                                ParallelAction(
-                                    robot.Intake,
-                                    AutoPoints.PGPIntake1.runToExact
-                                ),
-                                ParallelAction(
-                                    robot.Intake,
-                                    AutoPoints.PGPIntake2.runToExact
-                                ),
-                                ParallelAction(
-                                    robot.Intake,
-                                    AutoPoints.PGPIntake3.runToExact
-                                ),
+                                robot.StartIntake,
+                                AutoPoints.PGPIntake1.runToExact,
+                                robot.CheckColor,
+                                AutoPoints.PGPIntake2.runToExact,
+                                robot.CheckColor,
+                                AutoPoints.PGPIntake3.runToExact,
+                                robot.CheckColor,
+                                robot.StopIntake,
+                                AutoPoints.PreIntakePPG.runToExact
                             )
                         }
                         else -> {
                             SequentialAction(
                                 AutoPoints.PreIntakePPG.runToExact,
-                                ParallelAction(
-                                    robot.Intake,
-                                    AutoPoints.PPGIntake1.runToExact
-                                ),
-                                ParallelAction(
-                                    robot.Intake,
-                                    AutoPoints.PPGIntake2.runToExact
-                                ),
-                                ParallelAction(
-                                    robot.Intake,
-                                    AutoPoints.PPGIntake3.runToExact
-                                ),
+                                robot.StartIntake,
+                                AutoPoints.PPGIntake1.runToExact,
+                                robot.CheckColor,
+                                AutoPoints.PPGIntake2.runToExact,
+                                robot.CheckColor,
+                                AutoPoints.PPGIntake3.runToExact,
+                                robot.CheckColor,
+                                robot.StopIntake
                             )
                         }
                     },

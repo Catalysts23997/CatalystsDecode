@@ -46,7 +46,7 @@ public class Comp1Actions {
         intake = new Intake(hardwareMap);
     }
 
-    double timeoutMilliseconds = 500;
+    double timeoutMilliseconds = 1000;
 
     public Action CheckMotif = new Action() {
 
@@ -66,51 +66,74 @@ public class Comp1Actions {
         }
     };
 
+    public Action CheckColor = new Action() {
 
-        public Action Intake = new Action() {
-            @Override
-            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-                intake.state = State.INTAKING;
-                holder.state = Servo.State.HOLD;
+        final ElapsedTime timer = new ElapsedTime();
+        boolean initialized = false;
 
-                if(outtake.checkForRecognition()){
-                    holder.state = Servo.State.LAUNCH;
-                    intake.state = State.STOPPED;
-                    return false;
-                }
-                else return true;
-
-
+        @Override
+        public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+            if (!initialized) {
+                timer.reset();
+                initialized = true;
             }
-        };
 
-        int shootTime = 500;
-
-        public double shootingInterval = 500;
-
-        public Action Shoot = new Action() {
-            final ElapsedTime timer = new ElapsedTime();
-            boolean initialized = false;
-
-            @Override
-            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-                if(!initialized){
-                    timer.reset();
-                    initialized = true;
-                    holder.state = Servo.State.LAUNCH;
-                    launcher.setSpeed(1.0);
-                }
-
-                if(timer.milliseconds() >= shootTime && initialized){
-                    holder.state = Servo.State.HOLD;
-                    launcher.stop();
-                    return false;
-                }
-                else return true;
+            return !outtake.checkForRecognition() && timer.milliseconds()<=timeoutMilliseconds;
+        }
+    };
 
 
-            }
-        };
+
+
+     public Action StartIntake = new Action() {
+
+        @Override
+        public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+            intake.state = State.INTAKING;
+            holder.state = Servo.State.HOLD;
+
+            return false;
+        }
+    };
+
+    public Action StopIntake = new Action() {
+
+        @Override
+        public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+            intake.state = State.STOPPED;
+            holder.state = Servo.State.HOLD;
+
+            return false;
+        }
+    };
+
+
+     int shootTime = 500;
+     public double shootingInterval = 500;
+
+     public Action Shoot = new Action() {
+         final ElapsedTime timer = new ElapsedTime();
+         boolean initialized = false;
+
+         @Override
+         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+             if(!initialized){
+                 timer.reset();
+                 initialized = true;
+                 holder.state = Servo.State.LAUNCH;
+                 launcher.setSpeed(1.0);
+             }
+
+             if(timer.milliseconds() >= shootTime && initialized){
+                 holder.state = Servo.State.HOLD;
+                 launcher.stop();
+                 return false;
+             }
+             else return true;
+
+
+         }
+     };
 
 
 
