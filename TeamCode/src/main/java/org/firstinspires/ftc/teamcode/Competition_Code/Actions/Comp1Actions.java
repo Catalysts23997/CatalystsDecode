@@ -72,6 +72,9 @@ public class Comp1Actions {
             }
         };
 
+        int shootTime = 500;
+
+        public double shootingInterval = 500;
 
         public Action Shoot = new Action() {
             final ElapsedTime timer = new ElapsedTime();
@@ -86,7 +89,7 @@ public class Comp1Actions {
                     launcher.setSpeed(1.0);
                 }
 
-                if(timer.milliseconds() >= 500 && initialized){
+                if(timer.milliseconds() >= shootTime && initialized){
                     holder.state = Servo.State.HOLD;
                     launcher.stop();
                     return false;

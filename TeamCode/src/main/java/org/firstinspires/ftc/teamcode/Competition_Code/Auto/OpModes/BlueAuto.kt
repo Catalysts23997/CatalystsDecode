@@ -52,9 +52,9 @@ class BlueAuto : LinearOpMode() {
                     robot.CheckMotif,
                     AutoPoints.LaunchBlue.runToExact,
                     robot.Shoot,
-                    robot.Sleep(500.0),
+                    robot.Sleep(robot.shootingInterval),
                     robot.Shoot,
-                    robot.Sleep(500.0),
+                    robot.Sleep(robot.shootingInterval),
                     robot.Shoot,
 
                     when (robot.motif) {
@@ -112,9 +112,9 @@ class BlueAuto : LinearOpMode() {
                     },
                     AutoPoints.LaunchBlue.runToExact,
                     robot.Shoot,
-                    robot.Sleep(500.0),
+                    robot.Sleep(robot.shootingInterval),
                     robot.Shoot,
-                    robot.Sleep(500.0),
+                    robot.Sleep(robot.shootingInterval),
                     robot.Shoot,
                     AutoPoints.EndBlue.runToExact
                 )
