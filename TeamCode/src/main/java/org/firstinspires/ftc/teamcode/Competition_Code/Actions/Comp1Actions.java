@@ -46,11 +46,23 @@ public class Comp1Actions {
         intake = new Intake(hardwareMap);
     }
 
+    double timeoutMilliseconds = 500;
+
     public Action CheckMotif = new Action() {
+
+        final ElapsedTime timer = new ElapsedTime();
+        boolean initialized = false;
+
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+            if (!initialized) {
+                timer.reset();
+                initialized = true;
+            }
+
             motif = aprilTag.getMotif();
-            return motif == 0;
+
+            return motif == 0 && timer.milliseconds()<=timeoutMilliseconds;
         }
     };
 
