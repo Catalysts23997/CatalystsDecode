@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
-import com.acmerobotics.roadrunner.SequentialAction;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -56,46 +55,64 @@ public class Comp1Actions {
     };
 
 
-    public Action Intake = new Action() {
-        @Override
-        public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-            intake.state = State.INTAKING;
-            holder.state = Servo.State.HOLD;
-
-            if(outtake.checkForRecognition()){
-                holder.state = Servo.State.LAUNCH;
-                intake.state = State.STOPPED;
-                return false;
-            }
-            else return true;
-
-
-        }
-    };
-
-
-    public Action Shoot = new Action() {
-        final ElapsedTime timer = new ElapsedTime();
-        boolean initialized = false;
-
-        @Override
-        public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-            if(!initialized){
-                timer.reset();
-                initialized = true;
-                holder.state = Servo.State.LAUNCH;
-                launcher.setSpeed(1.0);
-            }
-
-            if(timer.milliseconds() >= 500 && initialized){
+        public Action Intake = new Action() {
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                intake.state = State.INTAKING;
                 holder.state = Servo.State.HOLD;
-                launcher.stop();
-                return false;
+
+                if(outtake.checkForRecognition()){
+                    holder.state = Servo.State.LAUNCH;
+                    intake.state = State.STOPPED;
+                    return false;
+                }
+                else return true;
+
+
             }
-            else return true;
+        };
 
 
-        }
-    };
+        public Action Shoot = new Action() {
+            final ElapsedTime timer = new ElapsedTime();
+            boolean initialized = false;
 
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                if(!initialized){
+                    timer.reset();
+                    initialized = true;
+                    holder.state = Servo.State.LAUNCH;
+                    launcher.setSpeed(1.0);
+                }
+
+                if(timer.milliseconds() >= 500 && initialized){
+                    holder.state = Servo.State.HOLD;
+                    launcher.stop();
+                    return false;
+                }
+                else return true;
+
+
+            }
+        };
+
+
+
+    public Action Sleep(double ms) {
+        return new Action() {
+            final ElapsedTime timer = new ElapsedTime();
+            boolean initialized = false;
+
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                if (!initialized) {
+                    timer.reset();
+                    initialized = true;
+                }
+
+                return timer.seconds() < ms;
+            }
+        };
+    }
 }

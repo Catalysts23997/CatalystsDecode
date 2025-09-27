@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 
 import org.firstinspires.ftc.teamcode.Competition_Code.Actions.ExampleActions
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoPoints
+import org.firstinspires.ftc.teamcode.Competition_Code.Auto.OpModes.BlueAuto.Companion.rT
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.RunToExactForever
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Drivetrain
 import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localizer
@@ -18,13 +19,13 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
 @Autonomous(name = "ExampleAuto", group = "Auto")
 class ExampleAuto : LinearOpMode() {
 
-    companion object{
-        var rT = Poses(-19.0,-66.0,0.0)
-    }
+//    companion object{
+//        var rT = Poses(-19.0,-66.0,0.0)
+//    }
 
     override fun runOpMode() {
         telemetry = FtcDashboard.getInstance().telemetry
-        ExampleAuto.rT = Poses(-19.0,-66.0,0.0)
+        rT = Poses(-19.0,-66.0,0.0)
 
         val localizer = Localizer(hardwareMap, rT)
         val drive = Drivetrain(hardwareMap)
@@ -40,7 +41,7 @@ class ExampleAuto : LinearOpMode() {
                 {
                     localizer.update()
                     RunToExactForever(rT)
-                    telemetry.addData("hello", ExampleAuto.rT)
+                    telemetry.addData("hello", rT)
                     telemetry.addData("df", Localizer.pose.heading)
                     telemetry.addData("x", Localizer.pose.x)
                     telemetry.addData("y", Localizer.pose.y)
@@ -50,11 +51,11 @@ class ExampleAuto : LinearOpMode() {
                 },
                 SequentialAction(
                     robot.example,
-                    AutoPoints.StartBF.runToExact,
+                    AutoPoints.StartBlue.runToExact,
 
                     robot.example,
 
-                    AutoPoints.EndBF.runToExact
+                    AutoPoints.StartBlue.runToExact
 
                 )
             )

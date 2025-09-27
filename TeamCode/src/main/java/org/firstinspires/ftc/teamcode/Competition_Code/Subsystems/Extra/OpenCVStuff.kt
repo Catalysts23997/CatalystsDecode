@@ -1,12 +1,10 @@
-package org.firstinspires.ftc.teamcode.Competition_Code.Subsystems
+package org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Extra
 
 import android.util.Size
 import com.qualcomm.robotcore.hardware.HardwareMap
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName
-
 import org.firstinspires.ftc.teamcode.Competition_Code.Interfaces.Camera
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Point2D
-
 import org.firstinspires.ftc.vision.VisionPortal
 import org.firstinspires.ftc.vision.opencv.ColorBlobLocatorProcessor
 import org.firstinspires.ftc.vision.opencv.ColorRange
@@ -55,7 +53,7 @@ class OpenCVStuff(hardwareMap: HardwareMap) : Camera {
         .setAutoStartStreamOnBuild(true)
         .build()
 
-    data class BlobInfo(val angle: Double, val position: Point2D,val size: Double)
+    data class BlobInfo(val angle: Double, val position: Point2D, val size: Double)
 
     fun turnOff(){
         visionPortal.stopStreaming()
@@ -119,7 +117,7 @@ class OpenCVStuff(hardwareMap: HardwareMap) : Camera {
 //            }
 
 
-            val position = Point2D(boxFit.center.x,boxFit.center.y)
+            val position = Point2D(boxFit.center.x, boxFit.center.y)
             val angle = boxFit.angle
             val size = boxFit.size.area()
             results += BlobInfo(angle,position,size)
@@ -132,4 +130,3 @@ class OpenCVStuff(hardwareMap: HardwareMap) : Camera {
         return maxBlobInfo
     }
 }
-

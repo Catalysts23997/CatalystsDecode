@@ -1,10 +1,8 @@
-package org.firstinspires.ftc.teamcode.Competition_Code.Subsystems
+package org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Extra
 
 import com.qualcomm.robotcore.hardware.DistanceSensor
-
 import com.qualcomm.robotcore.hardware.HardwareMap
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit
-
 
 class ExampleSensor(hwMap: HardwareMap) {
 

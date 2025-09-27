@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode.Competition_Code.Auto
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket
 import com.acmerobotics.roadrunner.Action
 import com.acmerobotics.roadrunner.Vector2d
+import org.firstinspires.ftc.teamcode.Competition_Code.Auto.OpModes.BlueAuto
+import org.firstinspires.ftc.teamcode.Competition_Code.Auto.OpModes.BlueAuto.Companion.rT
 import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localizer
 
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Drivetrain
@@ -111,10 +113,10 @@ object T {
 
 class SetDriveTarget(val pose: Poses):Action{
     override fun run(p: TelemetryPacket): Boolean {
-        ExampleAuto.rT = pose
+        rT = pose
 
-        return !(abs( ExampleAuto.rT.x -Localizer.pose.x) <= 3.0 &&
-                abs( ExampleAuto.rT.y-Localizer.pose.y) <= 3.0 &&
-                abs(Angles.wrap(ExampleAuto.rT.heading +Localizer.pose.heading)) <= Math.toRadians(5.0))
+        return !(abs( rT.x -Localizer.pose.x) <= 3.0 &&
+                abs( rT.y-Localizer.pose.y) <= 3.0 &&
+                abs(Angles.wrap(rT.heading + Localizer.pose.heading)) <= Math.toRadians(5.0))
     }
 }

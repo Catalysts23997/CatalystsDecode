@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Competition_Code.Tele.Testing
+package org.firstinspires.ftc.teamcode.Competition_Code.Tele.Extra
 
 import com.acmerobotics.dashboard.FtcDashboard
 import com.acmerobotics.dashboard.config.Config
@@ -6,14 +6,13 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorEx
-import com.qualcomm.robotcore.hardware.DcMotorSimple
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.PIDController
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.PIDParams
+import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.SlidesEncoderConv
 
 @Config
-@TeleOp(group = "Linear OpMode", name = "SlidesTests")
-class
-SlidesTest: LinearOpMode() {
+@TeleOp(group = "Linear OpMode", name = "PidTest- SlidesRotater")
+class RotationMotorTest: LinearOpMode() {
 
     companion object{
 
@@ -28,25 +27,24 @@ SlidesTest: LinearOpMode() {
     override fun runOpMode() {
         telemetry = FtcDashboard.getInstance().telemetry
 
-        val pidController = PIDController(PIDParams(0.0015,0.0,0.0015,0.0))
-        val motor = hardwareMap.get(DcMotorEx::class.java, "slide")
+        val pidController = PIDController(PIDParams(0.0, 0.0, 0.0, 0.0))
+        val motor = hardwareMap.get(DcMotorEx::class.java, "linkage")
 
         motor.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
         motor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
 
-        motor.direction = DcMotorSimple.Direction.REVERSE
-
-//        val calc = SlidesEncoderConv(24*Math.PI)
+        val calc = SlidesEncoderConv(24 * Math.PI)
 
         waitForStart()
         while (opModeIsActive()){
 
-            val currentPos = motor.currentPosition
+            val currentAngle  = (((motor.currentPosition*2*11/12)/1425.05923061 * 2 * Math.PI) *180/ Math.PI)/4 + 90
+
             pidController.setPID(p, i, d, f)
 
 //            telemetry.addData("Position  - Right", calc.toIn(motor.currentPosition))
-            telemetry.addData("CurrentPose", currentPos)
-            motor.power  =  pidController.calculate(target -currentPos)
+            telemetry.addData("CurrentPose", currentAngle * Math.PI/180)
+            motor.power  =  pidController.calculate(target -(currentAngle * Math.PI/180),currentAngle * Math.PI/180)
 
             telemetry.update()
         }

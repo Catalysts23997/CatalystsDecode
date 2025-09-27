@@ -7,8 +7,8 @@ import com.acmerobotics.roadrunner.Action;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 
-import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.LinearSlide;
-import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.RotaryMotor;
+import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Extra.LinearSlide;
+import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Extra.RotaryMotor;
 
 public class ExampleActions {
     LinearSlide linearSlides;

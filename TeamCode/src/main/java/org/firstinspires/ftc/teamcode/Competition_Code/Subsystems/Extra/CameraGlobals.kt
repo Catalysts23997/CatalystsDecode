@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Competition_Code.Subsystems
+package org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Extra
 
 class CameraGlobals {
     companion object{

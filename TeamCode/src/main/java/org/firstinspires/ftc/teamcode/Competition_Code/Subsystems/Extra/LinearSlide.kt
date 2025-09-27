@@ -1,14 +1,13 @@
-package org.firstinspires.ftc.teamcode.Competition_Code.Subsystems
+package org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Extra
 
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.DcMotorSimple
 import com.qualcomm.robotcore.hardware.HardwareMap
-
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.PIDController
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.PIDParams
 
-class LinearSlide(hwMap:HardwareMap) {
+class LinearSlide(hwMap: HardwareMap) {
 
     val motor: DcMotorEx = hwMap.get(DcMotorEx::class.java, "slide")
     init {
@@ -19,7 +18,7 @@ class LinearSlide(hwMap:HardwareMap) {
 
     //todo: Create an opmode that uses this subsytem - and sets the pid controller's paramters to ftc Dashboard numbers
 
-    private val pidController = PIDController(PIDParams(.0085,0.0,0.0007,0.0))
+    private val pidController = PIDController(PIDParams(.0085, 0.0, 0.0007, 0.0))
 
 
     //NOTE: Max encoder ticks is 311, otherwise we break hardware
