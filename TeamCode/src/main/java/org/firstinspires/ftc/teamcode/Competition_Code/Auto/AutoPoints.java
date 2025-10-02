@@ -24,10 +24,28 @@ public enum AutoPoints {
     PreIntakeGPP(new Vector2d(-25,-36), -Math.PI/2),
     GPPIntake1(new Vector2d(-36.5,-36), -Math.PI/2),
     GPPIntake2(new Vector2d(-41.5,-36), -Math.PI/2),
-    GPPIntake3(new Vector2d(-48,-36), -Math.PI/2);
+    GPPIntake3(new Vector2d(-48,-36), -Math.PI/2),
 
 
+    StartRed(new Vector2d(41,60), -Math.PI/2),
+    AprilTagRed(new Vector2d(41,60), -Math.PI/2),
+    LaunchRed(new Vector2d(41,60), -Math.PI/2),
+    EndRed(new Vector2d(54,33), -Math.PI/2),
 
+    PreIntakePPGRed(new Vector2d(25,12), -Math.PI/2),
+    PPGIntakeRed1(new Vector2d(36.5,12), -Math.PI/2),
+    PPGIntakeRed2(new Vector2d(41.5,12), -Math.PI/2),
+    PPGIntakeRed3(new Vector2d(48,12), -Math.PI/2),
+
+    PreIntakePGPRed(new Vector2d(25,-12), -Math.PI/2),
+    PGPIntake1Red(new Vector2d(36.5,-12), -Math.PI/2),
+    PGPIntakeRed2(new Vector2d(41.5,-12), -Math.PI/2),
+    PGPIntakeRed3(new Vector2d(48,-12), -Math.PI/2),
+
+    PreIntakeGPPRed(new Vector2d(25,-36), -Math.PI/2),
+    GPPIntakeRed1(new Vector2d(36.5,-36), -Math.PI/2),
+    GPPIntakeRed2(new Vector2d(41.5,-36), -Math.PI/2),
+    GPPIntakeRed3(new Vector2d(48,-36), -Math.PI/2);
 
     AutoPoints(Vector2d vector, Double rotation) {
         runToExact = new SetDriveTarget(new Poses(vector,rotation));
