@@ -19,53 +19,95 @@ import kotlin.math.sin
 
 class AprilTag(hardwareMap: HardwareMap) : Camera {
 
+    /**
+     * The different states that the subsystem can be in
+     */
     enum class State {
         On, Off
     }
 
+    /**
+     * The current state of the April Tag subsystem
+     */
     var state = State.Off
 
+    /**
+     * The instance of our camera
+     */
     override val camera: WebcamName = hardwareMap.get(WebcamName::class.java, "Arducam")
     override val visionProcessor: VisionProcessor = AprilTagProcessor.Builder()
+        // Set settings on the camera
         .setDrawAxes(true)
         .setDrawTagOutline(true)
+        // Tell the camera what kind of tag we are looking for
         .setTagFamily(AprilTagProcessor.TagFamily.TAG_36h11)
+        // Give the camera a list of locations that the April tags
+        // will be at
         .setTagLibrary(AprilTagGameDatabase.getCenterStageTagLibrary())
+        // We want the output to be in Inches and Radians
         .setOutputUnits(DistanceUnit.INCH, AngleUnit.RADIANS)
+        // Set lens settings
         .setLensIntrinsics(919.688, 919.688, 647.849 ,350.162)
+        // Create a new instance of our camera with all of the options
+        // we set
         .build()
 
-
+    /**
+     * The Vision Portal, which controls the camera
+     */
     override var visionPortal: VisionPortal
 
+    // The code that will run when the instance is first created
     init {
+        // Create a new Vision Portal
         val builder = VisionPortal.Builder()
+            // Give it our camera
             .setCamera(camera)
+            // Set the camera resolution
             .setCameraResolution(Size(1280, 720))
             .enableLiveView(false)
+            // Tell the camera that we want to get images in
+            // Motion JPEG format
             .setStreamFormat(VisionPortal.StreamFormat.MJPEG)
+            // Add our vision processor
             .addProcessor(visionProcessor)
 
         visionPortal = builder.build()
         visionPortal.stopStreaming()
     }
 
+    /**
+     * Search for a tag
+     */
     fun searchForTag(): Vector2d {
+        // Tell our camera to start streaming video data
+        // to our code!
         visionPortal.resumeStreaming()
         visionPortal.resumeLiveView()
+        // Ask the camera if it sees any april tags
         val currentDetections = (visionProcessor as AprilTagProcessor).detections
 
-
+        // Loop through every tag that it sees
         for (detection in currentDetections) {
+            // Check if it the detected tag is one of the tags
+            // that we need to find.
             if (detection.id == 12 || detection.id == 16) {
                 //state = State.TagDiscovered
+                // Create a new vector from the camera's view to return to the
+                // caller
                 val data = Vector2d(detection.ftcPose.x, detection.ftcPose.y)
                 return cameraVector(fieldDistanceToTag(data))
             }
         }
+
+        // We didn't find anything.
         return Vector2d(0.0,0.0)
     }
 
+    /**
+     * This function returns the distance the detected tag is from the
+     * robot
+     */
     private fun fieldDistanceToTag(translateData: Vector2d): Vector2d {
         //todo measure Camera Offset
         val relX = translateData.x + 0.0
