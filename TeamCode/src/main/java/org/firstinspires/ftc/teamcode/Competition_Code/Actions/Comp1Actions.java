@@ -134,23 +134,4 @@ public class Comp1Actions {
 
          }
      };
-
-
-
-    public Action Sleep(double ms) {
-        return new Action() {
-            final ElapsedTime timer = new ElapsedTime();
-            boolean initialized = false;
-
-            @Override
-            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-                if (!initialized) {
-                    timer.reset();
-                    initialized = true;
-                }
-
-                return timer.seconds() < ms;
-            }
-        };
-    }
 }

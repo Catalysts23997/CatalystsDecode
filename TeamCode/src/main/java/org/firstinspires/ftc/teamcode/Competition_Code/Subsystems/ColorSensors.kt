@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.NormalizedColorSensor
 import org.firstinspires.ftc.robotcore.external.JavaUtil
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit
 import android.graphics.Color
+import com.qualcomm.robotcore.hardware.NormalizedRGBA
 
 
 class ColorSensors(hwMap: HardwareMap, name: String) {
@@ -16,6 +17,7 @@ class ColorSensors(hwMap: HardwareMap, name: String) {
      * converted RGB to HSV values
      * */
     val hsvValues = FloatArray(3)
+    var hue = 0f
 
     /**
      * The handle to our color sensor
@@ -45,42 +47,52 @@ class ColorSensors(hwMap: HardwareMap, name: String) {
         // - An object must have a color value
         //   of at least 0.05 (basically black)
         val inside =
-            ((colorSensor as DistanceSensor).getDistance(DistanceUnit.CM) < 7) && value >= .05
+            ((colorSensor as DistanceSensor).getDistance(DistanceUnit.CM) < 7)
 
         return inside
     }
+
 
     /**
      * Checks if the color green is in front of the sensor
      */
     fun isGreen(): Boolean {
         // Convert the RGB output to
-        Color.RGBToHSV(
-            (colorSensor.red() * 255) / 800,
-            (colorSensor.green() * 255) / 800,
-            (colorSensor.blue() * 255) / 800,
-            hsvValues
-        )
+        val normalizedColors = (colorSensor as NormalizedColorSensor).normalizedColors
 
-        val hue = hsvValues[0]
+        val colors: NormalizedRGBA = colorSensor.normalizedColors
 
-        return  hue in 100f..140f
+        val hsv = FloatArray(3)
+        Color.colorToHSV(colors.toColor(), hsv)
+
+        hue = hsv[0]
+        val sat = hsv[1]
+        val value = hsv[2]
+
+
+
+        return  hue in 90f..160f && sat > 0.3f
     }
 
     /**
      * Checks if the color purple is in front of the sensor
      */
     fun isPurple(): Boolean {
-        Color.RGBToHSV(
-            (colorSensor.red() * 255) / 800,
-            (colorSensor.green() * 255) / 800,
-            (colorSensor.blue() * 255) / 800,
-            hsvValues
-        )
+        // Convert the RGB output to
+        val normalizedColors = (colorSensor as NormalizedColorSensor).normalizedColors
 
-        val hue = hsvValues[0]
+        val colors: NormalizedRGBA = colorSensor.normalizedColors
 
-        return hue in 250f..290f
+        val hsv = FloatArray(3)
+        Color.colorToHSV(colors.toColor(), hsv)
+
+        hue = hsv[0]
+        val sat = hsv[1]
+        val value = hsv[2]
+
+
+
+        return  hue in 200f..260f && sat > 0.3f
     }
 
 }

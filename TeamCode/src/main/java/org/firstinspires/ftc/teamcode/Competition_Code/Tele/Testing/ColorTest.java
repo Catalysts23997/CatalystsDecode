@@ -20,7 +20,7 @@ public class ColorTest extends LinearOpMode {
             telemetry.addData("Is Something?", colorSensor.checkForRecognition());
             telemetry.addData("Is Green?", colorSensor.isGreen());
             telemetry.addData("Is Purple?", colorSensor.isPurple());
-            telemetry.addData("hue", colorSensor.getHsvValues());
+            telemetry.addData("hue", colorSensor.getHue());
             telemetry.update();
         }
     }

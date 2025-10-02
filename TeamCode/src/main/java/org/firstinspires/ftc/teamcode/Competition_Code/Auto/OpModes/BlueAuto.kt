@@ -53,9 +53,9 @@ class BlueAuto : LinearOpMode() {
                     robot.CheckMotif,
                     AutoPoints.LaunchBlue.runToExact,
                     robot.Shoot,
-                    robot.Sleep(robot.shootingInterval),
+                    SleepAction(robot.shootingInterval/1000),
                     robot.Shoot,
-                    robot.Sleep(robot.shootingInterval),
+                    SleepAction(robot.shootingInterval/1000),
                     robot.Shoot,
 
                     when (robot.motif) {
@@ -63,12 +63,18 @@ class BlueAuto : LinearOpMode() {
                             SequentialAction(
                                 AutoPoints.PreIntakeGPP.runToExact,
                                 robot.StartIntake,
-                                AutoPoints.GPPIntake1.runToExact,
-                                robot.CheckColor,
-                                AutoPoints.GPPIntake2.runToExact,
-                                robot.CheckColor,
-                                AutoPoints.GPPIntake3.runToExact,
-                                robot.CheckColor,
+                                ParallelAction(
+                                    AutoPoints.GPPIntake1.runToExact,
+                                    robot.CheckColor
+                                ),
+                                ParallelAction(
+                                    AutoPoints.GPPIntake2.runToExact,
+                                    robot.CheckColor
+                                ),
+                                ParallelAction(
+                                    AutoPoints.GPPIntake3.runToExact,
+                                    robot.CheckColor
+                                ),
                                 robot.StopIntake,
                                 AutoPoints.PreIntakePGP.runToExact
                             )
@@ -77,12 +83,18 @@ class BlueAuto : LinearOpMode() {
                             SequentialAction(
                                 AutoPoints.PreIntakePGP.runToExact,
                                 robot.StartIntake,
-                                AutoPoints.PGPIntake1.runToExact,
-                                robot.CheckColor,
-                                AutoPoints.PGPIntake2.runToExact,
-                                robot.CheckColor,
-                                AutoPoints.PGPIntake3.runToExact,
-                                robot.CheckColor,
+                                ParallelAction(
+                                    AutoPoints.PGPIntake1.runToExact,
+                                    robot.CheckColor
+                                ),
+                                ParallelAction(
+                                    AutoPoints.PGPIntake2.runToExact,
+                                    robot.CheckColor
+                                ),
+                                ParallelAction(
+                                    AutoPoints.PGPIntake3.runToExact,
+                                    robot.CheckColor
+                                ),
                                 robot.StopIntake,
                                 AutoPoints.PreIntakePPG.runToExact
                             )
@@ -91,21 +103,27 @@ class BlueAuto : LinearOpMode() {
                             SequentialAction(
                                 AutoPoints.PreIntakePPG.runToExact,
                                 robot.StartIntake,
-                                AutoPoints.PPGIntake1.runToExact,
-                                robot.CheckColor,
-                                AutoPoints.PPGIntake2.runToExact,
-                                robot.CheckColor,
-                                AutoPoints.PPGIntake3.runToExact,
-                                robot.CheckColor,
+                                ParallelAction(
+                                    AutoPoints.PPGIntake1.runToExact,
+                                    robot.CheckColor
+                                ),
+                                ParallelAction(
+                                    AutoPoints.PPGIntake2.runToExact,
+                                    robot.CheckColor
+                                ),
+                                ParallelAction(
+                                    AutoPoints.PPGIntake3.runToExact,
+                                    robot.CheckColor
+                                ),
                                 robot.StopIntake
                             )
                         }
                     },
                     AutoPoints.LaunchBlue.runToExact,
                     robot.Shoot,
-                    robot.Sleep(robot.shootingInterval),
+                    SleepAction(robot.shootingInterval/1000),
                     robot.Shoot,
-                    robot.Sleep(robot.shootingInterval),
+                    SleepAction(robot.shootingInterval/1000),
                     robot.Shoot,
                     AutoPoints.EndBlue.runToExact
                 )
