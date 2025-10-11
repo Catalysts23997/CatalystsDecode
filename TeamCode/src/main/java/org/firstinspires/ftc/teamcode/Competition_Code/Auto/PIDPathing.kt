@@ -56,7 +56,7 @@ class RunToNearest(private val targetVector: Vector2d) : Action {
 
         val latError = newTarget.y - current.y
         val axialError = newTarget.x - current.x
-        val headingError = Angles.wrap(newTarget.heading + current.heading)
+        val headingError = Angles.wrap(newTarget.heading - current.heading)
 
         val lateral = drive.Ypid.calculate(latError)
         val axial = drive.Xpid.calculate(axialError)
@@ -85,7 +85,7 @@ fun RunToExactForever(pose: Poses): Boolean {
 
         val latError = pose.y - current.y
         val axialError = pose.x - current.x
-        val headingError = Angles.wrap(pose.heading + current.heading)
+        val headingError = Angles.wrap(pose.heading - current.heading)
 
         val lateral = drive.Ypid.calculate(latError)
         val axial = drive.Xpid.calculate(axialError)
@@ -99,10 +99,11 @@ fun RunToExactForever(pose: Poses): Boolean {
 
         //todo add rotational pid
 
-        drive.leftFront.power = (rotY - rotX - turn)
-        drive.leftBack.power = (rotY + rotX - turn)
-        drive.rightFront.power = (rotY + rotX + turn)
-        drive.rightBack.power = (rotY - rotX + turn)
+        drive.leftFront.power = (rotY + rotX - turn)
+        drive.leftBack.power = (rotY - rotX - turn)
+        drive.rightFront.power = (rotY - rotX + turn)
+        drive.rightBack.power = (rotY + rotX + turn)
+
 
     return true
 }
@@ -117,6 +118,6 @@ class SetDriveTarget(val pose: Poses):Action{
 
         return !(abs( rT.x -Localizer.pose.x) <= 3.0 &&
                 abs( rT.y-Localizer.pose.y) <= 3.0 &&
-                abs(Angles.wrap(rT.heading + Localizer.pose.heading)) <= Math.toRadians(5.0))
+                abs(Angles.wrap(-rT.heading + Localizer.pose.heading)) <= Math.toRadians(5.0))
     }
 }

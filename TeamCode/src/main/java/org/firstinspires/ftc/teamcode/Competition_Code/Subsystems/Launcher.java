@@ -11,16 +11,21 @@ public class Launcher {
 
     /// The one motor that controls the launcher. There may be another one added in the
     /// future.
-    DcMotor launcherMotor;
+    DcMotor launcherMotor1;
+    DcMotor launcherMotor2;
 
     /// Declare a new instance of the launcher system.
     ///
     /// # Only one instance should be active at a given time!
     public Launcher(HardwareMap hardwareMap) {
-        launcherMotor = hardwareMap.get(DcMotor.class, "launcher1");
+        launcherMotor1 = hardwareMap.get(DcMotor.class, "launcher1");
         // Make sure we know the default state of our motor
-        launcherMotor.setDirection(DcMotorSimple.Direction.FORWARD);
-        launcherMotor.setPower(0);
+        launcherMotor1.setDirection(DcMotorSimple.Direction.FORWARD);
+        launcherMotor1.setPower(0);
+        launcherMotor2 = hardwareMap.get(DcMotor.class, "launcher2");
+        // Make sure we know the default state of our motor
+        launcherMotor2.setDirection(DcMotorSimple.Direction.REVERSE);
+        launcherMotor2.setPower(0);
     }
 
     /// Set the speed of the motor.
@@ -46,7 +51,8 @@ public class Launcher {
 
     /// Tick the launcher
     public void update() {
-        launcherMotor.setPower(speed);
+        launcherMotor1.setPower(speed);
+        launcherMotor2.setPower(speed);
     }
 
 }

@@ -61,10 +61,10 @@ class Drivetrain(hwMap: HardwareMap) : SubSystems {
         leftFront.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
         rightBack.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
         rightFront.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
-        leftBack.direction = DcMotorSimple.Direction.REVERSE
-        leftFront.direction = DcMotorSimple.Direction.REVERSE
-        rightFront.direction = DcMotorSimple.Direction.FORWARD
-        rightBack.direction = DcMotorSimple.Direction.FORWARD
+        leftBack.direction = DcMotorSimple.Direction.FORWARD
+        leftFront.direction = DcMotorSimple.Direction.FORWARD
+        rightFront.direction = DcMotorSimple.Direction.REVERSE
+        rightBack.direction = DcMotorSimple.Direction.REVERSE
 
         instance = this
 
@@ -93,10 +93,10 @@ class Drivetrain(hwMap: HardwareMap) : SubSystems {
 
         //todo add rotational pid
 
-        leftFront.power = (rotY - rotX + turn)
-        leftBack.power = (rotY + rotX + turn)
-        rightFront.power = (rotY + rotX - turn)
-        rightBack.power = (rotY - rotX - turn)
+        leftFront.power = (rotY + rotX - turn)
+        leftBack.power = (rotY - rotX - turn)
+        rightFront.power = (rotY - rotX + turn)
+        rightBack.power = (rotY + rotX + turn)
     }
 
 

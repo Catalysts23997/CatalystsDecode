@@ -29,8 +29,7 @@ class Localizer(hwmap: HardwareMap, private val offset: Poses) {
         backwards is a negative number.
          */
         odo.setOffsets(
-            -3.0 * 25.4,
-            -4.3 * 25.4
+            6.25 * 25.4, -0.25 * 25.4
         ) //these are tuned for 3110-0002-0001 Product Insight #1
 
 
@@ -60,7 +59,7 @@ class Localizer(hwmap: HardwareMap, private val offset: Poses) {
         you move the robot to the left.
          */
         odo.setEncoderDirections(
-            GoBildaPinpointDriver.EncoderDirection.REVERSED,
+            GoBildaPinpointDriver.EncoderDirection.FORWARD,
             GoBildaPinpointDriver.EncoderDirection.REVERSED
         )
 
