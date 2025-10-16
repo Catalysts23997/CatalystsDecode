@@ -53,77 +53,71 @@ class BlueAuto : LinearOpMode() {
                     robot.CheckMotif,
                     AutoPoints.LaunchBlue.runToExact,
                     robot.Shoot,
-                    SleepAction(robot.shootingInterval/1000),
+                    robot.Cycle,
                     robot.Shoot,
-                    SleepAction(robot.shootingInterval/1000),
+                    robot.Cycle,
                     robot.Shoot,
 
                     when (robot.motif) {
                         1 -> {
                             SequentialAction(
                                 AutoPoints.PreIntakeGPP.runToExact,
-                                robot.StartIntake,
                                 ParallelAction(
                                     AutoPoints.GPPIntake1.runToExact,
-                                    robot.CheckColor
+                                    robot.Ball1
                                 ),
                                 ParallelAction(
                                     AutoPoints.GPPIntake2.runToExact,
-                                    robot.CheckColor
+                                    robot.Ball2
                                 ),
                                 ParallelAction(
                                     AutoPoints.GPPIntake3.runToExact,
-                                    robot.CheckColor
+                                    robot.Ball3
                                 ),
-                                robot.StopIntake,
                                 AutoPoints.PreIntakePGP.runToExact
                             )
                         }
                         2 -> {
                             SequentialAction(
                                 AutoPoints.PreIntakePGP.runToExact,
-                                robot.StartIntake,
                                 ParallelAction(
                                     AutoPoints.PGPIntake1.runToExact,
-                                    robot.CheckColor
+                                    robot.Ball1
                                 ),
                                 ParallelAction(
                                     AutoPoints.PGPIntake2.runToExact,
-                                    robot.CheckColor
+                                    robot.Ball2
                                 ),
                                 ParallelAction(
                                     AutoPoints.PGPIntake3.runToExact,
-                                    robot.CheckColor
+                                    robot.Ball3
                                 ),
-                                robot.StopIntake,
                                 AutoPoints.PreIntakePPG.runToExact
                             )
                         }
                         else -> {
                             SequentialAction(
                                 AutoPoints.PreIntakePPG.runToExact,
-                                robot.StartIntake,
                                 ParallelAction(
                                     AutoPoints.PPGIntake1.runToExact,
-                                    robot.CheckColor
+                                    robot.Ball1
                                 ),
                                 ParallelAction(
                                     AutoPoints.PPGIntake2.runToExact,
-                                    robot.CheckColor
+                                    robot.Ball2
                                 ),
                                 ParallelAction(
                                     AutoPoints.PPGIntake3.runToExact,
-                                    robot.CheckColor
+                                    robot.Ball3
                                 ),
-                                robot.StopIntake
                             )
                         }
                     },
                     AutoPoints.LaunchBlue.runToExact,
                     robot.Shoot,
-                    SleepAction(robot.shootingInterval/1000),
+                    robot.Cycle,
                     robot.Shoot,
-                    SleepAction(robot.shootingInterval/1000),
+                    robot.Cycle,
                     robot.Shoot,
                     AutoPoints.EndBlue.runToExact
                 )
