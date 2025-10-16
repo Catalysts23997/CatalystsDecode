@@ -21,9 +21,8 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Intake.State;
 public class Comp1Actions {
     AprilTag aprilTag;
     Servo holder;
-    ColorSensors outtake;
-    ColorSensors stop;
-
+    public ColorSensors outtake;
+    public ColorSensors stop;
 
     Intake intake;
     Launcher launcher;
