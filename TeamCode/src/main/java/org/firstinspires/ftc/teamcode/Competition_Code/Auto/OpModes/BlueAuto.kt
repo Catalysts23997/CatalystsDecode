@@ -31,6 +31,7 @@ class BlueAuto : LinearOpMode() {
         val robot = Comp1Actions(hardwareMap)
 
         localizer.update()
+        robot.HoldBall
         robot.update()
 
         waitForStart()
@@ -52,12 +53,7 @@ class BlueAuto : LinearOpMode() {
                     AutoPoints.AprilTagBlue.runToExact,
                     robot.CheckMotif,
                     AutoPoints.LaunchBlue.runToExact,
-                    robot.Shoot,
-                    robot.Cycle,
-                    robot.Shoot,
-                    robot.Cycle,
-                    robot.Shoot,
-
+                    robot.ShootBalls,
                     when (robot.motif) {
                         1 -> {
                             SequentialAction(
@@ -109,16 +105,12 @@ class BlueAuto : LinearOpMode() {
                                 ParallelAction(
                                     AutoPoints.PPGIntake3.runToExact,
                                     robot.Ball3
-                                ),
+                                )
                             )
                         }
                     },
                     AutoPoints.LaunchBlue.runToExact,
-                    robot.Shoot,
-                    robot.Cycle,
-                    robot.Shoot,
-                    robot.Cycle,
-                    robot.Shoot,
+                    robot.ShootBalls,
                     AutoPoints.EndBlue.runToExact
                 )
             )

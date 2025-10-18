@@ -23,6 +23,11 @@ class Comp1Tele : LinearOpMode() {
         val packet = TelemetryPacket()
         var runningActions = ArrayList<Action>()
 
+        var balls = 0             // Tracks the next ball to intake
+        val intakeDebounce = 1000 // ms minimum between X presses
+        val intakeTimer = ElapsedTime()
+        var intaking = false
+
         val robot = Comp1Actions(hardwareMap)
         val timer = ElapsedTime()
 
@@ -33,37 +38,37 @@ class Comp1Tele : LinearOpMode() {
 
         while (opModeIsActive()) {
 
-            if(gamepad2.a){
-                runningActions.add(
-                    SequentialAction(
-                        robot.Shoot,
-                        if (robot.stop.checkForRecognition()){
-                            robot.Cycle
-                        } else{
-                            SleepAction(0.0)
+            // SHOOTING: A button triggers full ShootBalls sequence
+            if (gamepad2.a) {
+                runningActions.add(robot.ShootBalls)
+                balls = 0  // Reset intake counter after shooting
+            }
+
+            // STOP INTAKE immediately: Y button
+            if (gamepad2.y) {
+                runningActions.add(robot.StopIntake)
+                intaking = false
+            }
+
+            if (gamepad2.x) {
+                runningActions.add(robot.StartIntake)
+                intaking = true
+            }
+            if (intaking) {
+                when (balls){
+                    0 -> {
+                        if (robot.ball1.checkForRecognition()){
+                            runningActions.add(robot.HoldBall)
+                            balls += 1
                         }
-                    )
-                )
+                    }
+                    1 -> {
+                        if (robot.ball2.checkForRecognition()){
+                            balls += 1
+                        }
+                    }
+                }
             }
-            if(gamepad2.b){
-                runningActions.add(
-                    robot.Cycle
-                )
-            }
-            if(gamepad2.x){
-                runningActions.add(
-                    robot.StartIntake
-                )
-            }
-            if(gamepad2.y){
-                runningActions.add(
-                    robot.StopIntake
-                )
-            }
-
-
-
-
 
             // update running actions
             val newActions = ArrayList<Action>()
@@ -74,6 +79,10 @@ class Comp1Tele : LinearOpMode() {
                 }
             }
             runningActions = newActions
+
+
+            packet.put("Running Actions", runningActions.size)
+            packet.put("Balls", balls)
             dash.sendTelemetryPacket(packet)
 
             //update subsystems

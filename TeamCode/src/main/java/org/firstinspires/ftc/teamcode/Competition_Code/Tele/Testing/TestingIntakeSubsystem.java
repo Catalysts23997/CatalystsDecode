@@ -27,7 +27,7 @@ public class TestingIntakeSubsystem extends LinearOpMode {
                 // If B is pressed, it goes backwards
                 intake.state = Intake.State.REVERSE;
             } else {
-                // If not button is pressed, stop the intake motor
+                // If not button is pressed, ball2 the intake motor
                 intake.state = Intake.State.STOPPED;
             }
 

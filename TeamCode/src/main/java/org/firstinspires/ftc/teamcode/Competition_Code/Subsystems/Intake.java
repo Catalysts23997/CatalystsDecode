@@ -39,7 +39,7 @@ public class Intake {
     /// Set the current state of the intake system with a boolean.
     ///
     /// @deprecated This function shouldn't be used, as it assumes you want to set the state to intaking, not reverse.
-    /// @param shouldIntake If true, the intake motors will be spinning. If false, they will stop.
+    /// @param shouldIntake If true, the intake motors will be spinning. If false, they will ball2.
     public void setState(boolean shouldIntake) {
         if (shouldIntake) this.state = State.INTAKING;
         else this.state = State.STOPPED;
@@ -74,7 +74,7 @@ public class Intake {
 
     }
 
-    /// Make motors stop
+    /// Make motors ball2
     private void stopIntake() {
         intake1.setPower(0);
 
@@ -84,13 +84,13 @@ public class Intake {
     ///
     /// Fields:
     /// - INTAKING: The intake motors will **spin**
-    /// - STOPPED: The intake motors will **stop**
+    /// - STOPPED: The intake motors will **ball2**
     public enum State {
         ///  Make motors spin
         INTAKING,
         /// Reverse the motors
         REVERSE,
-        /// Make motors stop
+        /// Make motors ball2
         STOPPED
     }
 }
