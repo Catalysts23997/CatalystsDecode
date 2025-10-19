@@ -240,6 +240,7 @@ public class Comp1Actions {
             // Phase 1: Wait for ball2 (the start signal)
             if (!initialized) {
                 timer.reset();
+                pulley.state = Pulley.State.On;
                 initialized = true;
                 packet.put("Cycle", "Waiting for ball2...");
             }
@@ -247,7 +248,6 @@ public class Comp1Actions {
             if (!started) {
                 // If ball2 detected → start cycle
                 if (ball2.checkForRecognition()) {
-                    pulley.state = Pulley.State.On;
                     timer.reset(); // restart timer for next phase
                     started = true;
                     packet.put("Cycle", "Ball2 detected → starting pulley");

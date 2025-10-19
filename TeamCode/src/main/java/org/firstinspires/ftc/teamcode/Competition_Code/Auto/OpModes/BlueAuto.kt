@@ -70,7 +70,7 @@ class BlueAuto : LinearOpMode() {
                                     AutoPoints.GPPIntake3.runToExact,
                                     robot.Ball3
                                 ),
-                                AutoPoints.PreIntakePGP.runToExact
+                                AutoPoints.GPPMidPoint.runToExact
                             )
                         }
                         2 -> {
@@ -88,7 +88,7 @@ class BlueAuto : LinearOpMode() {
                                     AutoPoints.PGPIntake3.runToExact,
                                     robot.Ball3
                                 ),
-                                AutoPoints.PreIntakePPG.runToExact
+                                AutoPoints.PGPMidPoint.runToExact
                             )
                         }
                         else -> {

@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import org.firstinspires.ftc.teamcode.Competition_Code.Actions.Comp1Actions
 
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoPoints
+import org.firstinspires.ftc.teamcode.Competition_Code.Auto.OpModes.BlueAuto.Companion.rT
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.RunToExactForever
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Drivetrain
 import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localizer
@@ -18,9 +19,6 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
 @Autonomous(name = "RedAutoTests", group = "Auto")
 class RedAutoTests : LinearOpMode() {
 
-    companion object{
-        var rT = Poses(-41.0,60.0,-Math.PI/2)
-    }
 
     override fun runOpMode() {
         telemetry = FtcDashboard.getInstance().telemetry
@@ -53,28 +51,28 @@ class RedAutoTests : LinearOpMode() {
                     when (motif) {
                         1 -> {
                             SequentialAction(
-                                AutoPoints.PreIntakeGPP.runToExact,
-                                AutoPoints.GPPIntake1.runToExact,
-                                AutoPoints.GPPIntake2.runToExact,
-                                AutoPoints.GPPIntake3.runToExact,
-                                AutoPoints.PreIntakePGP.runToExact
+                                AutoPoints.PreIntakeGPPRed.runToExact,
+                                AutoPoints.GPPIntake1Red.runToExact,
+                                AutoPoints.GPPIntake2Red.runToExact,
+                                AutoPoints.GPPIntake3Red.runToExact,
+                                AutoPoints.GPPMidPointRed.runToExact
                             )
                         }
                         2 -> {
                             SequentialAction(
-                                AutoPoints.PreIntakePGP.runToExact,
-                                AutoPoints.PGPIntake1.runToExact,
-                                AutoPoints.PGPIntake2.runToExact,
-                                AutoPoints.PGPIntake3.runToExact,
-                                AutoPoints.PreIntakePPG.runToExact
+                                AutoPoints.PreIntakePGPRed.runToExact,
+                                AutoPoints.PGPIntake1Red.runToExact,
+                                AutoPoints.PGPIntake2Red.runToExact,
+                                AutoPoints.PGPIntake3Red.runToExact,
+                                AutoPoints.PGPMidPointRed.runToExact
                             )
                         }
                         else -> {
                             SequentialAction(
-                                AutoPoints.PreIntakePPG.runToExact,
-                                AutoPoints.PPGIntake1.runToExact,
-                                AutoPoints.PPGIntake2.runToExact,
-                                AutoPoints.PPGIntake3.runToExact,
+                                AutoPoints.PreIntakePPGRed.runToExact,
+                                AutoPoints.PPGIntake1Red.runToExact,
+                                AutoPoints.PPGIntake2Red.runToExact,
+                                AutoPoints.PPGIntake3Red.runToExact,
                             )
                         }
                     },

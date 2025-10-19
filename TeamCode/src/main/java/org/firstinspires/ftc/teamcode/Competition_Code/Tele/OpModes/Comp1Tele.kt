@@ -24,8 +24,8 @@ class Comp1Tele : LinearOpMode() {
         var runningActions = ArrayList<Action>()
 
         var balls = 0             // Tracks the next ball to intake
-        val intakeDebounce = 1000 // ms minimum between X presses
-        val intakeTimer = ElapsedTime()
+        val buttonDebounce = 500 // ms minimum between button presses
+        val buttonTimer = ElapsedTime()
         var intaking = false
 
         val robot = Comp1Actions(hardwareMap)
@@ -39,21 +39,23 @@ class Comp1Tele : LinearOpMode() {
         while (opModeIsActive()) {
 
             // SHOOTING: A button triggers full ShootBalls sequence
-            if (gamepad2.a) {
+            if (gamepad2.right_trigger >= 0.5) {
                 runningActions.add(robot.ShootBalls)
                 balls = 0  // Reset intake counter after shooting
             }
 
-            // STOP INTAKE immediately: Y button
-            if (gamepad2.y) {
-                runningActions.add(robot.StopIntake)
-                intaking = false
+            if (gamepad2.left_trigger >= 0.5 && buttonTimer.milliseconds() >= buttonDebounce) {
+                if(!intaking){
+                    runningActions.add(robot.StartIntake)
+                    intaking = true
+                }
+                else{
+                    runningActions.add(robot.StopIntake)
+                    intaking = false
+                }
+                buttonTimer.reset()
             }
 
-            if (gamepad2.x) {
-                runningActions.add(robot.StartIntake)
-                intaking = true
-            }
             if (intaking) {
                 when (balls){
                     0 -> {

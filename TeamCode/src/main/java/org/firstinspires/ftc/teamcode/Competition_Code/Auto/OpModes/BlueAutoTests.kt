@@ -55,7 +55,7 @@ class BlueAutoTests : LinearOpMode() {
                                 AutoPoints.GPPIntake1.runToExact,
                                 AutoPoints.GPPIntake2.runToExact,
                                 AutoPoints.GPPIntake3.runToExact,
-                                AutoPoints.PreIntakePGP.runToExact
+                                AutoPoints.GPPMidPointRed.runToExact
                             )
                         }
                         2 -> {
@@ -64,7 +64,7 @@ class BlueAutoTests : LinearOpMode() {
                                 AutoPoints.PGPIntake1.runToExact,
                                 AutoPoints.PGPIntake2.runToExact,
                                 AutoPoints.PGPIntake3.runToExact,
-                                AutoPoints.PreIntakePPG.runToExact
+                                AutoPoints.PGPMidPointRed.runToExact
                             )
                         }
                         else -> {
