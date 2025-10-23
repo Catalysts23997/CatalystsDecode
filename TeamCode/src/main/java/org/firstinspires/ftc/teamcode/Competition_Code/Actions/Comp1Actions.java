@@ -55,6 +55,9 @@ public class Comp1Actions {
         ball2 = new ColorSensors(hardwareMap, "sensor2");
     }
 
+    /// This is the timeout that our sensors will use. If
+    /// a sensor doesn't detect something in this amount
+    /// of time, it will stop searching.
     double timeoutMilliseconds = 1000;
 
     public Action CheckMotif = new Action() {
@@ -69,10 +72,11 @@ public class Comp1Actions {
                 initialized = true;
             }
 
+            // Check the current motif
             motif = aprilTag.getMotif();
 
-
-            return motif == 0 && timer.milliseconds()<=timeoutMilliseconds;
+            // If we don't see anything, stop searching
+            return motif == 0 && timer.milliseconds() <= timeoutMilliseconds;
         }
     };
 
@@ -88,12 +92,11 @@ public class Comp1Actions {
             if (!initialized) {
                 timer.reset();
                 initialized = true;
-
             }
 
-
-
-            return !ball1.checkForRecognition() && timer.milliseconds()<=timeoutMilliseconds;
+            // If we don't see anything, stop checking
+            return !ball1.checkForRecognition() &&
+                    timer.milliseconds() <= timeoutMilliseconds;
         }
     };
 
@@ -109,7 +112,9 @@ public class Comp1Actions {
                 initialized = true;
             }
 
-            return !ball2.checkForRecognition() && timer.milliseconds()<=timeoutMilliseconds;
+            // If we don't see anything, stop checking
+            return !ball2.checkForRecognition() &&
+                    timer.milliseconds() <= timeoutMilliseconds;
         }
     };
 
@@ -117,10 +122,11 @@ public class Comp1Actions {
 
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+            // Turn on our intake system!
             intake.state = State.INTAKING;
             pulley.state = Pulley.State.On;
 
-
+            // We return false because this only has to run once
             return false;
         }
     };
@@ -129,9 +135,11 @@ public class Comp1Actions {
 
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+            // Stop our intake system
             intake.state = State.STOPPED;
             pulley.state = Pulley.State.Off;
 
+            // We return false because this only has to run once
             return false;
         }
     };
@@ -142,16 +150,18 @@ public class Comp1Actions {
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
             servo.state = Servo.State.HOLD;
 
+            // We return false because this only has to run once
             return false;
         }
     };
 
+    // These functions are for autonomous. Even if we don't find
+    // anything, we will just move on
     public SequentialAction Ball1 = new SequentialAction(StartIntake, Ball1Check, new SleepAction(0.1), HoldBall);
     public SequentialAction Ball2 = new SequentialAction(StartIntake, Ball2Check);
     public SequentialAction Ball3 = new SequentialAction(StartIntake, new SleepAction(0.5), StopIntake);
 
     //shooting stuff
-
     double shootTime = 300;       // ms for servo launch duration
     double detectTimeout = 500;   // ms to wait for ball detection
     double speedUpTime = 800;     // time for flywheel to reach speed
@@ -211,10 +221,11 @@ public class Comp1Actions {
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
             launcher.setSpeed(0.8);
+
+            // We return false because this only has to run once
             return false;
-
-
         }
+
     };
 
     public Action StopShooter = new Action() {
@@ -222,6 +233,8 @@ public class Comp1Actions {
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
             launcher.stop();
+
+            // We return false because this only has to run once
             return false;
         }
     };
