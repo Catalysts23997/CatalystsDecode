@@ -14,6 +14,7 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.AprilTag;
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.ColorSensors;
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Launcher;
+import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Lights;
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Pulley;
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Servo;
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Intake.State;
@@ -29,6 +30,7 @@ public class Comp1Actions {
 
     Pulley pulley;
 
+    Lights light;
     //apriltag will dictate the motif number
     public int motif;
 
@@ -41,6 +43,16 @@ public class Comp1Actions {
         intake.update();
         launcher.update();
         pulley.update();
+        if(ball1.isGreen()){
+            light.color = Lights.Color.red;
+        }
+        else if(ball1.isPurple()){
+            light.color = Lights.Color.purple;
+        }
+        else {
+            light.color = Lights.Color.rainbow;
+        }
+        light.update();
     }
 
 

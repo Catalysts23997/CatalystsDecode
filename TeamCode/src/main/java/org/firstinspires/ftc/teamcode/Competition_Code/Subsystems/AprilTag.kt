@@ -163,4 +163,15 @@ class AprilTag(hardwareMap: HardwareMap) : Camera {
         }
         return motif
     }
+
+    fun getAngle(): Double {
+        visionPortal.resumeStreaming()
+        visionPortal.resumeLiveView()
+        val currentDetections = (visionProcessor as AprilTagProcessor).detections
+        var angle = 0.0
+        for (detection in currentDetections) {
+            angle = detection.ftcPose.yaw
+        }
+        return angle
+    }
 }
