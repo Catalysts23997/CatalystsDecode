@@ -3,8 +3,6 @@ package org.firstinspires.ftc.teamcode.Competition_Code.Tele.OpModes
 import com.acmerobotics.dashboard.FtcDashboard
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket
 import com.acmerobotics.roadrunner.Action
-import com.acmerobotics.roadrunner.SequentialAction
-import com.acmerobotics.roadrunner.SleepAction
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.util.ElapsedTime
@@ -12,6 +10,7 @@ import com.qualcomm.robotcore.util.ElapsedTime
 import org.firstinspires.ftc.teamcode.Competition_Code.Actions.Comp1Actions
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Drivetrain
 import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localizer
+import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.DrivetrainOverride
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
 
 //todo test after getting wheels in right directions
@@ -33,6 +32,13 @@ class Comp1Tele : LinearOpMode() {
 
         val drive = Drivetrain(hardwareMap)
         val localizer = Localizer(hardwareMap, Poses(0.0, 0.0, 0.0))
+
+        val driveOverride = DrivetrainOverride()
+
+        /**
+         * This is only used for telemetry, nothing more
+         */
+        val driveOverrideSafetyTimer = 0.0f
 
         while (opModeInInit()) timer.reset()
 
@@ -82,21 +88,35 @@ class Comp1Tele : LinearOpMode() {
             }
             runningActions = newActions
 
-
-            packet.put("Running Actions", runningActions.size)
-            packet.put("Balls", balls)
-            dash.sendTelemetryPacket(packet)
-
             //update subsystems
             localizer.update()
             robot.update()
-            drive.update(
-                arrayListOf(
-                    gamepad1.left_stick_x,
-                    -gamepad1.left_stick_y,
-                    gamepad1.right_stick_x
+
+            if (driveOverride.shouldOverrideInput()) {
+                if (driveOverride.safetyMeasures(gamepad2)) {
+                    System.currentTimeMillis()
+                }
+
+                driveOverride.update(drive)
+            } else {
+                drive.update(
+                    arrayListOf(
+                        gamepad1.left_stick_x,
+                        -gamepad1.left_stick_y,
+                        gamepad1.right_stick_x
+                    )
                 )
-            )
+            }
+
+            packet.put("Running Actions", runningActions.size)
+            packet.put("Balls", balls)
+
+            val overrideTimeLeft = System.currentTimeMillis() - driveOverrideSafetyTimer
+            if (overrideTimeLeft < 5000) {
+                packet.put("Drive train override safety was tripped!", overrideTimeLeft)
+            }
+
+            dash.sendTelemetryPacket(packet)
 
             if(gamepad1.a){
                 localizer.resetHeading()

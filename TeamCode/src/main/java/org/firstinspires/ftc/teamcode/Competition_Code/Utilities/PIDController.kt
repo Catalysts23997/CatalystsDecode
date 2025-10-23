@@ -11,6 +11,8 @@ class PIDController(private var params: PIDParams) {
     private var integral = 0.0
     private val timer = ElapsedTime()
     var pastTime = 0.0
+
+    @JvmOverloads // This fixes problems using this code from Java (not Kotlin)
     fun calculate(
         target: Double,
         armAngle: Double = 0.0
