@@ -7,7 +7,7 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses;
 
 public enum AutoPoints {
     StartBlue(new Vector2d(39,-63), -Math.PI/2),
-    AprilTagBlue(new Vector2d(20,-50), -Math.PI/4),
+    AprilTagBlue(new Vector2d(20,-50), -9*Math.PI/32),
     LaunchBlue(new Vector2d(10,-20.0), -3*Math.PI/4),
     EndBlue(new Vector2d(54,-33), -Math.PI/2),
 
@@ -35,7 +35,7 @@ public enum AutoPoints {
     Test4(new Vector2d(-45,10), Math.PI),
 
     StartRed(new Vector2d(-39,-63), Math.PI/2),
-    AprilTagRed(new Vector2d(-20,-50), Math.PI/4),
+    AprilTagRed(new Vector2d(-20,-50), 9*Math.PI/32),
     LaunchRed(new Vector2d(-10,-20.0), 3*Math.PI/4),
     EndRed(new Vector2d(-54,-33), Math.PI/2),
 

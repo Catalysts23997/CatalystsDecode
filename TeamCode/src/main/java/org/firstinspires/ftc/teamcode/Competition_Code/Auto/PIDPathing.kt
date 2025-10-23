@@ -8,7 +8,6 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Auto.OpModes.BlueAuto.Com
 import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localizer
 
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Drivetrain
-import org.firstinspires.ftc.teamcode.Competition_Code.Auto.OpModes.ExampleAuto
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Angles
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.findNearestPoint
