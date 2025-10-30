@@ -23,7 +23,7 @@ public class Intake {
     public Intake(HardwareMap hardwareMap) {
         // Assign the physical motor to our variable
         intake1 = hardwareMap.get(DcMotor.class, "intake1");
-        // Make sure we know the default state of our motor
+        // Make sure we know+ -the default state of our motor
         intake1.setDirection(DcMotorSimple.Direction.FORWARD);
         intake1.setPower(0);
     }

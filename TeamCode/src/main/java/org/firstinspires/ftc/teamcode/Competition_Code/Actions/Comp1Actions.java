@@ -48,11 +48,11 @@ public class Comp1Actions {
     public Comp1Actions(HardwareMap hardwareMap) {
         aprilTag = new AprilTag(hardwareMap);
         servo = new Servo(hardwareMap, "port1");
-        ball1 = new ColorSensors(hardwareMap, "sensor1");
+//        ball1 = new ColorSensors(hardwareMap, "sensor1");
         launcher = new Launcher(hardwareMap);
         intake = new Intake(hardwareMap);
         pulley = new Pulley(hardwareMap);
-        ball2 = new ColorSensors(hardwareMap, "sensor2");
+//        ball2 = new ColorSensors(hardwareMap, "sensor2");
     }
 
     /// This is the timeout that our sensors will use. If

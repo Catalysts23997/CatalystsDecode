@@ -11,8 +11,8 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-@TeleOp(name = "Testing Intake Subsystem", group = "Linear OpMode")
-public class TestingIntakeSubsystem extends LinearOpMode {
+@TeleOp(name = "IntakeAndDrive", group = "Linear OpMode")
+public class IntakeAndDrive extends LinearOpMode {
 
     /// The instance of our Intake subsystem
     public Intake intake;
@@ -24,6 +24,10 @@ public class TestingIntakeSubsystem extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         // Create a new instance of the Intake subsystem
         intake = new Intake(hardwareMap);
+        drive = new Drivetrain(hardwareMap);
+
+        Localizer localizer = new Localizer(hardwareMap, new Poses(0.0, 0.0, 0.0));
+        Drivetrain drive = new Drivetrain(hardwareMap);
 
         // Wait for the user to start the opmode
         waitForStart();
@@ -38,6 +42,18 @@ public class TestingIntakeSubsystem extends LinearOpMode {
                 // If not button is pressed, ball2 the intake motor
                 intake.state = Intake.State.STOPPED;
             }
+
+            localizer.update(false);
+
+            if(gamepad1.y){
+                localizer.resetHeading();
+            }
+
+            drive.update
+                    (
+                            new ArrayList<>(Arrays.asList(gamepad1.left_stick_x, -gamepad1.left_stick_y, gamepad1.right_stick_x))
+                    );
+
 
             // Tick the intake subsystem
             intake.update();
