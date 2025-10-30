@@ -11,7 +11,7 @@ public class Pulley {
     public State state;
 
     public Pulley(HardwareMap hardwareMap){
-        pulley = hardwareMap.get(com.qualcomm.robotcore.hardware.DcMotor .class, "pulley");
+        pulley = hardwareMap.get(com.qualcomm.robotcore.hardware.DcMotor.class, "pulley");
         pulley.setDirection(DcMotorSimple.Direction.FORWARD);
     }
 
@@ -20,7 +20,7 @@ public class Pulley {
     }
 
     public enum State {
-        On(0.5),
+        On(1.0),
         Off(0.0);
         public final double power;
         State(double power) {

@@ -38,7 +38,7 @@ class Comp1TeleAuto : LinearOpMode() {
         /**
          * This is only used for telemetry, nothing more
          */
-        val driveOverrideSafetyTimer = 0.0f
+        var driveOverrideSafetyTimer: Long = 0L
 
         while (opModeInInit()) timer.reset()
 
@@ -94,7 +94,7 @@ class Comp1TeleAuto : LinearOpMode() {
 
             if (driveOverride.shouldOverrideInput()) {
                 if (driveOverride.safetyMeasures(gamepad2)) {
-                    System.currentTimeMillis()
+                    driveOverrideSafetyTimer = System.currentTimeMillis()
                 }
 
                 driveOverride.update(drive)
