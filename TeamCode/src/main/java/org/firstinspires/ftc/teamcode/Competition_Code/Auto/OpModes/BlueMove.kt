@@ -16,13 +16,13 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Drivetrain
 import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localizer
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
 
-@Autonomous(name = "BlueAutoTest", group = "Auto")
-class BlueAutoTests : LinearOpMode() {
+@Autonomous(name = "BlueMove", group = "Auto")
+class BlueMove : LinearOpMode() {
 
 
     override fun runOpMode() {
         telemetry = FtcDashboard.getInstance().telemetry
-        rT = Poses(39.0,-63.0,Math.PI/2)
+        rT = Poses(39.0,-63.0,-Math.PI/2)
 
         val localizer = Localizer(hardwareMap, rT)
         val drive = Drivetrain(hardwareMap)
@@ -45,39 +45,7 @@ class BlueAutoTests : LinearOpMode() {
                     true
                 },
                 SequentialAction(
-                    AutoPoints.AprilTagBlue.runToExact,
-                    AutoPoints.LaunchBlue.runToExact,
-
-                    when (motif) {
-                        1 -> {
-                            SequentialAction(
-                                AutoPoints.PreIntakeGPP.runToExact,
-                                AutoPoints.GPPIntake1.runToExact,
-                                AutoPoints.GPPIntake2.runToExact,
-                                AutoPoints.GPPIntake3.runToExact,
-                                AutoPoints.GPPMidPointRed.runToExact
-                            )
-                        }
-                        2 -> {
-                            SequentialAction(
-                                AutoPoints.PreIntakePGP.runToExact,
-                                AutoPoints.PGPIntake1.runToExact,
-                                AutoPoints.PGPIntake2.runToExact,
-                                AutoPoints.PGPIntake3.runToExact,
-                                AutoPoints.PGPMidPointRed.runToExact
-                            )
-                        }
-                        else -> {
-                            SequentialAction(
-                                AutoPoints.PreIntakePPG.runToExact,
-                                AutoPoints.PPGIntake1.runToExact,
-                                AutoPoints.PPGIntake2.runToExact,
-                                AutoPoints.PPGIntake3.runToExact,
-                            )
-                        }
-                    },
-                    AutoPoints.LaunchBlue.runToExact,
-                    AutoPoints.EndBlue.runToExact
+                    AutoPoints.EndBlue.runToExact,
                 )
             )
         )

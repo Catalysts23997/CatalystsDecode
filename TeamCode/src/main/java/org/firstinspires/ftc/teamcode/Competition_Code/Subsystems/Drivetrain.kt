@@ -27,7 +27,7 @@ class Drivetrain(hwMap: HardwareMap) : SubSystems {
 
     val Xpid = PIDController(PIDParams(0.2, 0.0001, 0.018, 0.0))
     val Ypid = PIDController(PIDParams(0.2, 0.0001, 0.02, 0.0))
-    val Rpid = PIDController(PIDParams(1.4, 0.0001, 0.08, 0.0))
+    val Rpid = PIDController(PIDParams(1.6, 0.0001, 0.08, 0.0))
 
     override var state = States.Manual
 

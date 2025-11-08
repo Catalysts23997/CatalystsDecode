@@ -29,7 +29,7 @@ class Localizer(hwmap: HardwareMap, private val offset: Poses) {
         backwards is a negative number.
          */
         odo.setOffsets(
-            6.25 * 25.4, -0.25 * 25.4
+            6.25 * 25.4, -4.75 * 25.4
         ) //these are tuned for 3110-0002-0001 Product Insight #1
 
 

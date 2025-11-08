@@ -90,7 +90,6 @@ fun RunToExactForever(pose: Poses): Boolean {
         val axial = drive.Xpid.calculate(axialError)
         val turn = drive.Rpid.calculate(headingError)
 
-//        Log.d("Y", doubleArrayOf(axial,lateral,turn, targetVector.y, current.y).contentToString())
 
         val h = -Localizer.pose.heading
         val rotX = -axial * cos(h) - lateral * sin(h)
