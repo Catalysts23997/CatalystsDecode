@@ -21,14 +21,14 @@ public enum AutoPoints {
     PGPIntake1(new Vector2d(-36.5,-12), -Math.PI/2),
     PGPIntake2(new Vector2d(-41.5,-12), -Math.PI/2),
     PGPIntake3(new Vector2d(-48,-12), -Math.PI/2),
-    PGPMidPoint(new Vector2d(-25,12), 3*-Math.PI/8),
+    PGPMidPoint(new Vector2d(-25,12), 9*Math.PI/8),
 
 
     PreIntakeGPP(new Vector2d(-25,-36), -Math.PI/2),
     GPPIntake1(new Vector2d(-36.5,-36), -Math.PI/2),
     GPPIntake2(new Vector2d(-41.5,-36), -Math.PI/2),
     GPPIntake3(new Vector2d(-48,-36), -Math.PI/2),
-    GPPMidPoint(new Vector2d(-25,-12), 3*-Math.PI/8),
+    GPPMidPoint(new Vector2d(-25,-12), 9*Math.PI/8),
 
     Test1(new Vector2d(-34,63), 0.0),
     Test2(new Vector2d(-39,68), Math.PI/2),
@@ -49,14 +49,14 @@ public enum AutoPoints {
     PGPIntake1Red(new Vector2d(36.5,-12), Math.PI/2),
     PGPIntake2Red(new Vector2d(41.5,-12), Math.PI/2),
     PGPIntake3Red(new Vector2d(48,-12), Math.PI/2),
-    PGPMidPointRed(new Vector2d(25,12), 3 * Math.PI / 8),
+    PGPMidPointRed(new Vector2d(25,12), -9*Math.PI/8),
 
 
     PreIntakeGPPRed(new Vector2d(25,-36), Math.PI/2),
     GPPIntake1Red(new Vector2d(36.5,-36), Math.PI/2),
     GPPIntake2Red(new Vector2d(41.5,-36), Math.PI/2),
     GPPIntake3Red(new Vector2d(48,-36), Math.PI/2),
-    GPPMidPointRed(new Vector2d(25,-12), 3 * Math.PI / 8);
+    GPPMidPointRed(new Vector2d(25,-12), -9*Math.PI/8);
 
 
     AutoPoints(Vector2d vector, Double rotation) {
