@@ -59,7 +59,7 @@ public class Comp1Actions {
 
     public Comp1Actions(HardwareMap hardwareMap) {
         aprilTag = new AprilTag(hardwareMap);
-        servo = new Servo(hardwareMap, "port1");
+        servo = new Servo(hardwareMap, "port0");
 //        ball1 = new ColorSensors(hardwareMap, "sensor1");
         launcher = new Launcher(hardwareMap);
         intake = new Intake(hardwareMap);
@@ -107,7 +107,7 @@ public class Comp1Actions {
             }
 
             // If we don't see anything, stop checking
-            return !ball1.checkForRecognition() &&
+            return !(ball1.isGreen() || ball1.isPurple()) &&
                     timer.milliseconds() <= timeoutMilliseconds;
         }
     };
@@ -125,7 +125,7 @@ public class Comp1Actions {
             }
 
             // If we don't see anything, stop checking
-            return !ball2.checkForRecognition() &&
+            return !(ball2.isGreen() || ball2.isPurple()) &&
                     timer.milliseconds() <= timeoutMilliseconds;
         }
     };
@@ -196,7 +196,7 @@ public class Comp1Actions {
 
             // Wait for ball
             if (waitingForBall) {
-                if (ball1.checkForRecognition()) {
+                if ((ball1.isGreen() || ball1.isPurple())) {
                     servo.state = Servo.State.LAUNCH;
                     timer.reset(); // restart timer for launch duration
                     waitingForBall = false;
@@ -272,7 +272,7 @@ public class Comp1Actions {
 
             if (!started) {
                 // If ball2 detected → start cycle
-                if (ball2.checkForRecognition()) {
+                if ((ball2.isGreen() || ball2.isPurple())) {
                     timer.reset(); // restart timer for next phase
                     started = true;
                     packet.put("Cycle", "Ball2 detected → starting pulley");
@@ -292,7 +292,7 @@ public class Comp1Actions {
             // Phase 2: Running until ball1 detected or timeout
             if (started) {
                 // If ball1 detected → stop and hold
-                if (ball1.checkForRecognition()) {
+                if ((ball1.isGreen() || ball1.isPurple())) {
                     pulley.state = Pulley.State.Off;
                     servo.state = Servo.State.HOLD;
                     packet.put("Cycle", "Ball1 detected → stopping");

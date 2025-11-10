@@ -13,6 +13,7 @@ public class Pulley {
     public Pulley(HardwareMap hardwareMap){
         pulley = hardwareMap.get(com.qualcomm.robotcore.hardware.DcMotor.class, "pulley");
         pulley.setDirection(DcMotorSimple.Direction.FORWARD);
+        state= State.Off;
     }
 
     public void update(){

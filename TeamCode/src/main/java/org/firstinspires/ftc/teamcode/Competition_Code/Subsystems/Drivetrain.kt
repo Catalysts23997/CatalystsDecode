@@ -27,15 +27,15 @@ class Drivetrain(hwMap: HardwareMap) : SubSystems {
 
     val Xpid = PIDController(PIDParams(0.2, 0.0001, 0.018, 0.0))
     val Ypid = PIDController(PIDParams(0.2, 0.0001, 0.02, 0.0))
-    val Rpid = PIDController(PIDParams(1.6, 0.0001, 0.08, 0.0))
+    val Rpid = PIDController(PIDParams(1.4, 0.0001, 0.08, 0.0))
 
     override var state = States.Manual
 
     //todo note it will differ on new dt - (use customTest)
-    val leftFront: DcMotor = hwMap.get(DcMotor::class.java, "backRight") //good
-    val rightBack: DcMotor = hwMap.get(DcMotor::class.java, "frontLeft") // good
-    val leftBack: DcMotor = hwMap.get(DcMotor::class.java, "frontRight") // good
-    val rightFront: DcMotor = hwMap.get(DcMotor::class.java, "backLeft")
+    val leftFront: DcMotor = hwMap.get(DcMotor::class.java, "frontLeft") //good
+    val rightBack: DcMotor = hwMap.get(DcMotor::class.java, "backRight") // good
+    val leftBack: DcMotor = hwMap.get(DcMotor::class.java, "backLeft") // good
+    val rightFront: DcMotor = hwMap.get(DcMotor::class.java, "frontRight")
 
     override fun update(gamepadInput: ArrayList<Float>) {
 
@@ -61,10 +61,10 @@ class Drivetrain(hwMap: HardwareMap) : SubSystems {
         leftFront.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
         rightBack.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
         rightFront.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
-        leftBack.direction = DcMotorSimple.Direction.FORWARD
-        leftFront.direction = DcMotorSimple.Direction.FORWARD
-        rightFront.direction = DcMotorSimple.Direction.REVERSE
-        rightBack.direction = DcMotorSimple.Direction.REVERSE
+        leftBack.direction = DcMotorSimple.Direction.REVERSE
+        leftFront.direction = DcMotorSimple.Direction.REVERSE
+        rightFront.direction = DcMotorSimple.Direction.FORWARD
+        rightBack.direction = DcMotorSimple.Direction.FORWARD
 
         instance = this
 
@@ -93,10 +93,10 @@ class Drivetrain(hwMap: HardwareMap) : SubSystems {
 
         //todo add rotational pid
 
-        leftFront.power = (rotY + rotX - turn)
-        leftBack.power = (rotY - rotX - turn)
-        rightFront.power = (rotY - rotX + turn)
-        rightBack.power = (rotY + rotX + turn)
+        leftFront.power = (rotY - rotX + turn)
+        leftBack.power = (rotY + rotX + turn)
+        rightFront.power = (rotY + rotX - turn)
+        rightBack.power = (rotY - rotX - turn)
     }
 
 

@@ -19,12 +19,12 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
 class BlueAuto : LinearOpMode() {
 
     companion object{
-        var rT = Poses(39.0,-63.0,-Math.PI/2)
+        var rT = Poses(-39.0,63.0,Math.PI/2)
     }
 
     override fun runOpMode() {
         telemetry = FtcDashboard.getInstance().telemetry
-        rT = Poses(39.0,-63.0,-Math.PI/2)
+        rT = Poses(-39.0,63.0,Math.PI/2)
 
         val localizer = Localizer(hardwareMap, rT)
         val drive = Drivetrain(hardwareMap)

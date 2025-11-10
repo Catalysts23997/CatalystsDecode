@@ -56,21 +56,21 @@ class Comp1Tele : LinearOpMode() {
                 buttonTimer.reset()
             }
 
-//            if (intaking) {
-//                when (balls){
-//                    0 -> {
-//                        if (robot.ball1.checkForRecognition()){
-//                            runningActions.add(robot.HoldBall)
-//                            balls += 1
-//                        }
-//                    }
-//                    1 -> {
-//                        if (robot.ball2.checkForRecognition()){
-//                            balls += 1
-//                        }
-//                    }
-//                }
-//            }
+            if (intaking) {
+                when (balls){
+                    0 -> {
+                        if (robot.ball1.isGreen() || robot.ball1.isPurple()){
+                            runningActions.add(robot.HoldBall)
+                            balls += 1
+                        }
+                    }
+                    1 -> {
+                        if (robot.ball2.isGreen() || robot.ball2.isPurple()){
+                            balls += 1
+                        }
+                    }
+                }
+            }
 
             // update running actions
             val newActions = ArrayList<Action>()
