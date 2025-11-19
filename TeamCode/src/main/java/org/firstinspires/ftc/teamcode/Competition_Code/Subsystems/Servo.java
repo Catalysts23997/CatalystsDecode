@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 public class Servo {
 
     public com.qualcomm.robotcore.hardware.Servo servo;
-    public State state;
+    public State state =State.RESET;
 
     public Servo(HardwareMap hardwareMap, String name){
         servo = hardwareMap.get(com.qualcomm.robotcore.hardware.Servo.class, name);
@@ -17,8 +17,8 @@ public class Servo {
     }
 
     public enum State {
-        HOLD(1.0),
-        LAUNCH(0.5),
+        HOLD(0.5),
+        LAUNCH(1.0),
         RESET(0.0);
         public final double servoPos;
         State(double servoPos) {

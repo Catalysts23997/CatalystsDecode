@@ -92,7 +92,7 @@ class ColorSensors(hwMap: HardwareMap, name: String) {
 
 
 
-        return  hue in 200f..260f && sat > 0.3f
+        return  hue in 200f..230f && sat > 0.3f
     }
 
 }

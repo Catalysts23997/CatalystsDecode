@@ -6,18 +6,20 @@ import com.acmerobotics.roadrunner.Action
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.util.ElapsedTime
-
 import org.firstinspires.ftc.teamcode.Competition_Code.Actions.Comp1Actions
+import org.firstinspires.ftc.teamcode.Competition_Code.Auto.OpModes.BlueAuto
+
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Drivetrain
 import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localizer
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.DrivetrainOverride
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
 
 //todo test after getting wheels in right directions
-@TeleOp(name = "Comp1TeleAuto", group = "Linear OpMode")
-class Comp1TeleAuto : LinearOpMode() {
+@TeleOp(name = "BlueTele", group = "Linear OpMode")
+class BlueTele : LinearOpMode() {
 
     override fun runOpMode() {
+
         val dash: FtcDashboard = FtcDashboard.getInstance()
         val packet = TelemetryPacket()
         var runningActions = ArrayList<Action>()
@@ -27,11 +29,11 @@ class Comp1TeleAuto : LinearOpMode() {
         val buttonTimer = ElapsedTime()
         var intaking = false
 
-        val robot = Comp1Actions(hardwareMap)
+        val robot = Comp1Actions(hardwareMap, telemetry)
         val timer = ElapsedTime()
 
         val drive = Drivetrain(hardwareMap)
-        val localizer = Localizer(hardwareMap, Poses(0.0, 0.0, 0.0))
+        val localizer = Localizer(hardwareMap, BlueAuto.endPos)
 
         val driveOverride = DrivetrainOverride()
 
@@ -44,13 +46,19 @@ class Comp1TeleAuto : LinearOpMode() {
 
         while (opModeIsActive()) {
 
-            // SHOOTING: A button triggers full ShootBalls sequence
-            if (gamepad2.right_trigger >= 0.5) {
-                runningActions.add(robot.ShootBalls)
+            // SHOOTING: A button triggers full Shoot3Balls sequence
+            if (gamepad1.right_trigger >= 0.5 && buttonTimer.milliseconds() >= buttonDebounce && balls != 0) {
+
+                if(balls == 1){
+                    runningActions.add(robot.Shoot1Ball())
+                }
+                else runningActions.add(robot.Shoot3Balls())
+
                 balls = 0  // Reset intake counter after shooting
+                buttonTimer.reset()
             }
 
-            if (gamepad2.left_trigger >= 0.5 && buttonTimer.milliseconds() >= buttonDebounce) {
+            if (gamepad1.left_trigger >= 0.5 && buttonTimer.milliseconds() >= buttonDebounce) {
                 if(!intaking){
                     runningActions.add(robot.StartIntake)
                     intaking = true
@@ -65,13 +73,13 @@ class Comp1TeleAuto : LinearOpMode() {
             if (intaking) {
                 when (balls){
                     0 -> {
-                        if (robot.ball1.checkForRecognition()){
+                        if (robot.ball1.isGreen() || robot.ball1.isPurple()){
                             runningActions.add(robot.HoldBall)
                             balls += 1
                         }
                     }
                     1 -> {
-                        if (robot.ball2.checkForRecognition()){
+                        if (robot.ball2.isGreen() || robot.ball2.isPurple()){
                             balls += 1
                         }
                     }
@@ -92,8 +100,12 @@ class Comp1TeleAuto : LinearOpMode() {
             localizer.update()
             robot.update()
 
+            if(gamepad1.y){
+                driveOverride.beginOverriding(Poses(-10.0, 20.0, 3*Math.PI/4))
+            }
+
             if (driveOverride.shouldOverrideInput()) {
-                if (driveOverride.safetyMeasures(gamepad2)) {
+                if (driveOverride.safetyMeasures(gamepad1)) {
                     driveOverrideSafetyTimer = System.currentTimeMillis()
                 }
 
@@ -104,16 +116,16 @@ class Comp1TeleAuto : LinearOpMode() {
                         gamepad1.left_stick_x,
                         -gamepad1.left_stick_y,
                         gamepad1.right_stick_x
-                    )
+                    ), -Math.PI/2
                 )
             }
 
-            packet.put("Running Actions", runningActions.size)
-            packet.put("Balls", balls)
+            telemetry.addData("Running Actions", runningActions.size)
+            telemetry.addData("Balls", balls)
 
             val overrideTimeLeft = System.currentTimeMillis() - driveOverrideSafetyTimer
             if (overrideTimeLeft < 5000) {
-                packet.put("Drive train override safety was tripped!", overrideTimeLeft)
+                telemetry.addData("Drive train override safety was tripped!", overrideTimeLeft)
             }
 
             dash.sendTelemetryPacket(packet)
@@ -121,6 +133,18 @@ class Comp1TeleAuto : LinearOpMode() {
             if(gamepad1.a){
                 localizer.resetHeading()
             }
+            BlueAuto.endPos = Localizer.pose
+
+
+            telemetry.addData("Is intaking?", intaking)
+
+            telemetry.addData("x", gamepad1.left_stick_x)
+            telemetry.addData("y", gamepad1.left_stick_y)
+
+            telemetry.addData("Heading", Localizer.pose.heading)
+            telemetry.addData("X position", Localizer.pose.x)
+            telemetry.addData("Y position", Localizer.pose.y)
+            telemetry.update()
 
             timer.reset()
         }

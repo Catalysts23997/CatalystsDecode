@@ -11,6 +11,7 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Actions.Comp1Actions
 
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoPoints
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.OpModes.BlueAuto.Companion.rT
+import org.firstinspires.ftc.teamcode.Competition_Code.Auto.OpModes.BlueAuto.Companion.endPos
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.RunToExactForever
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Drivetrain
 import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localizer
@@ -37,6 +38,7 @@ class BlueAutoTests : LinearOpMode() {
                 {
                     localizer.update()
                     RunToExactForever(rT)
+                    endPos = Localizer.pose
                     telemetry.addData("hello", rT)
                     telemetry.addData("df", Localizer.pose.heading)
                     telemetry.addData("x", Localizer.pose.x)
@@ -47,6 +49,7 @@ class BlueAutoTests : LinearOpMode() {
                 SequentialAction(
                     AutoPoints.AprilTagBlue.runToExact,
                     AutoPoints.LaunchBlue.runToExact,
+                    SleepAction(1.0),
 
                     when (motif) {
                         1 -> {

@@ -1,116 +1,121 @@
 package org.firstinspires.ftc.teamcode.Competition_Code.Auto.OpModes;
 
-import com.acmerobotics.dashboard.FtcDashboard
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket
 import com.acmerobotics.roadrunner.ParallelAction
 import com.acmerobotics.roadrunner.SequentialAction
-import com.acmerobotics.roadrunner.SleepAction
 import com.acmerobotics.roadrunner.ftc.runBlocking
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import org.firstinspires.ftc.teamcode.Competition_Code.Actions.Comp1Actions
+import com.acmerobotics.roadrunner.Action
 
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoPoints
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.RunToExactForever
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Drivetrain
 import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localizer
+import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Servo
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
 
 @Autonomous(name = "BlueAuto", group = "Auto")
 class BlueAuto : LinearOpMode() {
 
     companion object{
-        var rT = Poses(-39.0,63.0,Math.PI/2)
+        var rT = Poses(-39.0,63.0,0.0)
+        var endPos = Poses(0.0,0.0,0.0)
+
     }
 
+
+
     override fun runOpMode() {
-        telemetry = FtcDashboard.getInstance().telemetry
-        rT = Poses(-39.0,63.0,Math.PI/2)
+        rT = Poses(-39.0,63.0,0.0)
 
         val localizer = Localizer(hardwareMap, rT)
         val drive = Drivetrain(hardwareMap)
-        val robot = Comp1Actions(hardwareMap)
+        val robot = Comp1Actions(hardwareMap, telemetry)
 
         localizer.update()
-        robot.HoldBall
+        robot.servo.state = Servo.State.HOLD
         robot.update()
 
         waitForStart()
 
         runBlocking(
             ParallelAction(
-                {
-                    localizer.update()
-                    RunToExactForever(rT)
-                    telemetry.addData("hello", rT)
-                    telemetry.addData("df", Localizer.pose.heading)
-                    telemetry.addData("x", Localizer.pose.x)
-                    telemetry.addData("y", Localizer.pose.y)
-                    telemetry.update()
-                    robot.update()
-                    true
+                object : Action {
+                    override fun run(p: TelemetryPacket): Boolean {
+                        localizer.update()
+                        RunToExactForever(rT)
+                        endPos = Poses(Localizer.pose.x, Localizer.pose.y, Localizer.pose.heading)
+                        telemetry.addData("hello", rT)
+                        telemetry.addData("heading", Localizer.pose.heading)
+                        telemetry.addData("x", Localizer.pose.x)
+                        telemetry.addData("y", Localizer.pose.y)
+                        telemetry.update()
+                        robot.update()
+                        return true // keep looping
+                    }
                 },
                 SequentialAction(
                     AutoPoints.AprilTagBlue.runToExact,
-                    robot.CheckMotif,
+                    robot.CheckMotif(),
+                    robot.OffCamera(),
+                    robot.StartShooter,
                     AutoPoints.LaunchBlue.runToExact,
-                    robot.ShootBalls,
-                    when (robot.motif) {
-                        1 -> {
-                            SequentialAction(
-                                AutoPoints.PreIntakeGPP.runToExact,
-                                ParallelAction(
-                                    AutoPoints.GPPIntake1.runToExact,
-                                    robot.Ball1
-                                ),
-                                ParallelAction(
-                                    AutoPoints.GPPIntake2.runToExact,
-                                    robot.Ball2
-                                ),
-                                ParallelAction(
-                                    AutoPoints.GPPIntake3.runToExact,
-                                    robot.Ball3
-                                ),
-                                AutoPoints.GPPMidPoint.runToExact
-                            )
-                        }
-                        2 -> {
-                            SequentialAction(
-                                AutoPoints.PreIntakePGP.runToExact,
-                                ParallelAction(
-                                    AutoPoints.PGPIntake1.runToExact,
-                                    robot.Ball1
-                                ),
-                                ParallelAction(
-                                    AutoPoints.PGPIntake2.runToExact,
-                                    robot.Ball2
-                                ),
-                                ParallelAction(
-                                    AutoPoints.PGPIntake3.runToExact,
-                                    robot.Ball3
-                                ),
-                                AutoPoints.PGPMidPoint.runToExact
-                            )
-                        }
-                        else -> {
-                            SequentialAction(
-                                AutoPoints.PreIntakePPG.runToExact,
-                                ParallelAction(
-                                    AutoPoints.PPGIntake1.runToExact,
-                                    robot.Ball1
-                                ),
-                                ParallelAction(
-                                    AutoPoints.PPGIntake2.runToExact,
-                                    robot.Ball2
-                                ),
-                                ParallelAction(
-                                    AutoPoints.PPGIntake3.runToExact,
-                                    robot.Ball3
-                                )
-                            )
+                    robot.AutoShoot(),
+                    object : Action {
+                        var nextAction: Action? = null
+
+                        override fun run(p: TelemetryPacket): Boolean {
+                            if (nextAction == null) {
+                                nextAction = when (robot.motif) {
+                                    1 -> SequentialAction(
+                                        AutoPoints.PreIntakeGPP.runToExact,
+                                        ParallelAction(
+                                            robot.Balls(),
+                                            SequentialAction(
+                                                AutoPoints.GPPIntake1.runToExact,
+                                                AutoPoints.GPPIntake2.runToExact,
+                                                AutoPoints.GPPIntake3.runToExact,
+                                            )
+                                        ),
+                                        AutoPoints.GPPMidPoint.runToExact
+                                    )
+
+                                    2 -> SequentialAction(
+                                        AutoPoints.PreIntakePGP.runToExact,
+                                        ParallelAction(
+                                            robot.Balls(),
+                                            SequentialAction(
+                                                AutoPoints.PGPIntake1.runToExact,
+                                                AutoPoints.PGPIntake2.runToExact,
+                                                AutoPoints.PGPIntake3.runToExact,
+                                            )
+                                        ),
+                                        AutoPoints.PGPMidPoint.runToExact
+                                    )
+
+                                    else -> SequentialAction(
+                                        AutoPoints.PreIntakePPG.runToExact,
+                                        ParallelAction(
+                                            robot.Balls(),
+                                            SequentialAction(
+                                                AutoPoints.PPGIntake1.runToExact,
+                                                AutoPoints.PPGIntake2.runToExact,
+                                                AutoPoints.PPGIntake3.runToExact,
+                                            )
+                                        ),
+                                    )
+                                }
+                            }
+
+                            // run the generated action normally
+                            return nextAction!!.run(p)
                         }
                     },
+                    robot.StartShooter,
                     AutoPoints.LaunchBlue.runToExact,
-                    robot.ShootBalls,
+                    robot.AutoShoot(),
                     AutoPoints.EndBlue.runToExact
                 )
             )

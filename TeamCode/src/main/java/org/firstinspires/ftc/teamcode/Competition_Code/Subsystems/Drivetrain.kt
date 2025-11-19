@@ -37,7 +37,7 @@ class Drivetrain(hwMap: HardwareMap) : SubSystems {
     val leftBack: DcMotor = hwMap.get(DcMotor::class.java, "backLeft") // good
     val rightFront: DcMotor = hwMap.get(DcMotor::class.java, "frontRight")
 
-    override fun update(gamepadInput: ArrayList<Float>) {
+    fun update(gamepadInput: ArrayList<Float>, offset: Double) {
 
         when (state) {
             States.Auto -> {
@@ -45,7 +45,7 @@ class Drivetrain(hwMap: HardwareMap) : SubSystems {
             }
 
             States.Manual -> {
-                driveManual(gamepadInput)
+                driveManual(gamepadInput, offset)
             }
         }
     }
@@ -82,12 +82,12 @@ class Drivetrain(hwMap: HardwareMap) : SubSystems {
         rightBack.power = 0.0
     }
 
-    private fun driveManual(gamepadInput: ArrayList<Float>) {
+    private fun driveManual(gamepadInput: ArrayList<Float>, offset:Double) {
         val input = gamepadInput.map { smoothGamepadInput(it.toDouble()) }
         Log.d("f", input.toString())
         val (axial, lateral, turn) = input
 
-        val h = -Localizer.pose.heading
+        val h = -Localizer.pose.heading +offset
         val rotX = -axial * cos(h) - lateral * sin(h)
         val rotY = -axial * sin(h) + lateral * cos(h)
 
