@@ -276,7 +276,7 @@ public class Comp1Actions {
 
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-            launcher.setSpeed(0.71);
+            launcher.setSpeed(0.67);
 
             // We return false because this only has to run once
             return false;

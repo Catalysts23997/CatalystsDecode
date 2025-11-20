@@ -28,6 +28,7 @@ class BlueAuto : LinearOpMode() {
 
 
     override fun runOpMode() {
+        var k = 1.0
         rT = Poses(-39.0,63.0,0.0)
 
         val localizer = Localizer(hardwareMap, rT)
@@ -45,7 +46,7 @@ class BlueAuto : LinearOpMode() {
                 object : Action {
                     override fun run(p: TelemetryPacket): Boolean {
                         localizer.update()
-                        RunToExactForever(rT)
+                        RunToExactForever(rT, k)
                         endPos = Poses(Localizer.pose.x, Localizer.pose.y, Localizer.pose.heading)
                         telemetry.addData("hello", rT)
                         telemetry.addData("heading", Localizer.pose.heading)
@@ -73,11 +74,7 @@ class BlueAuto : LinearOpMode() {
                                         AutoPoints.PreIntakeGPP.runToExact,
                                         ParallelAction(
                                             robot.Balls(),
-                                            SequentialAction(
-                                                AutoPoints.GPPIntake1.runToExact,
-                                                AutoPoints.GPPIntake2.runToExact,
-                                                AutoPoints.GPPIntake3.runToExact,
-                                            )
+                                            AutoPoints.GPPIntake3.runToExact
                                         ),
                                         AutoPoints.GPPMidPoint.runToExact
                                     )
@@ -92,6 +89,7 @@ class BlueAuto : LinearOpMode() {
                                                 AutoPoints.PGPIntake3.runToExact,
                                             )
                                         ),
+                                        AutoPoints.PGPIntake2.runToExact,
                                         AutoPoints.PGPMidPoint.runToExact
                                     )
 

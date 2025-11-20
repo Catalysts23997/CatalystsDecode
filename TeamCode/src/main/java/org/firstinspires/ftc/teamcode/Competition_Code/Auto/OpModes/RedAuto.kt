@@ -90,6 +90,7 @@ class RedAuto : LinearOpMode() {
                                                 AutoPoints.PGPIntake3Red.runToExact,
                                             )
                                         ),
+                                        AutoPoints.PGPIntake2Red.runToExact,
                                         AutoPoints.PGPMidPointRed.runToExact
                                     )
 

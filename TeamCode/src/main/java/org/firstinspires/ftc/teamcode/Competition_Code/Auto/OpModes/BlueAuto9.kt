@@ -91,6 +91,7 @@ class BlueAuto9 : LinearOpMode() {
                                                 AutoPoints.PGPIntake3.runToExact,
                                             )
                                         ),
+                                        AutoPoints.PGPIntake2.runToExact,
                                         AutoPoints.PGPMidPoint.runToExact
                                     )
 
