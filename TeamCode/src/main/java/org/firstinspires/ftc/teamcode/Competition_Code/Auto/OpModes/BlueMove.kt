@@ -22,7 +22,7 @@ class BlueMove : LinearOpMode() {
 
     override fun runOpMode() {
         telemetry = FtcDashboard.getInstance().telemetry
-        rT = Poses(39.0,-63.0,-Math.PI/2)
+        rT = Poses(39.0,63.0,0.0)
 
         val localizer = Localizer(hardwareMap, rT)
         val drive = Drivetrain(hardwareMap)
@@ -36,7 +36,7 @@ class BlueMove : LinearOpMode() {
             ParallelAction(
                 {
                     localizer.update()
-                    RunToExactForever(rT)
+                    RunToExactForever(rT, 1.0)
                     telemetry.addData("hello", rT)
                     telemetry.addData("df", Localizer.pose.heading)
                     telemetry.addData("x", Localizer.pose.x)

@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Competition_Code.Tele.Testing;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 

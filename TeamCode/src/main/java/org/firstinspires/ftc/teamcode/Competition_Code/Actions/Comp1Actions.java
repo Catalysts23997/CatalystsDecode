@@ -283,6 +283,29 @@ public class Comp1Actions {
         }
 
     };
+    public Action Reverse = new Action() {
+
+        @Override
+        public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+            pulley.state = Pulley.State.Reverse;
+
+            // We return false because this only has to run once
+            return false;
+        }
+
+    };
+    public Action Off = new Action() {
+
+        @Override
+        public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+            pulley.state = Pulley.State.Off;
+
+            // We return false because this only has to run once
+            return false;
+        }
+
+    };
+
 
     public Action StopShooter = new Action() {
 
@@ -345,9 +368,8 @@ public class Comp1Actions {
                 if (started) {
                     // If ball1 detected → stop and hold
                     if ((ball1.isGreen() || ball1.isPurple())) {
-                        pulley.state = Pulley.State.Off;
+                        pulley.state = Pulley.State.Reverse;
                         intake.state = State.STOPPED;
-                        servo.state = Servo.State.HOLD;
                         telemetry.addData("Cycle", "Ball1 detected → stopping");
                         return false;
                     }
@@ -406,9 +428,12 @@ public class Comp1Actions {
                 Shoot(),
                 Cycle(),
                 WaitAction(shootingInterval),
+                HoldBall,
+                Off,
                 Shoot(),
                 Cycle(),
-                WaitAction(shootingInterval),
+                HoldBall,
+                Off,
                 Shoot(),
                 StopShooter
         );
@@ -418,9 +443,12 @@ public class Comp1Actions {
                 Shoot(),
                 Cycle(),
                 WaitAction(shootingInterval),
+                HoldBall,
+                Off,
                 Shoot(),
                 Cycle(),
-                WaitAction(shootingInterval),
+                HoldBall,
+                Off,
                 Shoot(),
                 StopShooter
         );

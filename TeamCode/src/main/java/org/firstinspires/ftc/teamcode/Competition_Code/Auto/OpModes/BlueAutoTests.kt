@@ -37,7 +37,7 @@ class BlueAutoTests : LinearOpMode() {
             ParallelAction(
                 {
                     localizer.update()
-                    RunToExactForever(rT)
+                    RunToExactForever(rT, 1.0)
                     endPos = Localizer.pose
                     telemetry.addData("hello", rT)
                     telemetry.addData("df", Localizer.pose.heading)

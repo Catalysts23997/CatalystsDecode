@@ -44,7 +44,7 @@ class BlueAuto9 : LinearOpMode() {
                 object : Action {
                     override fun run(p: TelemetryPacket): Boolean {
                         localizer.update()
-                        RunToExactForever(rT)
+                        RunToExactForever(rT, 1.0)
                         endPos = Poses(Localizer.pose.x, Localizer.pose.y, Localizer.pose.heading)
                         telemetry.addData("hello", rT)
                         telemetry.addData("heading", Localizer.pose.heading)

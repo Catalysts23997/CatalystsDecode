@@ -35,7 +35,7 @@ class TestAuto : LinearOpMode() {
             ParallelAction(
                 {
                     localizer.update()
-                    RunToExactForever(rT)
+                    RunToExactForever(rT, 1.0)
                     telemetry.addData("hello", rT)
                     telemetry.addData("df", Localizer.pose.heading)
                     telemetry.addData("x", Localizer.pose.x)

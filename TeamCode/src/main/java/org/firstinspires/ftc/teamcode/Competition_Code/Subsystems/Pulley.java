@@ -23,6 +23,7 @@ public class Pulley {
     public enum State {
         On(1.0),
         Slow(0.6),
+        Reverse(-1.0),
         Off(0.0);
         public final double power;
         State(double power) {
