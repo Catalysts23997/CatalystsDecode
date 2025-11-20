@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.*;
 
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Pulley;
 
-
+@Disabled
 @TeleOp(name = "PulleyTest", group = "LinearOpMode")
 public class PulleyTest extends LinearOpMode {
     Pulley pulley;

@@ -13,6 +13,7 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+@Disabled
 @TeleOp(name = "MainTest", group = "LinearOpMode")
 public class MainTest extends LinearOpMode {
 

@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import java.util.Arrays;
 import java.util.List;
 
-
+@Disabled
 @Config
 @TeleOp(name = "ClawTest", group = "Linear OpMode")
 public class ServoTest extends LinearOpMode {

@@ -11,6 +11,7 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+@Disabled
 @TeleOp(name = "Testing Intake Subsystem", group = "Linear OpMode")
 public class TestingIntakeSubsystem extends LinearOpMode {
 

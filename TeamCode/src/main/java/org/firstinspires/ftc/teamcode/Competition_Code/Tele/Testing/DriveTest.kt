@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.Competition_Code.Tele.Testing//package or
 
 import com.acmerobotics.dashboard.FtcDashboard
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry
+import com.qualcomm.robotcore.eventloop.opmode.Disabled
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 
@@ -9,6 +10,7 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Drivetrain
 import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localizer
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
 
+@Disabled
 @TeleOp(name = "DrivingPractice", group = "Linear OpMode")
 class DriveTest : LinearOpMode(){
     override fun runOpMode() {

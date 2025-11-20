@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.*;
 
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.ColorSensors;
 
+@Disabled
 @TeleOp(name = "ColorTest", group = "Linear OpMode")
 public class ColorTest extends LinearOpMode {
 

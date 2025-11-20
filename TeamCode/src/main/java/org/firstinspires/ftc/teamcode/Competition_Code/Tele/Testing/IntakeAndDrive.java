@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Competition_Code.Tele.Testing;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -11,6 +12,7 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+@Disabled
 @TeleOp(name = "IntakeAndDrive", group = "Linear OpMode")
 public class IntakeAndDrive extends LinearOpMode {
 
