@@ -58,8 +58,8 @@ public enum AutoPoints {
     GPPIntake3Red(new Vector2d(63,-36), Math.PI/2),
     GPPMidPointRed(new Vector2d(25,-12), -9*Math.PI/8),
 
-    REDtest2(new Vector2d(25,-12), -9*Math.PI/8),
-    BLUEtest2(new Vector2d(25,-12), -9*Math.PI/8);
+    REDtest2(new Vector2d(50,-63), -9*Math.PI/8),
+    BLUEtest2(new Vector2d(-50,-63), -9*Math.PI/8);
 
 
 
