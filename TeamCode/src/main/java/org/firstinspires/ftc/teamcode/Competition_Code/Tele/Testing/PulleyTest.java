@@ -21,6 +21,7 @@ public class PulleyTest extends LinearOpMode {
             else {
                 pulley.state= Pulley.State.Off;
             }
+            pulley.update();
         }
     }
 }

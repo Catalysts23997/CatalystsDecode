@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.Competition_Code.Subsystems;
 
+import static java.lang.Math.abs;
+
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localizer;
@@ -37,7 +39,7 @@ public class DrivetrainOverride {
         double latError = target.getY() - current.getY();
         double axialError = target.getX() - current.getX();
         double headingError = Angles.INSTANCE.wrap(
-            target.getHeading() + current.getHeading()
+            target.getHeading() - current.getHeading()
         );
 
         double lateral = drive.getYpid().calculate(latError);
@@ -48,14 +50,14 @@ public class DrivetrainOverride {
         double rotX = -axial * Math.cos(heading) - lateral * Math.sin(heading);
         double rotY = -axial * Math.sin(heading) + lateral * Math.cos(heading);
 
-        drive.getLeftFront().setPower(rotY - rotX - turn);
-        drive.getLeftBack().setPower(rotY + rotX - turn);
-        drive.getRightFront().setPower(rotY + rotX + turn);
-        drive.getRightBack().setPower(rotY - rotX + turn);
+        drive.getLeftFront().setPower(rotY - rotX + turn);
+        drive.getLeftBack().setPower(rotY + rotX + turn);
+        drive.getRightFront().setPower(rotY + rotX - turn);
+        drive.getRightBack().setPower(rotY - rotX - turn);
 
-        if (Math.abs(axialError) <= 1.0 &&
-            Math.abs(latError) <= 1.0 &&
-            Math.abs(headingError) <= Math.toRadians(5.0)) {
+        if (abs(axialError) <= 1.0 &&
+            abs(latError) <= 1.0 &&
+            abs(headingError) <= Math.toRadians(5.0)) {
             stopOverriding();
         }
     }
@@ -68,8 +70,8 @@ public class DrivetrainOverride {
     /// if not.
     public boolean safetyMeasures(Gamepad gamepad) {
         if (gamepad.x ||
-            gamepad.right_stick_x != 0 || gamepad.right_stick_y != 0 ||
-            gamepad.left_stick_x != 0 ||gamepad.left_stick_y != 0) {
+            abs(gamepad.right_stick_x) >= 0.1 || abs(gamepad.right_stick_y) >= 0.1 ||
+                abs(gamepad.left_stick_x) >= 0.1 ||abs(gamepad.left_stick_y) >= 0.1) {
             stopOverriding();
 
             return true;

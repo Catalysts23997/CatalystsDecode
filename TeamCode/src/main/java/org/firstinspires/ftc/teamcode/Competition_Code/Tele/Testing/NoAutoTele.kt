@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Competition_Code.Tele.OpModes
+package org.firstinspires.ftc.teamcode.Competition_Code.Tele.Testing
 
 import com.acmerobotics.dashboard.FtcDashboard
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket
@@ -6,15 +6,14 @@ import com.acmerobotics.roadrunner.Action
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.util.ElapsedTime
-
 import org.firstinspires.ftc.teamcode.Competition_Code.Actions.Comp1Actions
-import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Drivetrain
 import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localizer
+import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Drivetrain
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
 
 //todo test after getting wheels in right directions
-@TeleOp(name = "Comp1Tele", group = "Linear OpMode")
-class Comp1Tele : LinearOpMode() {
+@TeleOp(name = "NoAutoTele", group = "Linear OpMode")
+class NoAutoTele : LinearOpMode() {
 
     override fun runOpMode() {
         val dash: FtcDashboard = FtcDashboard.getInstance()
@@ -26,7 +25,7 @@ class Comp1Tele : LinearOpMode() {
         val buttonTimer = ElapsedTime()
         var intaking = false
 
-        val robot = Comp1Actions(hardwareMap)
+        val robot = Comp1Actions(hardwareMap, telemetry)
         val timer = ElapsedTime()
 
         val drive = Drivetrain(hardwareMap)
@@ -38,9 +37,9 @@ class Comp1Tele : LinearOpMode() {
 
         while (opModeIsActive()) {
 
-            // SHOOTING: A button triggers full ShootBalls sequence
+            // SHOOTING: A button triggers full Shoot3Balls sequence
             if (gamepad2.right_trigger >= 0.5) {
-                runningActions.add(robot.ShootBalls)
+                runningActions.add(robot.Shoot3Balls())
                 balls = 0  // Reset intake counter after shooting
             }
 
@@ -56,21 +55,21 @@ class Comp1Tele : LinearOpMode() {
                 buttonTimer.reset()
             }
 
-//            if (intaking) {
-//                when (balls){
-//                    0 -> {
-//                        if (robot.ball1.checkForRecognition()){
-//                            runningActions.add(robot.HoldBall)
-//                            balls += 1
-//                        }
-//                    }
-//                    1 -> {
-//                        if (robot.ball2.checkForRecognition()){
-//                            balls += 1
-//                        }
-//                    }
-//                }
-//            }
+            if (intaking) {
+                when (balls){
+                    0 -> {
+                        if (robot.ball1.isGreen() || robot.ball1.isPurple()){
+                            runningActions.add(robot.HoldBall)
+                            balls += 1
+                        }
+                    }
+                    1 -> {
+                        if (robot.ball2.isGreen() || robot.ball2.isPurple()){
+                            balls += 1
+                        }
+                    }
+                }
+            }
 
             // update running actions
             val newActions = ArrayList<Action>()

@@ -22,11 +22,11 @@ class RedAutoTests : LinearOpMode() {
 
     override fun runOpMode() {
         telemetry = FtcDashboard.getInstance().telemetry
-        rT = Poses(-39.0,-63.0, Math.PI/2)
+        rT = Poses(39.0,63.0, 0.0)
 
         val localizer = Localizer(hardwareMap, rT)
         val drive = Drivetrain(hardwareMap)
-        val motif = 1
+        val motif = 3
 
         localizer.update()
 

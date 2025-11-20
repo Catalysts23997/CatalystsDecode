@@ -10,26 +10,23 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Actions.Comp1Actions
 import com.acmerobotics.roadrunner.Action
 
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoPoints
+import org.firstinspires.ftc.teamcode.Competition_Code.Auto.OpModes.BlueAuto.Companion.endPos
+import org.firstinspires.ftc.teamcode.Competition_Code.Auto.OpModes.BlueAuto.Companion.rT
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.RunToExactForever
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Drivetrain
 import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localizer
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Servo
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
 
-@Autonomous(name = "BlueAuto", group = "Auto")
-class BlueAuto : LinearOpMode() {
+@Autonomous(name = "RedAuto", group = "Auto")
+class RedAuto : LinearOpMode() {
 
-    companion object{
-        var rT = Poses(-39.0,63.0,0.0)
-        var endPos = Poses(0.0,0.0,0.0)
 
-    }
 
 
 
     override fun runOpMode() {
-        var k = 1.0
-        rT = Poses(-39.0,63.0,0.0)
+        rT = Poses(39.0,63.0,0.0)
 
         val localizer = Localizer(hardwareMap, rT)
         val drive = Drivetrain(hardwareMap)
@@ -46,7 +43,7 @@ class BlueAuto : LinearOpMode() {
                 object : Action {
                     override fun run(p: TelemetryPacket): Boolean {
                         localizer.update()
-                        RunToExactForever(rT, k)
+                        RunToExactForever(rT)
                         endPos = Poses(Localizer.pose.x, Localizer.pose.y, Localizer.pose.heading)
                         telemetry.addData("hello", rT)
                         telemetry.addData("heading", Localizer.pose.heading)
@@ -58,11 +55,11 @@ class BlueAuto : LinearOpMode() {
                     }
                 },
                 SequentialAction(
-                    AutoPoints.AprilTagBlue.runToExact,
+                    AutoPoints.AprilTagRed.runToExact,
                     robot.CheckMotif(),
                     robot.OffCamera(),
                     robot.StartShooter,
-                    AutoPoints.LaunchBlue.runToExact,
+                    AutoPoints.LaunchRed.runToExact,
                     robot.AutoShoot(),
                     object : Action {
                         var nextAction: Action? = null
@@ -71,36 +68,40 @@ class BlueAuto : LinearOpMode() {
                             if (nextAction == null) {
                                 nextAction = when (robot.motif) {
                                     1 -> SequentialAction(
-                                        AutoPoints.PreIntakeGPP.runToExact,
+                                        AutoPoints.PreIntakeGPPRed.runToExact,
                                         ParallelAction(
                                             robot.Balls(),
-                                            AutoPoints.GPPIntake3.runToExact
+                                            SequentialAction(
+                                                AutoPoints.GPPIntake1Red.runToExact,
+                                                AutoPoints.GPPIntake2Red.runToExact,
+                                                AutoPoints.GPPIntake3Red.runToExact,
+                                            )
                                         ),
-                                        AutoPoints.GPPMidPoint.runToExact
+                                        AutoPoints.GPPMidPointRed.runToExact
                                     )
 
                                     2 -> SequentialAction(
-                                        AutoPoints.PreIntakePGP.runToExact,
+                                        AutoPoints.PreIntakePGPRed.runToExact,
                                         ParallelAction(
                                             robot.Balls(),
                                             SequentialAction(
-                                                AutoPoints.PGPIntake1.runToExact,
-                                                AutoPoints.PGPIntake2.runToExact,
-                                                AutoPoints.PGPIntake3.runToExact,
+                                                AutoPoints.PGPIntake1Red.runToExact,
+                                                AutoPoints.PGPIntake2Red.runToExact,
+                                                AutoPoints.PGPIntake3Red.runToExact,
                                             )
                                         ),
-                                        AutoPoints.PGPIntake2.runToExact,
-                                        AutoPoints.PGPMidPoint.runToExact
+                                        AutoPoints.PGPIntake2Red.runToExact,
+                                        AutoPoints.PGPMidPointRed.runToExact
                                     )
 
                                     else -> SequentialAction(
-                                        AutoPoints.PreIntakePPG.runToExact,
+                                        AutoPoints.PreIntakePPGRed.runToExact,
                                         ParallelAction(
                                             robot.Balls(),
                                             SequentialAction(
-                                                AutoPoints.PPGIntake1.runToExact,
-                                                AutoPoints.PPGIntake2.runToExact,
-                                                AutoPoints.PPGIntake3.runToExact,
+                                                AutoPoints.PPGIntake1Red.runToExact,
+                                                AutoPoints.PPGIntake2Red.runToExact,
+                                                AutoPoints.PPGIntake3Red.runToExact,
                                             )
                                         ),
                                     )
@@ -112,9 +113,9 @@ class BlueAuto : LinearOpMode() {
                         }
                     },
                     robot.StartShooter,
-                    AutoPoints.LaunchBlue.runToExact,
+                    AutoPoints.LaunchRed.runToExact,
                     robot.AutoShoot(),
-                    AutoPoints.EndBlue.runToExact
+                    AutoPoints.EndRed.runToExact
                 )
             )
         )

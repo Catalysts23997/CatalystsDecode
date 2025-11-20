@@ -78,7 +78,8 @@ class RunToNearest(private val targetVector: Vector2d) : Action {
     }
 }
 
-fun RunToExactForever(pose: Poses): Boolean {
+fun RunToExactForever(pose: Poses, k:Double): Boolean {
+
         val current = Localizer.pose
         val drive = Drivetrain.instance
 
@@ -95,12 +96,12 @@ fun RunToExactForever(pose: Poses): Boolean {
         val rotX = -axial * cos(h) - lateral * sin(h)
         val rotY = -axial * sin(h) + lateral * cos(h)
 
-        //todo add rotational pid
+        //todo add rotational pi
 
-        drive.leftFront.power = (rotY + rotX - turn)
-        drive.leftBack.power = (rotY - rotX - turn)
-        drive.rightFront.power = (rotY - rotX + turn)
-        drive.rightBack.power = (rotY + rotX + turn)
+        drive.leftFront.power = k*(rotY - rotX + turn)
+        drive.leftBack.power = k*(rotY + rotX + turn)
+        drive.rightFront.power = k*(rotY + rotX - turn)
+        drive.rightBack.power = k*(rotY - rotX - turn)
 
 
     return true

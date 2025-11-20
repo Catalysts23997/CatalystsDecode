@@ -10,7 +10,7 @@ import java.util.List;
 
 @Disabled
 @Config
-@TeleOp(name = "ClawTest", group = "Linear OpMode")
+@TeleOp(name = "ServoTest", group = "Linear OpMode")
 public class ServoTest extends LinearOpMode {
 
     public static double servoPose=0.0;
@@ -19,7 +19,7 @@ public class ServoTest extends LinearOpMode {
     @Override
     public void runOpMode() {
 
-        List<Servo> servoList = Arrays.asList(hardwareMap.get(Servo.class, "port0"), hardwareMap.get(Servo.class, "port1"), hardwareMap.get(Servo.class, "port2"), hardwareMap.get(Servo.class, "port3"), hardwareMap.get(Servo.class, "port4"));
+        List<Servo> servoList = Arrays.asList(hardwareMap.get(Servo.class, "port0"));
 
         waitForStart();
         while (opModeIsActive()){
