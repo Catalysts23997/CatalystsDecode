@@ -56,7 +56,12 @@ public enum AutoPoints {
     GPPIntake1Red(new Vector2d(36.5,-36), Math.PI/2),
     GPPIntake2Red(new Vector2d(41.5,-36), Math.PI/2),
     GPPIntake3Red(new Vector2d(63,-36), Math.PI/2),
-    GPPMidPointRed(new Vector2d(25,-12), -9*Math.PI/8);
+    GPPMidPointRed(new Vector2d(25,-12), -9*Math.PI/8),
+
+    REDtest2(new Vector2d(25,-12), -9*Math.PI/8),
+    BLUEtest2(new Vector2d(25,-12), -9*Math.PI/8);
+
+
 
 
     AutoPoints(Vector2d vector, Double rotation) {
