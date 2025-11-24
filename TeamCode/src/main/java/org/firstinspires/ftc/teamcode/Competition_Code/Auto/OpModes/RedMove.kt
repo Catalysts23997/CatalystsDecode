@@ -22,7 +22,7 @@ class RedMove : LinearOpMode() {
 
     override fun runOpMode() {
         telemetry = FtcDashboard.getInstance().telemetry
-        rT = Poses(39.0,63.0,0.0)
+        rT = AutoPoints.StartRed.pose
 
         val localizer = Localizer(hardwareMap, rT)
         val drive = Drivetrain(hardwareMap)

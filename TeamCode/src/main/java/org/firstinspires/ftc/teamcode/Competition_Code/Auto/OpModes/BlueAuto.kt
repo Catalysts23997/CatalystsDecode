@@ -10,6 +10,7 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Actions.Comp1Actions
 import com.acmerobotics.roadrunner.Action
 
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoPoints
+import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoPoints.LaunchBlue
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.RunToExactForever
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Drivetrain
 import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localizer
@@ -20,7 +21,7 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
 class BlueAuto : LinearOpMode() {
 
     companion object{
-        var rT = Poses(-39.0,63.0,0.0)
+        var rT = Poses(-40.0,63.0,0.0)
         var endPos = Poses(0.0,0.0,0.0)
 
     }
@@ -29,14 +30,14 @@ class BlueAuto : LinearOpMode() {
 
     override fun runOpMode() {
         var k = 1.0
-        rT = Poses(-39.0,63.0,0.0)
+        rT = AutoPoints.StartBlue.pose
 
         val localizer = Localizer(hardwareMap, rT)
         val drive = Drivetrain(hardwareMap)
         val robot = Comp1Actions(hardwareMap, telemetry)
 
         localizer.update()
-        robot.servo.state = Servo.State.HOLD
+        robot.holder.state = Servo.State.STOP
         robot.update()
 
         waitForStart()
@@ -47,7 +48,7 @@ class BlueAuto : LinearOpMode() {
                     override fun run(p: TelemetryPacket): Boolean {
                         localizer.update()
                         RunToExactForever(rT, k)
-                        endPos = Poses(Localizer.pose.x, Localizer.pose.y, Localizer.pose.heading)
+                        endPos = Poses(Localizer.pose.x, Localizer.pose.y, 0.0)
                         telemetry.addData("hello", rT)
                         telemetry.addData("heading", Localizer.pose.heading)
                         telemetry.addData("x", Localizer.pose.x)
@@ -81,7 +82,7 @@ class BlueAuto : LinearOpMode() {
                                         },
                                         ParallelAction(
                                             SequentialAction(
-                                                robot.Balls(),
+                                                robot.BallsIntake(),
                                                 object: Action {
                                                     override fun run(p: TelemetryPacket): Boolean {
                                                         k = 1.0
@@ -106,7 +107,7 @@ class BlueAuto : LinearOpMode() {
                                         },
                                         ParallelAction(
                                             SequentialAction(
-                                                robot.Balls(),
+                                                robot.BallsIntake(),
                                                 object: Action {
                                                     override fun run(p: TelemetryPacket): Boolean {
                                                         k = 1.0
@@ -132,7 +133,7 @@ class BlueAuto : LinearOpMode() {
                                         },
                                         ParallelAction(
                                             SequentialAction(
-                                                robot.Balls(),
+                                                robot.BallsIntake(),
                                                 object: Action {
                                                     override fun run(p: TelemetryPacket): Boolean {
                                                         k = 1.0

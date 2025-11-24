@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.Competition_Code.Tele.Extra
 
 import com.acmerobotics.dashboard.FtcDashboard
 import com.acmerobotics.dashboard.config.Config
+import com.qualcomm.robotcore.eventloop.opmode.Disabled
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.hardware.DcMotor
@@ -11,6 +12,7 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.PIDParams
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.SlidesEncoderConv
 
 @Config
+@Disabled
 @TeleOp(group = "Linear OpMode", name = "PidTest- SlidesRotater")
 class RotationMotorTest: LinearOpMode() {
 

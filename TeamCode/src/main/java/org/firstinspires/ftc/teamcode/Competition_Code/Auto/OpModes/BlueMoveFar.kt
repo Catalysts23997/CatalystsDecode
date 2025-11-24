@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode.Competition_Code.Auto.OpModes;
 import com.acmerobotics.dashboard.FtcDashboard
 import com.acmerobotics.roadrunner.ParallelAction
 import com.acmerobotics.roadrunner.SequentialAction
-import com.acmerobotics.roadrunner.SleepAction
 import com.acmerobotics.roadrunner.ftc.runBlocking
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
@@ -16,17 +15,18 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Drivetrain
 import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localizer
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
 
-@Autonomous(name = "AidinBlueMove", group = "Auto")
-class AidinBlueMove : LinearOpMode() {
+@Autonomous(name = "BlueMoveFar", group = "Auto")
+class BlueMoveFar : LinearOpMode() {
 
 
     override fun runOpMode() {
         telemetry = FtcDashboard.getInstance().telemetry
-        rT = Poses(15.0,-63.0,-Math.PI/2)
+        rT = Poses(-15.0,-63.0,0.0)
 
         val localizer = Localizer(hardwareMap, rT)
         val drive = Drivetrain(hardwareMap)
         val motif = 1
+        val robot = Comp1Actions(hardwareMap, telemetry)
 
         localizer.update()
 
@@ -45,7 +45,8 @@ class AidinBlueMove : LinearOpMode() {
                     true
                 },
                 SequentialAction(
-                    AutoPoints.BLUEtest2.runToExact,
+                    robot.WaitAction(22000.0),
+                    AutoPoints.MoveFarBlue.runToExact,
                 )
             )
         )

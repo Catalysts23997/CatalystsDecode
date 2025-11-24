@@ -6,6 +6,7 @@ import com.acmerobotics.roadrunner.SequentialAction
 import com.acmerobotics.roadrunner.SleepAction
 import com.acmerobotics.roadrunner.ftc.runBlocking
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
+import com.qualcomm.robotcore.eventloop.opmode.Disabled
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import org.firstinspires.ftc.teamcode.Competition_Code.Actions.Comp1Actions
 
@@ -16,13 +17,14 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Drivetrain
 import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localizer
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
 
+@Disabled
 @Autonomous(name = "RedAutoTests", group = "Auto")
 class RedAutoTests : LinearOpMode() {
 
 
     override fun runOpMode() {
         telemetry = FtcDashboard.getInstance().telemetry
-        rT = Poses(39.0,63.0, 0.0)
+        rT = AutoPoints.StartRed.pose
 
         val localizer = Localizer(hardwareMap, rT)
         val drive = Drivetrain(hardwareMap)

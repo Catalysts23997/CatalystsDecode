@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Competition_Code.Tele.Extra;
 import com.qualcomm.robotcore.eventloop.opmode.*;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+@Disabled
 @TeleOp(name = "Aidin_servo", group = "Linear OpMode")
 public class Aidin_motor extends LinearOpMode {
     DcMotor Intake1;

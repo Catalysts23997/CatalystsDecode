@@ -7,11 +7,13 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.util.ElapsedTime
 import org.firstinspires.ftc.teamcode.Competition_Code.Actions.Comp1Actions
+import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoPoints
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.OpModes.BlueAuto
 
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Drivetrain
 import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localizer
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.DrivetrainOverride
+import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Servo
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
 
 //todo test after getting wheels in right directions
@@ -20,20 +22,27 @@ class BlueTele : LinearOpMode() {
 
     override fun runOpMode() {
 
+        if(BlueAuto.endPos == Poses(0.0,0.0,0.0))    {
+            BlueAuto.endPos = Poses(-39.0,63.0,0.0)
+        }
+
         val dash: FtcDashboard = FtcDashboard.getInstance()
         val packet = TelemetryPacket()
         var runningActions = ArrayList<Action>()
 
         var balls = 0             // Tracks the next ball to intake
-        val buttonDebounce = 500 // ms minimum between button presses
+        val buttonDebounce = 200 // ms minimum between button presses
         val buttonTimer = ElapsedTime()
+
         var intaking = false
+        var reversing = false
 
         val robot = Comp1Actions(hardwareMap, telemetry)
         val timer = ElapsedTime()
 
         val drive = Drivetrain(hardwareMap)
         val localizer = Localizer(hardwareMap, BlueAuto.endPos)
+
 
         val driveOverride = DrivetrainOverride()
 
@@ -43,30 +52,46 @@ class BlueTele : LinearOpMode() {
         var driveOverrideSafetyTimer: Long = 0L
 
         while (opModeInInit()) timer.reset()
+        robot.holder.state = Servo.State.STOP
 
         while (opModeIsActive()) {
 
             // SHOOTING: A button triggers full Shoot3Balls sequence
-            if (gamepad1.right_trigger >= 0.5 && buttonTimer.milliseconds() >= buttonDebounce && balls != 0) {
+            if (gamepad1.right_trigger >= 0.5 && buttonTimer.milliseconds() >= buttonDebounce) {
 
-                if(balls == 1){
-                    runningActions.add(robot.Shoot1Ball())
-                }
-                else runningActions.add(robot.Shoot3Balls())
+                runningActions.add(robot.ShootThrough())
 
                 balls = 0  // Reset intake counter after shooting
                 buttonTimer.reset()
             }
 
-            if (gamepad1.left_trigger >= 0.5 && buttonTimer.milliseconds() >= buttonDebounce) {
+            if (gamepad1.dpad_down && buttonTimer.milliseconds() >= buttonDebounce) {
+                if(!reversing){
+                    runningActions.add(robot.ReverseIntake)
+                    reversing = true
+                    intaking = false
+                }
+                else{
+                    runningActions.add(robot.StopIntake)
+                    reversing = false
+                    intaking = false
+                }
+
+                buttonTimer.reset()
+            }
+
+            if (gamepad1.dpad_up && buttonTimer.milliseconds() >= buttonDebounce) {
                 if(!intaking){
                     runningActions.add(robot.StartIntake)
                     intaking = true
+                    reversing = false
                 }
                 else{
                     runningActions.add(robot.StopIntake)
                     intaking = false
+                    reversing = false
                 }
+
                 buttonTimer.reset()
             }
 
@@ -74,7 +99,6 @@ class BlueTele : LinearOpMode() {
                 when (balls){
                     0 -> {
                         if (robot.ball1.isGreen() || robot.ball1.isPurple()){
-                            runningActions.add(robot.HoldBall)
                             balls += 1
                         }
                     }
@@ -97,11 +121,18 @@ class BlueTele : LinearOpMode() {
             runningActions = newActions
 
             //update subsystems
+            if(gamepad1.a){
+                localizer.resetHeading()
+            }
+
             localizer.update()
             robot.update()
 
             if(gamepad1.y){
-                driveOverride.beginOverriding(Poses(-10.0, 20.0, 3*Math.PI/4))
+                driveOverride.beginOverriding(AutoPoints.LaunchBlue.pose)
+            }
+            if(gamepad1.b){
+                driveOverride.beginOverriding(Poses(34.0, -38.0, 0.0))
             }
 
             if (driveOverride.shouldOverrideInput()) {
@@ -120,21 +151,13 @@ class BlueTele : LinearOpMode() {
                 )
             }
 
-            telemetry.addData("Running Actions", runningActions.size)
-            telemetry.addData("Balls", balls)
-
             val overrideTimeLeft = System.currentTimeMillis() - driveOverrideSafetyTimer
             if (overrideTimeLeft < 5000) {
                 telemetry.addData("Drive train override safety was tripped!", overrideTimeLeft)
             }
 
-            dash.sendTelemetryPacket(packet)
-
-            if(gamepad1.a){
-                localizer.resetHeading()
-            }
-            BlueAuto.endPos = Localizer.pose
-
+            telemetry.addData("Running Actions", runningActions.size)
+            telemetry.addData("BallsIntake", balls)
 
             telemetry.addData("Is intaking?", intaking)
 

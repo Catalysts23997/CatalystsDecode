@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Competition_Code.Tele.Testing
 import com.acmerobotics.dashboard.FtcDashboard
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket
 import com.acmerobotics.roadrunner.Action
+import com.qualcomm.robotcore.eventloop.opmode.Disabled
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.util.ElapsedTime
@@ -12,6 +13,7 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Drivetrain
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
 
 //todo test after getting wheels in right directions
+@Disabled
 @TeleOp(name = "NoAutoTele", group = "Linear OpMode")
 class NoAutoTele : LinearOpMode() {
 
@@ -95,7 +97,7 @@ class NoAutoTele : LinearOpMode() {
             )
 
             packet.put("Running Actions", runningActions.size)
-            packet.put("Balls", balls)
+            packet.put("BallsIntake", balls)
 
             dash.sendTelemetryPacket(packet)
 

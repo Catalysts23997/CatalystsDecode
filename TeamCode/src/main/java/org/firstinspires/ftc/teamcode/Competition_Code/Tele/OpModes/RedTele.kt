@@ -12,6 +12,7 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Auto.OpModes.BlueAuto
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Drivetrain
 import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localizer
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.DrivetrainOverride
+import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Servo
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
 
 //todo test after getting wheels in right directions
@@ -20,12 +21,16 @@ class RedTele : LinearOpMode() {
 
     override fun runOpMode() {
 
+        if(BlueAuto.endPos == Poses(0.0,0.0,0.0))    {
+            BlueAuto.endPos = Poses(39.0,63.0,0.0)
+        }
+
         val dash: FtcDashboard = FtcDashboard.getInstance()
         val packet = TelemetryPacket()
         var runningActions = ArrayList<Action>()
 
         var balls = 0             // Tracks the next ball to intake
-        val buttonDebounce = 500 // ms minimum between button presses
+        val buttonDebounce = 200 // ms minimum between button presses
         val buttonTimer = ElapsedTime()
         var intaking = false
 
@@ -43,16 +48,22 @@ class RedTele : LinearOpMode() {
         var driveOverrideSafetyTimer: Long = 0L
 
         while (opModeInInit()) timer.reset()
+        robot.holder.state = Servo.State.STOP
 
         while (opModeIsActive()) {
 
-            // SHOOTING: A button triggers full Shoot3Balls sequence
-            if (gamepad1.right_trigger >= 0.5 && buttonTimer.milliseconds() >= buttonDebounce && balls != 0) {
 
-                if(balls == 1){
-                    runningActions.add(robot.Shoot1Ball())
-                }
-                else runningActions.add(robot.Shoot3Balls())
+            // SHOOTING: A button triggers full Shoot3Balls sequence
+            if (gamepad1.right_trigger >= 0.5 && buttonTimer.milliseconds() >= buttonDebounce) {
+
+                runningActions.add(robot.ShootThrough())
+
+                balls = 0  // Reset intake counter after shooting
+                buttonTimer.reset()
+            }
+            if (gamepad1.right_bumper && buttonTimer.milliseconds() >= buttonDebounce) {
+
+                runningActions.add(robot.Shoot3Balls())
 
                 balls = 0  // Reset intake counter after shooting
                 buttonTimer.reset()
@@ -74,7 +85,6 @@ class RedTele : LinearOpMode() {
                 when (balls){
                     0 -> {
                         if (robot.ball1.isGreen() || robot.ball1.isPurple()){
-                            runningActions.add(robot.HoldBall)
                             balls += 1
                         }
                     }
@@ -101,7 +111,10 @@ class RedTele : LinearOpMode() {
             robot.update()
 
             if(gamepad1.y){
-                driveOverride.beginOverriding(Poses(10.0, 20.0, -3*Math.PI/4))
+                driveOverride.beginOverriding(Poses(10.0, 15.0, -11*Math.PI/16))
+            }
+            if(gamepad1.b){
+                driveOverride.beginOverriding(Poses(-34.0, -38.0, 0.0))
             }
 
             if (driveOverride.shouldOverrideInput()) {
@@ -121,7 +134,7 @@ class RedTele : LinearOpMode() {
             }
 
             telemetry.addData("Running Actions", runningActions.size)
-            telemetry.addData("Balls", balls)
+            telemetry.addData("BallsIntake", balls)
 
             val overrideTimeLeft = System.currentTimeMillis() - driveOverrideSafetyTimer
             if (overrideTimeLeft < 5000) {
@@ -133,7 +146,6 @@ class RedTele : LinearOpMode() {
             if(gamepad1.a){
                 localizer.resetHeading()
             }
-            BlueAuto.endPos = Localizer.pose
 
 
             telemetry.addData("Is intaking?", intaking)

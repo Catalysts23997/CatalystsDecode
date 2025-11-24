@@ -35,6 +35,10 @@ public class Launcher {
         this.speed = Math.max(0.0, Math.min(1.0, speed));
     }
 
+    public double getSpeed() {
+        return speed;
+    }
+
     /// Stop the launcher!
     public void stop() {
         setSpeed(0.0);

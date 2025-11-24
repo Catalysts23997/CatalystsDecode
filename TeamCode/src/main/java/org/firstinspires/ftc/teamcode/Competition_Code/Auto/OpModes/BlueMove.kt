@@ -22,11 +22,12 @@ class BlueMove : LinearOpMode() {
 
     override fun runOpMode() {
         telemetry = FtcDashboard.getInstance().telemetry
-        rT = Poses(39.0,63.0,0.0)
+        rT = AutoPoints.StartBlue.pose
 
         val localizer = Localizer(hardwareMap, rT)
         val drive = Drivetrain(hardwareMap)
         val motif = 1
+        val robot = Comp1Actions(hardwareMap, telemetry)
 
         localizer.update()
 
@@ -45,6 +46,7 @@ class BlueMove : LinearOpMode() {
                     true
                 },
                 SequentialAction(
+                     robot.WaitAction(22000.0),
                     AutoPoints.EndBlue.runToExact,
                 )
             )

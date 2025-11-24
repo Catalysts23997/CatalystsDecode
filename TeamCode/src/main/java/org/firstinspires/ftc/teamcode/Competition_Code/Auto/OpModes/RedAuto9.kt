@@ -19,15 +19,16 @@ import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localiz
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Servo
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
 
-@Autonomous(name = "BlueAuto9", group = "Auto")
-class BlueAuto9 : LinearOpMode() {
+@Autonomous(name = "RedAuto9", group = "Auto")
+class RedAuto9 : LinearOpMode() {
 
 
 
 
 
     override fun runOpMode() {
-        rT = AutoPoints.StartBlue.pose
+        rT = AutoPoints.StartRed.pose
+
         var k = 1.0
 
         val localizer = Localizer(hardwareMap, rT)
@@ -57,11 +58,11 @@ class BlueAuto9 : LinearOpMode() {
                     }
                 },
                 SequentialAction(
-                    AutoPoints.AprilTagBlue.runToExact,
+                    AutoPoints.AprilTagRed.runToExact,
                     robot.CheckMotif(),
                     robot.OffCamera(),
                     robot.StartShooter,
-                    AutoPoints.LaunchBlue.runToExact,
+                    AutoPoints.LaunchRed.runToExact,
                     robot.AutoShoot(),
                     object : Action {
                         var nextAction: Action? = null
@@ -73,125 +74,7 @@ class BlueAuto9 : LinearOpMode() {
                             if (nextAction == null) {
                                 nextAction = when (robot.motif) {
                                     1 -> SequentialAction(
-                                        AutoPoints.PreIntakeGPP.runToExact,
-                                        object: Action {
-                                            override fun run(p: TelemetryPacket): Boolean {
-                                                k = 0.5
-                                                return false
-                                            }
-
-                                        },
-                                        ParallelAction(
-                                            SequentialAction(
-                                                robot.BallsIntake(),
-                                                object: Action {
-                                                    override fun run(p: TelemetryPacket): Boolean {
-                                                        k = 1.0
-                                                        return false
-                                                    }
-
-                                                },
-                                            ),
-                                            AutoPoints.GPPIntake3.runToExact,
-                                        ),
-                                        AutoPoints.GPPIntake2.runToExact,
-
-                                        AutoPoints.GPPMidPoint.runToExact
-                                    )
-
-                                    2 -> SequentialAction(
-                                        AutoPoints.PreIntakePGP.runToExact,
-                                        object: Action {
-                                            override fun run(p: TelemetryPacket): Boolean {
-                                                k = 0.5
-                                                return false
-                                            }
-
-                                        },
-                                        ParallelAction(
-                                            SequentialAction(
-                                                robot.BallsIntake(),
-                                                object: Action {
-                                                    override fun run(p: TelemetryPacket): Boolean {
-                                                        k = 1.0
-                                                        return false
-                                                    }
-
-                                                },
-                                            ),
-                                            AutoPoints.PGPIntake3.runToExact,
-                                        ),
-                                        AutoPoints.PGPIntake2.runToExact,
-                                        AutoPoints.PGPMidPoint.runToExact
-                                    )
-
-                                    else -> SequentialAction(
-                                        AutoPoints.PreIntakePPG.runToExact,
-                                        object: Action {
-                                            override fun run(p: TelemetryPacket): Boolean {
-                                                k = 0.5
-                                                return false
-                                            }
-
-                                        },
-                                        ParallelAction(
-                                            SequentialAction(
-                                                robot.BallsIntake(),
-                                                object: Action {
-                                                    override fun run(p: TelemetryPacket): Boolean {
-                                                        k = 1.0
-                                                        return false
-                                                    }
-
-                                                },
-                                            ),
-                                            AutoPoints.PPGIntake3.runToExact,
-                                        ),
-
-                                    )
-                                }
-                            }
-
-                            // run the generated action normally
-                            return nextAction!!.run(p)
-                        }
-                    },
-                    robot.StartShooter,
-                    AutoPoints.LaunchBlue.runToExact,
-                    robot.AutoShoot(),
-
-                    object : Action {
-                        var nextAction: Action? = null
-
-                        override fun run(p: TelemetryPacket): Boolean {
-                            if (nextAction == null) {
-                                nextAction = when (robot.motif) {
-                                    3 -> SequentialAction(
-                                        AutoPoints.PreIntakePGP.runToExact,
-                                        object: Action {
-                                            override fun run(p: TelemetryPacket): Boolean {
-                                                k = 0.5
-                                                return false
-                                            }
-
-                                        },
-                                        ParallelAction(
-                                            SequentialAction(
-                                                robot.BallsIntake(),
-                                                object: Action {
-                                                    override fun run(p: TelemetryPacket): Boolean {
-                                                        k = 1.0
-                                                        return false
-                                                    }
-                                                },
-                                            ),
-                                            AutoPoints.PGPIntake3.runToExact,
-                                        ),
-                                        AutoPoints.PGPIntake2.runToExact,
-                                        AutoPoints.PGPMidPoint.runToExact
-                                    )
-                                    else -> SequentialAction(
-                                        AutoPoints.PreIntakePPG.runToExact,
+                                        AutoPoints.PreIntakeGPPRed.runToExact,
                                         object: Action {
                                             override fun run(p: TelemetryPacket): Boolean {
                                                 k = 0.5
@@ -210,7 +93,62 @@ class BlueAuto9 : LinearOpMode() {
 
                                                 },
                                             ),
-                                            AutoPoints.PPGIntake3.runToExact,
+                                            AutoPoints.GPPIntake3Red.runToExact,
+                                        ),
+                                        AutoPoints.GPPIntake2Red.runToExact,
+                                        AutoPoints.GPPMidPointRed.runToExact
+                                    )
+
+                                    2 -> SequentialAction(
+                                        AutoPoints.PreIntakePGPRed.runToExact,
+                                        object: Action {
+                                            override fun run(p: TelemetryPacket): Boolean {
+                                                k = 0.5
+                                                return false
+                                            }
+
+                                        },
+                                        ParallelAction(
+                                            SequentialAction(
+                                            robot.BallsIntake(),
+                                                object: Action {
+                                                    override fun run(p: TelemetryPacket): Boolean {
+                                                        k = 1.0
+                                                        return false
+                                                    }
+
+                                                },
+                                            ),
+
+                                            AutoPoints.PGPIntake3Red.runToExact,
+
+                                        ),
+                                        AutoPoints.PGPIntake2Red.runToExact,
+                                        AutoPoints.PGPMidPointRed.runToExact
+                                    )
+
+                                    else -> SequentialAction(
+                                        AutoPoints.PreIntakePPGRed.runToExact,
+                                        object: Action {
+                                            override fun run(p: TelemetryPacket): Boolean {
+                                                k = 0.5
+                                                return false
+                                            }
+
+                                        },
+                                        ParallelAction(
+                                            SequentialAction(
+                                            robot.BallsIntake(),
+                                                object: Action {
+                                                    override fun run(p: TelemetryPacket): Boolean {
+                                                        k = 1.0
+                                                        return false
+                                                    }
+
+                                                },
+                                            ),
+
+                                            AutoPoints.PPGIntake3Red.runToExact
                                         ),
                                     )
                                 }
@@ -221,9 +159,76 @@ class BlueAuto9 : LinearOpMode() {
                         }
                     },
                     robot.StartShooter,
-                    AutoPoints.LaunchBlue.runToExact,
+                    AutoPoints.LaunchRed.runToExact,
                     robot.AutoShoot(),
-                    AutoPoints.EndBlue.runToExact
+
+                    object : Action {
+                        var nextAction: Action? = null
+
+                        override fun run(p: TelemetryPacket): Boolean {
+                            if (nextAction == null) {
+                                nextAction = when (robot.motif) {
+                                    3 -> SequentialAction(
+                                        AutoPoints.PreIntakePGPRed.runToExact,
+                                        object: Action {
+                                            override fun run(p: TelemetryPacket): Boolean {
+                                                k = 0.5
+                                                return false
+                                            }
+
+                                        },
+                                        ParallelAction(
+                                            SequentialAction(
+                                            robot.BallsIntake(),
+                                                object: Action {
+                                                    override fun run(p: TelemetryPacket): Boolean {
+                                                        k = 1.0
+                                                        return false
+                                                    }
+
+                                                }
+                                            ),
+                                            AutoPoints.PGPIntake3Red.runToExact
+
+                                        ),
+                                        AutoPoints.PGPIntake2Red.runToExact,
+                                        AutoPoints.PGPMidPointRed.runToExact
+                                    )
+                                    else -> SequentialAction(
+                                        AutoPoints.PreIntakePPGRed.runToExact,
+                                        object: Action {
+                                            override fun run(p: TelemetryPacket): Boolean {
+                                                k = 0.5
+                                                return false
+                                            }
+
+                                        },
+                                        ParallelAction(
+                                            SequentialAction(
+                                                robot.BallsIntake(),
+                                                object: Action {
+                                                    override fun run(p: TelemetryPacket): Boolean {
+                                                        k = 1.0
+                                                        return false
+                                                    }
+
+                                                },
+                                            ),
+                                            AutoPoints.PPGIntake3Red.runToExact
+
+                                        ),
+                                    )
+                                }
+                            }
+
+                            // run the generated action normally
+                            return nextAction!!.run(p)
+                        }
+                    },
+                    robot.StartShooter,
+                    AutoPoints.LaunchRed.runToExact,
+                    robot.AutoShoot(),
+                    AutoPoints.EndRed.runToExact
 
                 )
             )

@@ -9,7 +9,6 @@ import com.qualcomm.robotcore.hardware.Servo;
 import java.util.Arrays;
 import java.util.List;
 
-@Disabled
 @Config
 @TeleOp(name = "ServoTest", group = "Linear OpMode")
 public class ServoTest extends LinearOpMode {
@@ -17,10 +16,13 @@ public class ServoTest extends LinearOpMode {
     public static double servoPose=0.0;
     public static int index=0;
 
+
+
+
     @Override
     public void runOpMode() {
 
-        List<Servo> servoList = Arrays.asList(hardwareMap.get(Servo.class, "port0"));
+        List<Servo> servoList = Arrays.asList(hardwareMap.get(Servo.class, "port1"),hardwareMap.get(Servo.class, "port2"));
 
         waitForStart();
         while (opModeIsActive()){
