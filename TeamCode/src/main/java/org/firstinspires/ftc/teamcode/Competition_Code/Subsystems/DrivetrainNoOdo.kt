@@ -60,8 +60,8 @@ class DrivetrainNoOdo(hwMap: HardwareMap) : SubSystems {
     }
 //    fun setPID(p: DoubleArray, i: DoubleArray, d: DoubleArray) {
 //        val controllers = listOf(Xpid, Ypid, Rpid)
-//        controllers.forEachIndexed { index, controller ->
-//            controller.params = PIDParams(p[index], i[index], d[index], 0.0)
+//        controllers.forEachIndexed { index, leftController ->
+//            leftController.params = PIDParams(p[index], i[index], d[index], 0.0)
 //        }
 //    }
 

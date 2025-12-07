@@ -72,7 +72,7 @@ public class MainTest extends LinearOpMode {
             intake.update();
 
             // Now that we have undated our drivetrain and intake, we
-            // can how update the launcher
+            // can how updatePID the launcher
             if (gamepad1.dpad_up && timer.seconds()>=0.5){
                 speed += 0.1;
                 timer.reset();
@@ -89,8 +89,8 @@ public class MainTest extends LinearOpMode {
                 speed = 0;
             }
 
-            launcher.setSpeed(speed);
-            launcher.update();
+            launcher.setPower(speed);
+            launcher.updatePower();
         }
     }
 

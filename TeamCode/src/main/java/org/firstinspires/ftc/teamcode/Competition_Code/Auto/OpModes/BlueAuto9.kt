@@ -8,9 +8,10 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import org.firstinspires.ftc.teamcode.Competition_Code.Actions.Comp1Actions
 import com.acmerobotics.roadrunner.Action
+import com.acmerobotics.roadrunner.RaceAction
 
-import org.firstinspires.ftc.teamcode.Competition_Code.Auto.OpModes.BlueAuto.Companion.rT
-import org.firstinspires.ftc.teamcode.Competition_Code.Auto.OpModes.BlueAuto.Companion.endPos
+import org.firstinspires.ftc.teamcode.Competition_Code.Auto.OpModes.BlueAuto6.Companion.rT
+import org.firstinspires.ftc.teamcode.Competition_Code.Auto.OpModes.BlueAuto6.Companion.endPos
 
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoPoints
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.RunToExactForever
@@ -21,10 +22,6 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
 
 @Autonomous(name = "BlueAuto9", group = "Auto")
 class BlueAuto9 : LinearOpMode() {
-
-
-
-
 
     override fun runOpMode() {
         rT = AutoPoints.StartBlue.pose
@@ -81,10 +78,10 @@ class BlueAuto9 : LinearOpMode() {
                                             }
 
                                         },
-                                        ParallelAction(
+                                        RaceAction(
                                             SequentialAction(
                                                 robot.BallsIntake(),
-                                                object: Action {
+                                                object : Action {
                                                     override fun run(p: TelemetryPacket): Boolean {
                                                         k = 1.0
                                                         return false
@@ -92,10 +89,8 @@ class BlueAuto9 : LinearOpMode() {
 
                                                 },
                                             ),
-                                            AutoPoints.GPPIntake3.runToExact,
+                                            AutoPoints.GPPIntake.runToExact,
                                         ),
-                                        AutoPoints.GPPIntake2.runToExact,
-
                                         AutoPoints.GPPMidPoint.runToExact
                                     )
 
@@ -108,7 +103,7 @@ class BlueAuto9 : LinearOpMode() {
                                             }
 
                                         },
-                                        ParallelAction(
+                                        RaceAction(
                                             SequentialAction(
                                                 robot.BallsIntake(),
                                                 object: Action {
@@ -119,9 +114,8 @@ class BlueAuto9 : LinearOpMode() {
 
                                                 },
                                             ),
-                                            AutoPoints.PGPIntake3.runToExact,
+                                            AutoPoints.PGPIntake.runToExact,
                                         ),
-                                        AutoPoints.PGPIntake2.runToExact,
                                         AutoPoints.PGPMidPoint.runToExact
                                     )
 
@@ -134,7 +128,7 @@ class BlueAuto9 : LinearOpMode() {
                                             }
 
                                         },
-                                        ParallelAction(
+                                        RaceAction(
                                             SequentialAction(
                                                 robot.BallsIntake(),
                                                 object: Action {
@@ -145,7 +139,7 @@ class BlueAuto9 : LinearOpMode() {
 
                                                 },
                                             ),
-                                            AutoPoints.PPGIntake3.runToExact,
+                                            AutoPoints.PPGIntake.runToExact,
                                         ),
 
                                     )
@@ -175,7 +169,7 @@ class BlueAuto9 : LinearOpMode() {
                                             }
 
                                         },
-                                        ParallelAction(
+                                        RaceAction(
                                             SequentialAction(
                                                 robot.BallsIntake(),
                                                 object: Action {
@@ -185,9 +179,8 @@ class BlueAuto9 : LinearOpMode() {
                                                     }
                                                 },
                                             ),
-                                            AutoPoints.PGPIntake3.runToExact,
+                                            AutoPoints.PGPIntake.runToExact,
                                         ),
-                                        AutoPoints.PGPIntake2.runToExact,
                                         AutoPoints.PGPMidPoint.runToExact
                                     )
                                     else -> SequentialAction(
@@ -199,7 +192,7 @@ class BlueAuto9 : LinearOpMode() {
                                             }
 
                                         },
-                                        ParallelAction(
+                                        RaceAction(
                                             SequentialAction(
                                             robot.BallsIntake(),
                                                 object: Action {
@@ -210,7 +203,7 @@ class BlueAuto9 : LinearOpMode() {
 
                                                 },
                                             ),
-                                            AutoPoints.PPGIntake3.runToExact,
+                                            AutoPoints.PPGIntake.runToExact,
                                         ),
                                     )
                                 }

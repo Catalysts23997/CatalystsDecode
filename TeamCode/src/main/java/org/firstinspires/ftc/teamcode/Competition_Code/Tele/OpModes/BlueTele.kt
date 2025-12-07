@@ -8,7 +8,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.util.ElapsedTime
 import org.firstinspires.ftc.teamcode.Competition_Code.Actions.Comp1Actions
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoPoints
-import org.firstinspires.ftc.teamcode.Competition_Code.Auto.OpModes.BlueAuto
+import org.firstinspires.ftc.teamcode.Competition_Code.Auto.OpModes.BlueAuto6
+import org.firstinspires.ftc.teamcode.Competition_Code.Auto.OpModes.BlueAuto6.Companion.endPos
 
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Drivetrain
 import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localizer
@@ -22,8 +23,8 @@ class BlueTele : LinearOpMode() {
 
     override fun runOpMode() {
 
-        if(BlueAuto.endPos == Poses(0.0,0.0,0.0))    {
-            BlueAuto.endPos = Poses(-39.0,63.0,0.0)
+        if(BlueAuto6.endPos == Poses(0.0,0.0,0.0))    {
+            BlueAuto6.endPos = Poses(-39.0,63.0,0.0)
         }
 
         val dash: FtcDashboard = FtcDashboard.getInstance()
@@ -41,7 +42,7 @@ class BlueTele : LinearOpMode() {
         val timer = ElapsedTime()
 
         val drive = Drivetrain(hardwareMap)
-        val localizer = Localizer(hardwareMap, BlueAuto.endPos)
+        val localizer = Localizer(hardwareMap, BlueAuto6.endPos)
 
 
         val driveOverride = DrivetrainOverride()
@@ -54,16 +55,56 @@ class BlueTele : LinearOpMode() {
         while (opModeInInit()) timer.reset()
         robot.holder.state = Servo.State.STOP
 
+        var shotsRequested = 0
+        var firstShot = false
+        var shooting = false
+
+        val shotTimer = ElapsedTime()
+
+        var lastTriggerPressed = false
+
         while (opModeIsActive()) {
 
             // SHOOTING: A button triggers full Shoot3Balls sequence
-            if (gamepad1.right_trigger >= 0.5 && buttonTimer.milliseconds() >= buttonDebounce) {
+            if (gamepad1.left_trigger >= 0.5 && buttonTimer.milliseconds() >= buttonDebounce) {
 
                 runningActions.add(robot.ShootThrough())
 
                 balls = 0  // Reset intake counter after shooting
                 buttonTimer.reset()
             }
+
+            val triggerPressed = gamepad1.right_trigger > 0.5
+            if (triggerPressed && !lastTriggerPressed && buttonTimer.milliseconds() > buttonDebounce) {
+                shotsRequested += 1
+                buttonTimer.reset()
+            }
+            lastTriggerPressed = triggerPressed
+
+            if (!shooting && shotsRequested > 0) {
+                runningActions.add(robot.ShootFirstBall())
+                shotTimer.reset()
+                shooting = true
+                firstShot = true
+            }
+
+            if (shooting) {
+                val requiredTime = if (firstShot) 3.0 else 2.0
+
+                if (shotTimer.seconds() >= requiredTime) {
+                    shotsRequested -= 1
+
+                    if (shotsRequested == 0) {
+                        runningActions.add(robot.StopShooter)
+                        shooting = false
+                    } else {
+                        runningActions.add(robot.ShootBall())
+                        firstShot = false
+                        shotTimer.reset()
+                    }
+                }
+            }
+
 
             if (gamepad1.dpad_down && buttonTimer.milliseconds() >= buttonDebounce) {
                 if(!reversing){
@@ -110,7 +151,7 @@ class BlueTele : LinearOpMode() {
                 }
             }
 
-            // update running actions
+            // updatePID running actions
             val newActions = ArrayList<Action>()
             runningActions.forEach {
                 it.preview(packet.fieldOverlay())
@@ -120,10 +161,14 @@ class BlueTele : LinearOpMode() {
             }
             runningActions = newActions
 
-            //update subsystems
+            endPos = Localizer.pose
+
+            //updatePID subsystems
             if(gamepad1.a){
+                localizer.resetOdo(endPos)
                 localizer.resetHeading()
             }
+
 
             localizer.update()
             robot.update()

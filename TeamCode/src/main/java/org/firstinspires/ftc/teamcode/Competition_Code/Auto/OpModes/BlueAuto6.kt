@@ -8,25 +8,23 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import org.firstinspires.ftc.teamcode.Competition_Code.Actions.Comp1Actions
 import com.acmerobotics.roadrunner.Action
+import com.acmerobotics.roadrunner.RaceAction
 
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoPoints
-import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoPoints.LaunchBlue
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.RunToExactForever
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Drivetrain
 import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localizer
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Servo
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
 
-@Autonomous(name = "BlueAuto", group = "Auto")
-class BlueAuto : LinearOpMode() {
+@Autonomous(name = "BlueAuto6", group = "Auto")
+class BlueAuto6 : LinearOpMode() {
 
     companion object{
         var rT = Poses(-40.0,63.0,0.0)
         var endPos = Poses(0.0,0.0,0.0)
 
     }
-
-
 
     override fun runOpMode() {
         var k = 1.0
@@ -48,8 +46,8 @@ class BlueAuto : LinearOpMode() {
                     override fun run(p: TelemetryPacket): Boolean {
                         localizer.update()
                         RunToExactForever(rT, k)
-                        endPos = Poses(Localizer.pose.x, Localizer.pose.y, 0.0)
-                        telemetry.addData("hello", rT)
+                        endPos = Poses(Localizer.pose.x, Localizer.pose.y, Localizer.pose.heading)
+                        telemetry.addData("goalPos", rT)
                         telemetry.addData("heading", Localizer.pose.heading)
                         telemetry.addData("x", Localizer.pose.x)
                         telemetry.addData("y", Localizer.pose.y)
@@ -80,10 +78,10 @@ class BlueAuto : LinearOpMode() {
                                             }
 
                                         },
-                                        ParallelAction(
+                                        RaceAction(
                                             SequentialAction(
                                                 robot.BallsIntake(),
-                                                object: Action {
+                                                object : Action {
                                                     override fun run(p: TelemetryPacket): Boolean {
                                                         k = 1.0
                                                         return false
@@ -91,7 +89,7 @@ class BlueAuto : LinearOpMode() {
 
                                                 }
                                             ),
-                                            AutoPoints.GPPIntake3.runToExact
+                                            AutoPoints.GPPIntake.runToExact
                                         ),
                                         AutoPoints.GPPMidPoint.runToExact
                                     )
@@ -105,7 +103,7 @@ class BlueAuto : LinearOpMode() {
                                             }
 
                                         },
-                                        ParallelAction(
+                                        RaceAction(
                                             SequentialAction(
                                                 robot.BallsIntake(),
                                                 object: Action {
@@ -116,9 +114,8 @@ class BlueAuto : LinearOpMode() {
 
                                                 }
                                             ),
-                                            AutoPoints.PGPIntake3.runToExact,
+                                            AutoPoints.PGPIntake.runToExact,
                                         ),
-                                        AutoPoints.PGPIntake2.runToExact,
                                         AutoPoints.PGPMidPoint.runToExact
                                     )
 
@@ -131,7 +128,7 @@ class BlueAuto : LinearOpMode() {
                                             }
 
                                         },
-                                        ParallelAction(
+                                        RaceAction(
                                             SequentialAction(
                                                 robot.BallsIntake(),
                                                 object: Action {
@@ -142,7 +139,7 @@ class BlueAuto : LinearOpMode() {
 
                                                 }
                                             ),
-                                            AutoPoints.PPGIntake3.runToExact,
+                                            AutoPoints.PPGIntake.runToExact,
                                         ),
                                     )
                                 }

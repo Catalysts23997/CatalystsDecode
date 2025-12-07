@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.util.ElapsedTime
 import org.firstinspires.ftc.teamcode.Competition_Code.Actions.Comp1Actions
-import org.firstinspires.ftc.teamcode.Competition_Code.Auto.OpModes.BlueAuto
+import org.firstinspires.ftc.teamcode.Competition_Code.Auto.OpModes.BlueAuto6
 
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Drivetrain
 import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localizer
@@ -21,8 +21,8 @@ class RedTele : LinearOpMode() {
 
     override fun runOpMode() {
 
-        if(BlueAuto.endPos == Poses(0.0,0.0,0.0))    {
-            BlueAuto.endPos = Poses(39.0,63.0,0.0)
+        if(BlueAuto6.endPos == Poses(0.0,0.0,0.0))    {
+            BlueAuto6.endPos = Poses(39.0,63.0,0.0)
         }
 
         val dash: FtcDashboard = FtcDashboard.getInstance()
@@ -38,7 +38,7 @@ class RedTele : LinearOpMode() {
         val timer = ElapsedTime()
 
         val drive = Drivetrain(hardwareMap)
-        val localizer = Localizer(hardwareMap, BlueAuto.endPos)
+        val localizer = Localizer(hardwareMap, BlueAuto6.endPos)
 
         val driveOverride = DrivetrainOverride()
 
@@ -57,13 +57,6 @@ class RedTele : LinearOpMode() {
             if (gamepad1.right_trigger >= 0.5 && buttonTimer.milliseconds() >= buttonDebounce) {
 
                 runningActions.add(robot.ShootThrough())
-
-                balls = 0  // Reset intake counter after shooting
-                buttonTimer.reset()
-            }
-            if (gamepad1.right_bumper && buttonTimer.milliseconds() >= buttonDebounce) {
-
-                runningActions.add(robot.Shoot3Balls())
 
                 balls = 0  // Reset intake counter after shooting
                 buttonTimer.reset()
@@ -96,7 +89,7 @@ class RedTele : LinearOpMode() {
                 }
             }
 
-            // update running actions
+            // updatePID running actions
             val newActions = ArrayList<Action>()
             runningActions.forEach {
                 it.preview(packet.fieldOverlay())
@@ -106,7 +99,7 @@ class RedTele : LinearOpMode() {
             }
             runningActions = newActions
 
-            //update subsystems
+            //updatePID subsystems
             localizer.update()
             robot.update()
 

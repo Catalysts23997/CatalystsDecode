@@ -3,18 +3,15 @@ package org.firstinspires.ftc.teamcode.Competition_Code.Auto.OpModes;
 import com.acmerobotics.dashboard.FtcDashboard
 import com.acmerobotics.roadrunner.ParallelAction
 import com.acmerobotics.roadrunner.SequentialAction
-import com.acmerobotics.roadrunner.SleepAction
 import com.acmerobotics.roadrunner.ftc.runBlocking
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
-import org.firstinspires.ftc.teamcode.Competition_Code.Actions.Comp1Actions
 
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoPoints
-import org.firstinspires.ftc.teamcode.Competition_Code.Auto.OpModes.BlueAuto.Companion.rT
+import org.firstinspires.ftc.teamcode.Competition_Code.Auto.OpModes.BlueAuto6.Companion.rT
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.RunToExactForever
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Drivetrain
 import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localizer
-import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
 
 @Autonomous(name = "RedMove", group = "Auto")
 class RedMove : LinearOpMode() {
@@ -45,7 +42,7 @@ class RedMove : LinearOpMode() {
                     true
                 },
                 SequentialAction(
-                    AutoPoints.EndRed.runToExact,
+                    AutoPoints.OutOfTheWayRed.runToExact,
                 )
             )
         )

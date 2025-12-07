@@ -3,8 +3,7 @@ package org.firstinspires.ftc.teamcode.Competition_Code.Auto
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket
 import com.acmerobotics.roadrunner.Action
 import com.acmerobotics.roadrunner.Vector2d
-import org.firstinspires.ftc.teamcode.Competition_Code.Auto.OpModes.BlueAuto
-import org.firstinspires.ftc.teamcode.Competition_Code.Auto.OpModes.BlueAuto.Companion.rT
+import org.firstinspires.ftc.teamcode.Competition_Code.Auto.OpModes.BlueAuto6.Companion.rT
 import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localizer
 
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Drivetrain

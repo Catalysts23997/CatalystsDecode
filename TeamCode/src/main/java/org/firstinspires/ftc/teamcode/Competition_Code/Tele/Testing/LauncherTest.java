@@ -5,7 +5,6 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Launcher;
 
-@Disabled
 @TeleOp(name = "LauncherTEst", group = "LinearOpMode")
 public class LauncherTest extends LinearOpMode {
     Launcher launcher;
@@ -34,8 +33,8 @@ public class LauncherTest extends LinearOpMode {
                 speed = 0;
             }
 
-            launcher.setSpeed(speed);
-            launcher.update();
+            launcher.setPower(speed);
+            launcher.updatePower();
         }
     }
 }

@@ -7,7 +7,7 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Angles
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
 
 
-class Localizer(hwmap: HardwareMap, private val offset: Poses) {
+class Localizer(hwmap: HardwareMap, private var offset: Poses) {
 
     private val odo: GoBildaPinpointDriver = hwmap.get(
         GoBildaPinpointDriver::class.java, "odo")
@@ -72,12 +72,16 @@ class Localizer(hwmap: HardwareMap, private val offset: Poses) {
     //todo add boolean just imu or not
     fun update(justImu: Boolean = false){
         odo.update()
-//        if (!justImu) odo.update() else odo.
+//        if (!justImu) odo.updatePID() else odo.
         pose = Poses(offset.x - odo.position.getY(DistanceUnit.INCH),offset.y + odo.position.getX(DistanceUnit.INCH),
             Angles.wrap(-odo.position.getHeading(AngleUnit.RADIANS) - Angleoffset +offset.heading))
     }
 
     fun resetHeading(){Angleoffset += pose.heading}
+    fun resetOdo(pos: Poses){
+        odo.resetPosAndIMU()
+        offset = pos
+    }
     companion object{
         lateinit var pose: Poses
     }

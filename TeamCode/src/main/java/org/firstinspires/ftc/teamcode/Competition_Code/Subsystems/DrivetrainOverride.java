@@ -27,7 +27,7 @@ public class DrivetrainOverride {
         this.shouldOverridingInput = false;
     }
 
-    /// This code does update the drivetrain, and should only be called
+    /// This code does updatePID the drivetrain, and should only be called
     /// when the override is active
     public void update(Drivetrain drive) {
         // prevent this from running if we don't have a target!

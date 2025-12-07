@@ -148,7 +148,7 @@ public class GoBildaPinpointDriver extends I2cDeviceSynchDevice<I2cDeviceSynchSi
         goBILDA_SWINGARM_POD,
         goBILDA_4_BAR_POD;
     }
-    //enum that captures a limited scope of read data. More options may be added in future update
+    //enum that captures a limited scope of read data. More options may be added in future updatePID
     public enum readData {
         ONLY_UPDATE_HEADING,
     }
@@ -252,7 +252,7 @@ public class GoBildaPinpointDriver extends I2cDeviceSynchDevice<I2cDeviceSynchSi
     }
 
     /**
-     * Call this once per loop to read new data from the Odometry Computer. Data will only update once this is called.
+     * Call this once per loop to read new data from the Odometry Computer. Data will only updatePID once this is called.
      */
     public void update(){
         byte[] bArr   = deviceClient.read(Register.BULK_READ.bVal, 40);
@@ -269,7 +269,7 @@ public class GoBildaPinpointDriver extends I2cDeviceSynchDevice<I2cDeviceSynchSi
     }
 
     /**
-     * Call this once per loop to read new data from the Odometry Computer. This is an override of the update() function
+     * Call this once per loop to read new data from the Odometry Computer. This is an override of the updatePID() function
      * which allows a narrower range of data to be read from the device for faster read times. Currently ONLY_UPDATE_HEADING
      * is supported.
      * @param data GoBildaPinpointDriver.readData.ONLY_UPDATE_HEADING
@@ -365,7 +365,7 @@ public class GoBildaPinpointDriver extends I2cDeviceSynchDevice<I2cDeviceSynchSi
 
     /**
      * Send a position that the Pinpoint should use to track your robot relative to. You can use this to
-     * update the estimated position of your robot with new external sensor data, or to run a robot
+     * updatePID the estimated position of your robot with new external sensor data, or to run a robot
      * in field coordinates. <br><br>
      * This overrides the current position. <br><br>
      * <strong>Using this feature to track your robot's position in field coordinates:</strong> <br>
@@ -374,7 +374,7 @@ public class GoBildaPinpointDriver extends I2cDeviceSynchDevice<I2cDeviceSynchSi
      * and the front of your robot is pointing towards the center of the field.
      * You can send a setPosition with something like -600mm x, -1200mm Y, and 90 degrees. The pinpoint would then always
      * keep track of how far away from the center of the field you are. <br><br>
-     * <strong>Using this feature to update your position with additional sensors: </strong><br>
+     * <strong>Using this feature to updatePID your position with additional sensors: </strong><br>
      * Some robots have a secondary way to locate their robot on the field. This is commonly
      * Apriltag localization in FTC, but it can also be something like a distance sensor.
      * Often these external sensors are absolute (meaning they measure something about the field)

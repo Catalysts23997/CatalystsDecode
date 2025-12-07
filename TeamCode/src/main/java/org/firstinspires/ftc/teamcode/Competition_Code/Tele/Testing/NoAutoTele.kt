@@ -41,7 +41,6 @@ class NoAutoTele : LinearOpMode() {
 
             // SHOOTING: A button triggers full Shoot3Balls sequence
             if (gamepad2.right_trigger >= 0.5) {
-                runningActions.add(robot.Shoot3Balls())
                 balls = 0  // Reset intake counter after shooting
             }
 
@@ -73,7 +72,7 @@ class NoAutoTele : LinearOpMode() {
                 }
             }
 
-            // update running actions
+            // updatePID running actions
             val newActions = ArrayList<Action>()
             runningActions.forEach {
                 it.preview(packet.fieldOverlay())
@@ -83,7 +82,7 @@ class NoAutoTele : LinearOpMode() {
             }
             runningActions = newActions
 
-            //update subsystems
+            //updatePID subsystems
             localizer.update()
             robot.update()
 

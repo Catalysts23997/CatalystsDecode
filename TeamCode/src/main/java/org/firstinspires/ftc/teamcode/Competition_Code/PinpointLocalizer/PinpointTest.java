@@ -107,16 +107,16 @@ public class PinpointTest extends LinearOpMode {
         while (opModeIsActive()) {
 
             /*
-            Request an update from the Pinpoint odometry computer. This checks almost all outputs
+            Request an updatePID from the Pinpoint odometry computer. This checks almost all outputs
             from the device in a single I2C read.
              */
             odo.update();
 
             /*
-            Optionally, you can update only the heading of the device. This takes less time to read, but will not
+            Optionally, you can updatePID only the heading of the device. This takes less time to read, but will not
             pull any other data. Only the heading (which you can pull with getHeading() or in getPosition().
              */
-            //odo.update(GoBildaPinpointDriver.readData.ONLY_UPDATE_HEADING);
+            //odo.updatePID(GoBildaPinpointDriver.readData.ONLY_UPDATE_HEADING);
 
 
             if (gamepad1.a){

@@ -8,22 +8,19 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import org.firstinspires.ftc.teamcode.Competition_Code.Actions.Comp1Actions
 import com.acmerobotics.roadrunner.Action
+import com.acmerobotics.roadrunner.RaceAction
 
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoPoints
-import org.firstinspires.ftc.teamcode.Competition_Code.Auto.OpModes.BlueAuto.Companion.endPos
-import org.firstinspires.ftc.teamcode.Competition_Code.Auto.OpModes.BlueAuto.Companion.rT
+import org.firstinspires.ftc.teamcode.Competition_Code.Auto.OpModes.BlueAuto6.Companion.endPos
+import org.firstinspires.ftc.teamcode.Competition_Code.Auto.OpModes.BlueAuto6.Companion.rT
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.RunToExactForever
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Drivetrain
 import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localizer
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Servo
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
 
-@Autonomous(name = "RedAuto", group = "Auto")
-class RedAuto : LinearOpMode() {
-
-
-
-
+@Autonomous(name = "RedAuto6", group = "Auto")
+class RedAuto6 : LinearOpMode() {
 
     override fun runOpMode() {
         var k = 1.0
@@ -77,7 +74,7 @@ class RedAuto : LinearOpMode() {
                                             }
 
                                         },
-                                        ParallelAction(
+                                        RaceAction(
                                             SequentialAction(
                                             robot.BallsIntake(),
                                                 object: Action {
@@ -88,7 +85,7 @@ class RedAuto : LinearOpMode() {
 
                                                 },
                                             ),
-                                            AutoPoints.GPPIntake3Red.runToExact,
+                                            AutoPoints.GPPIntakeRed.runToExact,
                                         ),
                                         AutoPoints.GPPMidPointRed.runToExact
                                     )
@@ -102,7 +99,7 @@ class RedAuto : LinearOpMode() {
                                             }
 
                                         },
-                                        ParallelAction(
+                                        RaceAction(
                                             SequentialAction(
                                             robot.BallsIntake(),
                                                 object: Action {
@@ -113,10 +110,9 @@ class RedAuto : LinearOpMode() {
 
                                                 },
                                             ),
-                                            AutoPoints.PGPIntake3Red.runToExact,
+                                            AutoPoints.PGPIntakeRed.runToExact,
 
                                         ),
-                                        AutoPoints.PGPIntake2Red.runToExact,
                                         AutoPoints.PGPMidPointRed.runToExact
                                     )
 
@@ -129,7 +125,7 @@ class RedAuto : LinearOpMode() {
                                             }
 
                                         },
-                                        ParallelAction(
+                                        RaceAction(
                                             SequentialAction(
                                             robot.BallsIntake(),
                                                 object: Action {
@@ -140,7 +136,7 @@ class RedAuto : LinearOpMode() {
 
                                                 },
                                             ),
-                                            AutoPoints.PPGIntake3Red.runToExact,
+                                            AutoPoints.PPGIntakeRed.runToExact,
                                         ),
                                     )
                                 }
