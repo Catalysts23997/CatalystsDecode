@@ -23,8 +23,13 @@ class BlueTele : LinearOpMode() {
 
     override fun runOpMode() {
 
-        if(BlueAuto6.endPos == Poses(0.0,0.0,0.0))    {
-            BlueAuto6.endPos = Poses(-39.0,63.0,0.0)
+        var tmpPose = BlueAuto6.endPos.copy()
+        if(tmpPose == Poses(0.0,0.0,0.0))    {
+            tmpPose = Poses(-39.0,63.0,0.0)
+        } else {
+            // Set a default value in case we don't run auto before
+            // TODO: apply to red as well?
+            tmpPose = Poses(0.0, 0.0, 0.0)
         }
 
         val dash: FtcDashboard = FtcDashboard.getInstance()
@@ -42,7 +47,7 @@ class BlueTele : LinearOpMode() {
         val timer = ElapsedTime()
 
         val drive = Drivetrain(hardwareMap)
-        val localizer = Localizer(hardwareMap, BlueAuto6.endPos)
+        val localizer = Localizer(hardwareMap, tmpPose)
 
 
         val driveOverride = DrivetrainOverride()

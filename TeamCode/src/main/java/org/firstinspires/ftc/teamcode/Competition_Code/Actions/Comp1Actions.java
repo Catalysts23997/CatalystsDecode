@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.SequentialAction;
+import com.acmerobotics.roadrunner.SleepAction;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -44,7 +45,7 @@ public class Comp1Actions {
         kicker.update();
         holder.update();
 
-        launcher.updatePID();
+        launcher.update();
 
         telemetry.addData("Ball1 Is Green?", ball1.isGreen());
         telemetry.addData("Ball1 Is Purple?", ball1.isPurple());
@@ -59,7 +60,7 @@ public class Comp1Actions {
         telemetry.addData("Kicker State", kicker.state);
         telemetry.addData("Holder State", holder.state);
 
-        telemetry.addData("Launcher Speed", launcher.getGoalRpm());
+        telemetry.addData("Launcher Speed", launcher.getSpeed());
 
         telemetry.update();
     }
@@ -258,7 +259,7 @@ public class Comp1Actions {
     public SequentialAction BallsIntake(){return new SequentialAction(StartIntake, Ball1Check(), Ball2Check(), WaitAction(ball3Timeout), StopIntake);}
 
     //shooting stuff
-    public double launchRpm = 5000;
+    public double launchSpeed = 0.57;
 
     double speedUpTime = 2000;      // time for flywheel to reach speed
     double servoShootTime = 700;    // ms for servo launch duration
@@ -270,7 +271,7 @@ public class Comp1Actions {
 
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-            launcher.setRPM(launchRpm);
+            launcher.setSpeed(launchSpeed);
 
             // We return false because this only has to run once
             return false;

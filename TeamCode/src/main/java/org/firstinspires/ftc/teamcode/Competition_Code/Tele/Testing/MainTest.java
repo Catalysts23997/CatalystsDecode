@@ -14,7 +14,6 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-@Disabled
 @TeleOp(name = "MainTest", group = "LinearOpMode")
 public class MainTest extends LinearOpMode {
 
@@ -58,13 +57,13 @@ public class MainTest extends LinearOpMode {
             }
 
             drive.update(
-                new ArrayList<>(
-                        Arrays.asList(
-                                gamepad1.left_stick_x,
-                                -gamepad1.left_stick_y,
-                                gamepad1.right_stick_x
-                        )
-                )
+                    new ArrayList<>(
+                            Arrays.asList(
+                                    gamepad1.left_stick_x,
+                                    -gamepad1.left_stick_y,
+                                    gamepad1.right_stick_x
+                            )
+                    )
             );
 
 
@@ -72,7 +71,7 @@ public class MainTest extends LinearOpMode {
             intake.update();
 
             // Now that we have undated our drivetrain and intake, we
-            // can how updatePID the launcher
+            // can how update the launcher
             if (gamepad1.dpad_up && timer.seconds()>=0.5){
                 speed += 0.1;
                 timer.reset();
@@ -89,8 +88,8 @@ public class MainTest extends LinearOpMode {
                 speed = 0;
             }
 
-            launcher.setPower(speed);
-            launcher.updatePower();
+            launcher.setSpeed(speed);
+            launcher.update();
         }
     }
 
