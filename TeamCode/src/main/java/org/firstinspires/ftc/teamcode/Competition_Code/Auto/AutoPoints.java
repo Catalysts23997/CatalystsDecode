@@ -12,14 +12,14 @@ public enum AutoPoints {
     EndBlue(new Vector2d(-25,0.0), 0.0),
     OutOfTheWayBlue(new Vector2d(-50,30.0), 0.0),
 
-    PreIntakePPG(new Vector2d(-25,14), -Math.PI/2),
+    PreIntakePPG(new Vector2d(-25,14), -Math.PI/2,.5),
     PPGIntake(new Vector2d(-56,14), -Math.PI/2),
 
-    PreIntakePGP(new Vector2d(-25,-11), -Math.PI/2),
+    PreIntakePGP(new Vector2d(-25,-11), -Math.PI/2,.5),
     PGPIntake(new Vector2d(-64,-11), -Math.PI/2),
     PGPMidPoint(new Vector2d(-25,-11), 9*Math.PI/8),
 
-    PreIntakeGPP(new Vector2d(-25,-33), -Math.PI/2),
+    PreIntakeGPP(new Vector2d(-25,-33), -Math.PI/2,.5),
     GPPIntake(new Vector2d(-64,-33), -Math.PI/2),
     GPPMidPoint(new Vector2d(-25,-33), 9*Math.PI/8),
 
@@ -29,15 +29,15 @@ public enum AutoPoints {
     EndRed(new Vector2d(25,0.0), 0.0),
     OutOfTheWayRed(new Vector2d(50,30.0), 0.0),
 
-    PreIntakePPGRed(new Vector2d(25,14), Math.PI/2),
+    PreIntakePPGRed(new Vector2d(25,14), Math.PI/2,.5),
     PPGIntakeRed(new Vector2d(56,14), Math.PI/2),
 
-    PreIntakePGPRed(new Vector2d(25,-11), Math.PI/2),
+    PreIntakePGPRed(new Vector2d(25,-11), Math.PI/2,.5),
     PGPIntakeRed(new Vector2d(64,-11), Math.PI/2),
     PGPMidPointRed(new Vector2d(25,-11), -9*Math.PI/8),
 
 
-    PreIntakeGPPRed(new Vector2d(25,-33), Math.PI/2),
+    PreIntakeGPPRed(new Vector2d(25,-33), Math.PI/2,.5),
     GPPIntakeRed(new Vector2d(64,-33), Math.PI/2),
     GPPMidPointRed(new Vector2d(25,-33), -9*Math.PI/8),
 
@@ -51,8 +51,13 @@ public enum AutoPoints {
     Test3(new Vector2d(-44,63), 0.0),
     Test4(new Vector2d(-39,58), 0.0);
 
+    AutoPoints(Vector2d vector, Double rotation, Double driveSpeed) {
+        runToExact = new SetDriveTarget(new Poses(vector,rotation),driveSpeed);
+        pose = new Poses(vector.x, vector.y, rotation);
+    }
     AutoPoints(Vector2d vector, Double rotation) {
-        runToExact = new SetDriveTarget(new Poses(vector,rotation));
+        double driveSpeed = 1.0;
+        runToExact = new SetDriveTarget(new Poses(vector,rotation),driveSpeed);
         pose = new Poses(vector.x, vector.y, rotation);
     }
 

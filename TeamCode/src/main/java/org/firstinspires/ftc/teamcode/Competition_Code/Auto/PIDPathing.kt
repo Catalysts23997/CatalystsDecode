@@ -77,7 +77,7 @@ class RunToNearest(private val targetVector: Vector2d) : Action {
     }
 }
 
-fun RunToExactForever(pose: Poses, PowerCoefficient:Double): Boolean {
+fun RunToExactForever(pose: Poses): Boolean {
 
         val current = Localizer.pose
         val drive = Drivetrain.instance
@@ -97,11 +97,11 @@ fun RunToExactForever(pose: Poses, PowerCoefficient:Double): Boolean {
 
         //todo add rotational pi
 
-
-        drive.leftFront.power = PowerCoefficient*(rotY - rotX + turn)
-        drive.leftBack.power = PowerCoefficient*(rotY + rotX + turn)
-        drive.rightFront.power = PowerCoefficient*(rotY + rotX - turn)
-        drive.rightBack.power = PowerCoefficient*(rotY - rotX - turn)
+        val powerCoefficient = AutoGlobals.driveSpeed
+        drive.leftFront.power = powerCoefficient*(rotY - rotX + turn)
+        drive.leftBack.power = powerCoefficient*(rotY + rotX + turn)
+        drive.rightFront.power = powerCoefficient*(rotY + rotX - turn)
+        drive.rightBack.power = powerCoefficient*(rotY - rotX - turn)
 
 
     return true
@@ -111,8 +111,9 @@ object T {
     var autoType = true
 }
 
-class SetDriveTarget(val pose: Poses):Action{
+class SetDriveTarget(val pose: Poses, val driveSpeed: Double):Action{
     override fun run(p: TelemetryPacket): Boolean {
+        AutoGlobals.driveSpeed = driveSpeed
         targetRobotPositon = pose
 
         return !(abs( targetRobotPositon.x -Localizer.pose.x) <= 3.0 &&

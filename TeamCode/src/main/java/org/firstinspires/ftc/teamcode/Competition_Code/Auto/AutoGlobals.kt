@@ -6,7 +6,7 @@ object AutoGlobals {
 
     var AutonomousRan: Boolean = false
     var locationOfRobot: Poses? = null
-
+    var driveSpeed = 1.0
     var targetRobotPositon: Poses = Poses(0.0,0.0,0.0)
 
 }

@@ -49,7 +49,7 @@ class TestBlueAuto : LinearOpMode() {
                 object : Action {
                     override fun run(p: TelemetryPacket): Boolean {
                         localizer.update()
-                        RunToExactForever(AutoGlobals.targetRobotPositon, motorPowerCoefficient)
+                        RunToExactForever(AutoGlobals.targetRobotPositon)
                         AutoGlobals.locationOfRobot =
                             Poses(Localizer.pose.x, Localizer.pose.y, Localizer.pose.heading)
                         telemetry.addData("goalPos", AutoGlobals.targetRobotPositon)

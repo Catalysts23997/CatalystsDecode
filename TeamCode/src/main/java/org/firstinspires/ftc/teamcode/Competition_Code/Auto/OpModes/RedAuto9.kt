@@ -41,7 +41,7 @@ class RedAuto9 : LinearOpMode() {
                 object : Action {
                     override fun run(p: TelemetryPacket): Boolean {
                         localizer.update()
-                        RunToExactForever(AutoGlobals.targetRobotPositon, motorPowerCoefficient)
+                        RunToExactForever(AutoGlobals.targetRobotPositon)
                         AutoGlobals.locationOfRobot =
                             Poses(Localizer.pose.x, Localizer.pose.y, Localizer.pose.heading)
                         telemetry.addData("goalPos", AutoGlobals.targetRobotPositon)
@@ -71,23 +71,9 @@ class RedAuto9 : LinearOpMode() {
                                 nextAction = when (robot.motif) {
                                     1 -> SequentialAction(
                                         AutoPoints.PreIntakeGPPRed.runToExact,
-                                        object : Action {
-                                            override fun run(p: TelemetryPacket): Boolean {
-                                                motorPowerCoefficient = 0.5
-                                                return false
-                                            }
-
-                                        },
                                         RaceAction(
                                             SequentialAction(
                                                 robot.BallsIntake(),
-                                                object : Action {
-                                                    override fun run(p: TelemetryPacket): Boolean {
-                                                        motorPowerCoefficient = 1.0
-                                                        return false
-                                                    }
-
-                                                },
                                             ),
                                             AutoPoints.GPPIntakeRed.runToExact,
                                         ),
@@ -96,23 +82,9 @@ class RedAuto9 : LinearOpMode() {
 
                                     2 -> SequentialAction(
                                         AutoPoints.PreIntakePGPRed.runToExact,
-                                        object : Action {
-                                            override fun run(p: TelemetryPacket): Boolean {
-                                                motorPowerCoefficient = 0.5
-                                                return false
-                                            }
-
-                                        },
                                         RaceAction(
                                             SequentialAction(
                                                 robot.BallsIntake(),
-                                                object : Action {
-                                                    override fun run(p: TelemetryPacket): Boolean {
-                                                        motorPowerCoefficient = 1.0
-                                                        return false
-                                                    }
-
-                                                },
                                             ),
 
                                             AutoPoints.PGPIntakeRed.runToExact,
@@ -123,23 +95,9 @@ class RedAuto9 : LinearOpMode() {
 
                                     else -> SequentialAction(
                                         AutoPoints.PreIntakePPGRed.runToExact,
-                                        object : Action {
-                                            override fun run(p: TelemetryPacket): Boolean {
-                                                motorPowerCoefficient = 0.5
-                                                return false
-                                            }
-
-                                        },
                                         RaceAction(
                                             SequentialAction(
                                                 robot.BallsIntake(),
-                                                object : Action {
-                                                    override fun run(p: TelemetryPacket): Boolean {
-                                                        motorPowerCoefficient = 1.0
-                                                        return false
-                                                    }
-
-                                                },
                                             ),
 
                                             AutoPoints.PPGIntakeRed.runToExact
@@ -164,23 +122,9 @@ class RedAuto9 : LinearOpMode() {
                                 nextAction = when (robot.motif) {
                                     3 -> SequentialAction(
                                         AutoPoints.PreIntakePGPRed.runToExact,
-                                        object : Action {
-                                            override fun run(p: TelemetryPacket): Boolean {
-                                                motorPowerCoefficient = 0.5
-                                                return false
-                                            }
-
-                                        },
                                         RaceAction(
                                             SequentialAction(
                                                 robot.BallsIntake(),
-                                                object : Action {
-                                                    override fun run(p: TelemetryPacket): Boolean {
-                                                        motorPowerCoefficient = 1.0
-                                                        return false
-                                                    }
-
-                                                }
                                             ),
                                             AutoPoints.PGPIntakeRed.runToExact
 
@@ -190,23 +134,9 @@ class RedAuto9 : LinearOpMode() {
 
                                     else -> SequentialAction(
                                         AutoPoints.PreIntakePPGRed.runToExact,
-                                        object : Action {
-                                            override fun run(p: TelemetryPacket): Boolean {
-                                                motorPowerCoefficient = 0.5
-                                                return false
-                                            }
-
-                                        },
                                         RaceAction(
                                             SequentialAction(
                                                 robot.BallsIntake(),
-                                                object : Action {
-                                                    override fun run(p: TelemetryPacket): Boolean {
-                                                        motorPowerCoefficient = 1.0
-                                                        return false
-                                                    }
-
-                                                },
                                             ),
                                             AutoPoints.PPGIntakeRed.runToExact
 

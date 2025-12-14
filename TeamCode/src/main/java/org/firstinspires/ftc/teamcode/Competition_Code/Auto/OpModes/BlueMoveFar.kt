@@ -20,7 +20,6 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
 class BlueMoveFar : LinearOpMode() {
 
     override fun runOpMode() {
-        var motorPowerCoefficient = 1.0
         AutoGlobals.targetRobotPositon = AutoPoints.StartFarBlue.pose
 
         val localizer = Localizer(hardwareMap, AutoGlobals.targetRobotPositon)
@@ -39,7 +38,7 @@ class BlueMoveFar : LinearOpMode() {
             ParallelAction(
                 {
                     localizer.update()
-                    RunToExactForever(AutoGlobals.targetRobotPositon, motorPowerCoefficient)
+                    RunToExactForever(AutoGlobals.targetRobotPositon)
                     AutoGlobals.locationOfRobot = Poses(Localizer.pose.x, Localizer.pose.y, 0.0)
                     telemetry.addData("hello", AutoGlobals.targetRobotPositon)
                     telemetry.addData("df", Localizer.pose.heading)
