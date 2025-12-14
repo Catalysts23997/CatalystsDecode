@@ -7,40 +7,46 @@ import com.acmerobotics.roadrunner.ftc.runBlocking
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import org.firstinspires.ftc.teamcode.Competition_Code.Actions.Comp1Actions
+import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoGlobals
 
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoPoints
-import org.firstinspires.ftc.teamcode.Competition_Code.Auto.OpModes.BlueAuto6.Companion.rT
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.RunToExactForever
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Drivetrain
 import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localizer
+import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Servo
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
 
 @Autonomous(name = "BlueMoveFar", group = "Auto")
 class BlueMoveFar : LinearOpMode() {
 
     override fun runOpMode() {
-        telemetry = FtcDashboard.getInstance().telemetry
-        rT = AutoPoints.StartFarBlue.pose
+        var motorPowerCoefficient = 1.0
+        AutoGlobals.targetRobotPositon = AutoPoints.StartFarBlue.pose
 
-        val localizer = Localizer(hardwareMap, rT)
+        val localizer = Localizer(hardwareMap, AutoGlobals.targetRobotPositon)
         val drive = Drivetrain(hardwareMap)
-        val motif = 1
         val robot = Comp1Actions(hardwareMap, telemetry)
 
         localizer.update()
+        robot.holder.state = Servo.State.STOP
+        robot.update()
 
         waitForStart()
+
+        AutoGlobals.AutonomousRan = true
 
         runBlocking(
             ParallelAction(
                 {
                     localizer.update()
-                    RunToExactForever(rT, 1.0)
-                    telemetry.addData("hello", rT)
+                    RunToExactForever(AutoGlobals.targetRobotPositon, motorPowerCoefficient)
+                    AutoGlobals.locationOfRobot = Poses(Localizer.pose.x, Localizer.pose.y, 0.0)
+                    telemetry.addData("hello", AutoGlobals.targetRobotPositon)
                     telemetry.addData("df", Localizer.pose.heading)
                     telemetry.addData("x", Localizer.pose.x)
                     telemetry.addData("y", Localizer.pose.y)
                     telemetry.update()
+                    robot.update()
                     true
                 },
                 SequentialAction(

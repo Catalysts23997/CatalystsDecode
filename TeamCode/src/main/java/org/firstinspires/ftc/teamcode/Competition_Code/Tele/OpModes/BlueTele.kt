@@ -7,14 +7,13 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.util.ElapsedTime
 import org.firstinspires.ftc.teamcode.Competition_Code.Actions.Comp1Actions
+import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoGlobals
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoPoints
-import org.firstinspires.ftc.teamcode.Competition_Code.Auto.OpModes.BlueAuto6
-import org.firstinspires.ftc.teamcode.Competition_Code.Auto.OpModes.BlueAuto6.Companion.endPos
-
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Drivetrain
 import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localizer
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.DrivetrainOverride
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Servo
+import org.firstinspires.ftc.teamcode.Competition_Code.Tele.TeleGlobals
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
 
 //todo test after getting wheels in right directions
@@ -23,13 +22,12 @@ class BlueTele : LinearOpMode() {
 
     override fun runOpMode() {
 
-        var tmpPose = BlueAuto6.endPos.copy()
-        if(tmpPose == Poses(0.0,0.0,0.0))    {
-            tmpPose = Poses(-39.0,63.0,0.0)
+        if(AutoGlobals.AutonomousRan) {
+            TeleGlobals.currentPosition = AutoGlobals.locationOfRobot!!
         } else {
-            // Set a default value in case we don't run auto before
-            // TODO: apply to red as well?
-            tmpPose = Poses(0.0, 0.0, 0.0)
+            //todo switch variable to a variable in the Positions file
+
+            TeleGlobals.currentPosition = Poses(-39.0,63.0,0.0)
         }
 
         val dash: FtcDashboard = FtcDashboard.getInstance()
@@ -47,7 +45,7 @@ class BlueTele : LinearOpMode() {
         val timer = ElapsedTime()
 
         val drive = Drivetrain(hardwareMap)
-        val localizer = Localizer(hardwareMap, tmpPose)
+        val localizer = Localizer(hardwareMap, TeleGlobals.currentPosition)
 
 
         val driveOverride = DrivetrainOverride()
@@ -166,11 +164,11 @@ class BlueTele : LinearOpMode() {
             }
             runningActions = newActions
 
-            endPos = Localizer.pose
+            TeleGlobals.currentPosition = Localizer.pose
 
             //updatePID subsystems
             if(gamepad1.a){
-                localizer.resetOdo(endPos)
+                localizer.resetOdo(TeleGlobals.currentPosition)
                 localizer.resetHeading()
             }
 
@@ -197,7 +195,7 @@ class BlueTele : LinearOpMode() {
                         gamepad1.left_stick_x,
                         -gamepad1.left_stick_y,
                         gamepad1.right_stick_x
-                    ), -Math.PI/2
+                    ), -Math.PI/2 // todo note that red has + PI/2
                 )
             }
 

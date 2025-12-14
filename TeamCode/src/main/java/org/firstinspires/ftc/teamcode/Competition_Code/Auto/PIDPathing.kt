@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.Competition_Code.Auto
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket
 import com.acmerobotics.roadrunner.Action
 import com.acmerobotics.roadrunner.Vector2d
-import org.firstinspires.ftc.teamcode.Competition_Code.Auto.OpModes.BlueAuto6.Companion.rT
+import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoGlobals.targetRobotPositon
 import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localizer
 
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Drivetrain
@@ -77,7 +77,7 @@ class RunToNearest(private val targetVector: Vector2d) : Action {
     }
 }
 
-fun RunToExactForever(pose: Poses, k:Double): Boolean {
+fun RunToExactForever(pose: Poses, PowerCoefficient:Double): Boolean {
 
         val current = Localizer.pose
         val drive = Drivetrain.instance
@@ -98,10 +98,10 @@ fun RunToExactForever(pose: Poses, k:Double): Boolean {
         //todo add rotational pi
 
 
-        drive.leftFront.power = k*(rotY - rotX + turn)
-        drive.leftBack.power = k*(rotY + rotX + turn)
-        drive.rightFront.power = k*(rotY + rotX - turn)
-        drive.rightBack.power = k*(rotY - rotX - turn)
+        drive.leftFront.power = PowerCoefficient*(rotY - rotX + turn)
+        drive.leftBack.power = PowerCoefficient*(rotY + rotX + turn)
+        drive.rightFront.power = PowerCoefficient*(rotY + rotX - turn)
+        drive.rightBack.power = PowerCoefficient*(rotY - rotX - turn)
 
 
     return true
@@ -113,10 +113,10 @@ object T {
 
 class SetDriveTarget(val pose: Poses):Action{
     override fun run(p: TelemetryPacket): Boolean {
-        rT = pose
+        targetRobotPositon = pose
 
-        return !(abs( rT.x -Localizer.pose.x) <= 3.0 &&
-                abs( rT.y-Localizer.pose.y) <= 3.0 &&
-                abs(Angles.wrap(-rT.heading + Localizer.pose.heading)) <= Math.toRadians(5.0))
+        return !(abs( targetRobotPositon.x -Localizer.pose.x) <= 3.0 &&
+                abs( targetRobotPositon.y-Localizer.pose.y) <= 3.0 &&
+                abs(Angles.wrap(-targetRobotPositon.heading + Localizer.pose.heading)) <= Math.toRadians(5.0))
     }
 }

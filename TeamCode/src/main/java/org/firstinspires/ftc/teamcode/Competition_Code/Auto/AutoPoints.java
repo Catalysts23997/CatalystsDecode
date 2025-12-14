@@ -6,7 +6,7 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses;
 
 
 public enum AutoPoints {
-    StartBlue(new Vector2d(-39,63), 0.0),
+    StartBlue(new Vector2d(-39,63), 0.0),// todo update new start position (robto has to touch tape)
     AprilTagBlue(new Vector2d(-15,45), Math.PI/8),
     LaunchBlue(new Vector2d(-18,19.0), 3*Math.PI/4),
     EndBlue(new Vector2d(-25,0.0), 0.0),

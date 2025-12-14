@@ -1,36 +1,31 @@
 package org.firstinspires.ftc.teamcode.Competition_Code.Auto.OpModes;
 
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket
+import com.acmerobotics.roadrunner.Action
 import com.acmerobotics.roadrunner.ParallelAction
 import com.acmerobotics.roadrunner.SequentialAction
 import com.acmerobotics.roadrunner.ftc.runBlocking
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import org.firstinspires.ftc.teamcode.Competition_Code.Actions.Comp1Actions
-import com.acmerobotics.roadrunner.Action
-import com.acmerobotics.roadrunner.RaceAction
-
+import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoGlobals
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoPoints
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.RunToExactForever
-import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Drivetrain
 import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localizer
+import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Drivetrain
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Servo
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
 
 @Autonomous(name = "RedAuto3", group = "Auto")
 class RedAuto3 : LinearOpMode() {
 
-    companion object{
-        var rT = Poses(-40.0,63.0,0.0)
-        var endPos = Poses(0.0,0.0,0.0)
-
-    }
 
     override fun runOpMode() {
 
-        rT = AutoPoints.StartRed.pose
+        var motorPowerCoefficient = 1.0
+        AutoGlobals.targetRobotPositon = AutoPoints.StartRed.pose
 
-        val localizer = Localizer(hardwareMap, rT)
+        val localizer = Localizer(hardwareMap, AutoGlobals.targetRobotPositon)
         val drive = Drivetrain(hardwareMap)
         val robot = Comp1Actions(hardwareMap, telemetry)
 
@@ -40,14 +35,17 @@ class RedAuto3 : LinearOpMode() {
 
         waitForStart()
 
+        AutoGlobals.AutonomousRan = true
+
         runBlocking(
             ParallelAction(
                 object : Action {
                     override fun run(p: TelemetryPacket): Boolean {
                         localizer.update()
-                        RunToExactForever(rT, 1.0)
-                        endPos = Poses(Localizer.pose.x, Localizer.pose.y, Localizer.pose.heading)
-                        telemetry.addData("goalPos", rT)
+                        RunToExactForever(AutoGlobals.targetRobotPositon, motorPowerCoefficient)
+                        AutoGlobals.locationOfRobot =
+                            Poses(Localizer.pose.x, Localizer.pose.y, Localizer.pose.heading)
+                        telemetry.addData("goalPos", AutoGlobals.targetRobotPositon)
                         telemetry.addData("heading", Localizer.pose.heading)
                         telemetry.addData("x", Localizer.pose.x)
                         telemetry.addData("y", Localizer.pose.y)
