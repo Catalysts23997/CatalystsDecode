@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Competition_Code.Auto
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket
 import com.acmerobotics.roadrunner.Action
 import com.acmerobotics.roadrunner.Vector2d
+import com.qualcomm.robotcore.util.ElapsedTime
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoGlobals.targetRobotPositon
 import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localizer
 
@@ -107,17 +108,24 @@ fun RunToExactForever(pose: Poses): Boolean {
     return true
 }
 
-object T {
-    var autoType = true
-}
+class SetDriveTarget @JvmOverloads constructor( val pose: Poses, val driveSpeed: Double = 1.0, val timeTobeDone: Double = 8.0):Action{
+    private var started = false
+    val timer = ElapsedTime()
 
-class SetDriveTarget(val pose: Poses, val driveSpeed: Double):Action{
     override fun run(p: TelemetryPacket): Boolean {
-        AutoGlobals.driveSpeed = driveSpeed
-        targetRobotPositon = pose
+        if (!started) {
+            AutoGlobals.driveSpeed = driveSpeed
+            targetRobotPositon = pose
+            timer.reset()
+            started = true
+        }
 
-        return !(abs( targetRobotPositon.x -Localizer.pose.x) <= 3.0 &&
+        val targetReached: Boolean = (abs( targetRobotPositon.x -Localizer.pose.x) <= 3.0 &&
                 abs( targetRobotPositon.y-Localizer.pose.y) <= 3.0 &&
                 abs(Angles.wrap(-targetRobotPositon.heading + Localizer.pose.heading)) <= Math.toRadians(5.0))
+
+        val isComplete = targetReached || timer.seconds() > timeTobeDone
+
+        return !isComplete
     }
 }

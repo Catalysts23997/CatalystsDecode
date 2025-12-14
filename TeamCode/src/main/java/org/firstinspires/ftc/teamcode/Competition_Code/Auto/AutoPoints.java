@@ -13,14 +13,14 @@ public enum AutoPoints {
     OutOfTheWayBlue(new Vector2d(-50,30.0), 0.0),
 
     PreIntakePPG(new Vector2d(-25,14), -Math.PI/2,.5),
-    PPGIntake(new Vector2d(-56,14), -Math.PI/2),
+    PPGIntake(new Vector2d(-56,14), -Math.PI/2, 6.0),
 
     PreIntakePGP(new Vector2d(-25,-11), -Math.PI/2,.5),
-    PGPIntake(new Vector2d(-64,-11), -Math.PI/2),
+    PGPIntake(new Vector2d(-64,-11), -Math.PI/2, 1.0 , 6.0),
     PGPMidPoint(new Vector2d(-25,-11), 9*Math.PI/8),
 
     PreIntakeGPP(new Vector2d(-25,-33), -Math.PI/2,.5),
-    GPPIntake(new Vector2d(-64,-33), -Math.PI/2),
+    GPPIntake(new Vector2d(-64,-33), -Math.PI/2, 1.0, 6.0),
     GPPMidPoint(new Vector2d(-25,-33), 9*Math.PI/8),
 
     StartRed(new Vector2d(39,63), 0.0),
@@ -30,15 +30,15 @@ public enum AutoPoints {
     OutOfTheWayRed(new Vector2d(50,30.0), 0.0),
 
     PreIntakePPGRed(new Vector2d(25,14), Math.PI/2,.5),
-    PPGIntakeRed(new Vector2d(56,14), Math.PI/2),
+    PPGIntakeRed(new Vector2d(56,14), Math.PI/2, 1.0, 6.0),
 
     PreIntakePGPRed(new Vector2d(25,-11), Math.PI/2,.5),
-    PGPIntakeRed(new Vector2d(64,-11), Math.PI/2),
+    PGPIntakeRed(new Vector2d(64,-11), Math.PI/2, 1.0, 6.0),
     PGPMidPointRed(new Vector2d(25,-11), -9*Math.PI/8),
 
 
     PreIntakeGPPRed(new Vector2d(25,-33), Math.PI/2,.5),
-    GPPIntakeRed(new Vector2d(64,-33), Math.PI/2),
+    GPPIntakeRed(new Vector2d(64,-33), Math.PI/2, 1.0, 6.0),
     GPPMidPointRed(new Vector2d(25,-33), -9*Math.PI/8),
 
     StartFarRed(new Vector2d(15,-63), 0.0),
@@ -51,15 +51,19 @@ public enum AutoPoints {
     Test3(new Vector2d(-44,63), 0.0),
     Test4(new Vector2d(-39,58), 0.0);
 
+    AutoPoints(Vector2d vector, Double rotation) {
+        runToExact = new SetDriveTarget(new Poses(vector,rotation));
+        pose = new Poses(vector.x, vector.y, rotation);
+    }
     AutoPoints(Vector2d vector, Double rotation, Double driveSpeed) {
         runToExact = new SetDriveTarget(new Poses(vector,rotation),driveSpeed);
         pose = new Poses(vector.x, vector.y, rotation);
     }
-    AutoPoints(Vector2d vector, Double rotation) {
-        double driveSpeed = 1.0;
-        runToExact = new SetDriveTarget(new Poses(vector,rotation),driveSpeed);
+    AutoPoints(Vector2d vector, Double rotation, Double driveSpeed, Double timeTobeDone) {
+        runToExact = new SetDriveTarget(new Poses(vector,rotation),driveSpeed,timeTobeDone);
         pose = new Poses(vector.x, vector.y, rotation);
     }
+
 
     public final SetDriveTarget runToExact;
     public final Poses pose;
