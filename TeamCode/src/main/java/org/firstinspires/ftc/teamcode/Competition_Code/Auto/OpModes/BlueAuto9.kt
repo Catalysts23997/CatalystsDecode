@@ -43,10 +43,10 @@ class BlueAuto9 : LinearOpMode() {
                         RunToExactForever(AutoGlobals.targetRobotPositon)
                         AutoGlobals.locationOfRobot = Poses(Localizer.pose.x, Localizer.pose.y, 0.0)
 
-                        telemetry.addData("hello", AutoGlobals.targetRobotPositon)
-                        telemetry.addData("heading", Localizer.pose.heading)
-                        telemetry.addData("x", Localizer.pose.x)
-                        telemetry.addData("y", Localizer.pose.y)
+                        telemetry.addData("Target Position", AutoGlobals.targetRobotPositon.toString())
+                        telemetry.addData("Current Pose", Localizer.pose.toString())
+                        telemetry.addData("Location of robot being transferred", AutoGlobals.locationOfRobot.toString())
+                        telemetry.addData("Drive speed", AutoGlobals.driveSpeed)
                         telemetry.update()
                         robot.update()
                         return true // keep looping

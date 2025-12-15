@@ -23,49 +23,54 @@ class BlueTele : LinearOpMode() {
     override fun runOpMode() {
 
         if(AutoGlobals.AutonomousRan) {
-            TeleGlobals.currentPosition = AutoGlobals.locationOfRobot!!
+            TeleGlobals.currentPosition = AutoGlobals.locationOfRobot!!  //todo check if position is being transferred
         } else {
-            //todo switch variable to a variable in the Positions file
 
-            TeleGlobals.currentPosition = Poses(-39.0,63.0,0.0)
+            TeleGlobals.currentPosition = AutoPoints.StartBlue.pose
         }
+
+        telemetry.addData("Robot at position ",  TeleGlobals.currentPosition)
 
         val dash: FtcDashboard = FtcDashboard.getInstance()
         val packet = TelemetryPacket()
         var runningActions = ArrayList<Action>()
 
         var balls = 0             // Tracks the next ball to intake
-        val buttonDebounce = 200 // ms minimum between button presses
+        val buttonDebounce = 100 // ms minimum between button presses
         val buttonTimer = ElapsedTime()
 
         var intaking = false
         var reversing = false
 
         val robot = Comp1Actions(hardwareMap, telemetry)
-        val timer = ElapsedTime()
 
         val drive = Drivetrain(hardwareMap)
         val localizer = Localizer(hardwareMap, TeleGlobals.currentPosition)
 
+        telemetry.addData("Robot at zero:",  Localizer.pose)
+        localizer.transferToTele()
+        telemetry.addData("Robot at original position:",  Localizer.pose)
 
         val driveOverride = DrivetrainOverride()
+
 
         /**
          * This is only used for telemetry, nothing more
          */
-        var driveOverrideSafetyTimer: Long = 0L
-
-        while (opModeInInit()) timer.reset()
+        var driveOverrideSafetyTimer = 0L
         robot.holder.state = Servo.State.STOP
-
         var shotsRequested = 0
         var firstShot = false
         var shooting = false
-
         val shotTimer = ElapsedTime()
-
         var lastTriggerPressed = false
+        telemetry.update()
 
+
+        //todo do we need that weird timer instance?
+
+        waitForStart()
+        buttonTimer.reset()
         while (opModeIsActive()) {
 
             // SHOOTING: A button triggers full Shoot3Balls sequence
@@ -168,8 +173,7 @@ class BlueTele : LinearOpMode() {
 
             //updatePID subsystems
             if(gamepad1.a){
-                localizer.resetOdo(TeleGlobals.currentPosition)
-                localizer.resetHeading()
+                localizer.resetOdo()
             }
 
 
@@ -204,20 +208,8 @@ class BlueTele : LinearOpMode() {
                 telemetry.addData("Drive train override safety was tripped!", overrideTimeLeft)
             }
 
-            telemetry.addData("Running Actions", runningActions.size)
-            telemetry.addData("BallsIntake", balls)
-
-            telemetry.addData("Is intaking?", intaking)
-
-            telemetry.addData("x", gamepad1.left_stick_x)
-            telemetry.addData("y", gamepad1.left_stick_y)
-
-            telemetry.addData("Heading", Localizer.pose.heading)
-            telemetry.addData("X position", Localizer.pose.x)
-            telemetry.addData("Y position", Localizer.pose.y)
+            telemetry.addData("Current Pose", Localizer.pose.toString())
             telemetry.update()
-
-            timer.reset()
         }
     }
 }

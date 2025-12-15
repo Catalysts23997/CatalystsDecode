@@ -25,9 +25,7 @@ class RedTele : LinearOpMode() {
         if(AutoGlobals.AutonomousRan) {
             TeleGlobals.currentPosition = AutoGlobals.locationOfRobot!!
         } else {
-            //todo switch variable to a variable in the Positions file
-
-            TeleGlobals.currentPosition = Poses(39.0,63.0,0.0)
+            TeleGlobals.currentPosition = AutoPoints.StartRed.pose
         }
 
         val dash: FtcDashboard = FtcDashboard.getInstance()
@@ -42,7 +40,6 @@ class RedTele : LinearOpMode() {
         var reversing = false
 
         val robot = Comp1Actions(hardwareMap, telemetry)
-        val timer = ElapsedTime()
 
         val drive = Drivetrain(hardwareMap)
         val localizer = Localizer(hardwareMap, TeleGlobals.currentPosition)
@@ -53,9 +50,8 @@ class RedTele : LinearOpMode() {
         /**
          * This is only used for telemetry, nothing more
          */
-        var driveOverrideSafetyTimer: Long = 0L
+        var driveOverrideSafetyTimer = 0L
 
-        while (opModeInInit()) timer.reset()
         robot.holder.state = Servo.State.STOP
 
         var shotsRequested = 0
@@ -65,7 +61,7 @@ class RedTele : LinearOpMode() {
         val shotTimer = ElapsedTime()
 
         var lastTriggerPressed = false
-
+        waitForStart()
         while (opModeIsActive()) {
 
             // SHOOTING: A button triggers full Shoot3Balls sequence
@@ -168,8 +164,7 @@ class RedTele : LinearOpMode() {
 
             //updatePID subsystems
             if(gamepad1.a){
-                localizer.resetOdo(TeleGlobals.currentPosition)
-                localizer.resetHeading()
+                localizer.resetOdo()
             }
 
 
@@ -216,8 +211,6 @@ class RedTele : LinearOpMode() {
             telemetry.addData("X position", Localizer.pose.x)
             telemetry.addData("Y position", Localizer.pose.y)
             telemetry.update()
-
-            timer.reset()
         }
     }
 }

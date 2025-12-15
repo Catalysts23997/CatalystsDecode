@@ -87,11 +87,10 @@ class Drivetrain(hwMap: HardwareMap) : SubSystems {
         Log.d("f", input.toString())
         val (axial, lateral, turn) = input
 
-        val h = -Localizer.pose.heading +offset
+        val h = -Localizer.pose.heading +offset // todo Why is there offset here??????
         val rotX = -axial * cos(h) - lateral * sin(h)
         val rotY = -axial * sin(h) + lateral * cos(h)
 
-        //todo add rotational pid
 
         leftFront.power = (rotY - rotX + turn)
         leftBack.power = (rotY + rotX + turn)

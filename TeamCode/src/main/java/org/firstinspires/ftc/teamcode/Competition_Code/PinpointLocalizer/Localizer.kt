@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer
 import com.qualcomm.robotcore.hardware.HardwareMap
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit
+import org.firstinspires.ftc.robotcore.external.navigation.Pose2D
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Angles
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
 
@@ -68,19 +69,20 @@ class Localizer(hwmap: HardwareMap, private var offset: Poses) {
         odo.resetPosAndIMU()
     }
 
-    var Angleoffset = 0.0
-    //todo add boolean just imu or not
-    fun update(justImu: Boolean = false){
+    fun update(){
         odo.update()
-//        if (!justImu) odo.updatePID() else odo.
-        pose = Poses(offset.x - odo.position.getY(DistanceUnit.INCH),offset.y + odo.position.getX(DistanceUnit.INCH),
-            Angles.wrap(-odo.position.getHeading(AngleUnit.RADIANS) - Angleoffset +offset.heading))
+        pose = Poses(- odo.position.getY(DistanceUnit.INCH),odo.position.getX(DistanceUnit.INCH),
+            Angles.wrap(-odo.position.getHeading(AngleUnit.RADIANS)))
+
+    } // 0,0,0
+
+    fun transferToTele(){
+        //todo Check if the position is actually normal x, y, h or not
+        odo.setPosition(Pose2D(DistanceUnit.INCH,offset.x, offset.y, AngleUnit.RADIANS,offset.heading))
     }
 
-    fun resetHeading(){Angleoffset += pose.heading}
-    fun resetOdo(pos: Poses){
+    fun resetOdo(){
         odo.resetPosAndIMU()
-        offset = pos
     }
     companion object{
         lateinit var pose: Poses
