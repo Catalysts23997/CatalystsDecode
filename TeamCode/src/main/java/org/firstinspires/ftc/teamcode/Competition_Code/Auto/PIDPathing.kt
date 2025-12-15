@@ -108,7 +108,7 @@ fun RunToExactForever(pose: Poses): Boolean {
     return true
 }
 
-class SetDriveTarget @JvmOverloads constructor( val pose: Poses, val driveSpeed: Double = 1.0, val timeTobeDone: Double = 8.0):Action{
+class SetDriveTarget @JvmOverloads constructor( val pose: Poses, val driveSpeed: Double = 1.0, val maxTime: Double = 8.0): Action{
     private var started = false
     val timer = ElapsedTime()
 
@@ -120,11 +120,11 @@ class SetDriveTarget @JvmOverloads constructor( val pose: Poses, val driveSpeed:
             started = true
         }
 
-        val targetReached: Boolean = (abs( targetRobotPositon.x -Localizer.pose.x) <= 3.0 &&
-                abs( targetRobotPositon.y-Localizer.pose.y) <= 3.0 &&
+        val targetReached: Boolean = (abs( targetRobotPositon.x - Localizer.pose.x) <= 3.0 &&
+                abs( targetRobotPositon.y - Localizer.pose.y) <= 3.0 &&
                 abs(Angles.wrap(-targetRobotPositon.heading + Localizer.pose.heading)) <= Math.toRadians(5.0))
 
-        val isComplete = targetReached || timer.seconds() > timeTobeDone
+        val isComplete = targetReached || timer.seconds() > maxTime
 
         return !isComplete
     }
