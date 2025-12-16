@@ -22,14 +22,4 @@ class ExampleSensor(hwMap: HardwareMap) {
         THREE(3.0);
         val value = values
     }
-
-
-    //TODO:
-    //for color sensors make multiple boolean that recognizes any requested color (use paramaters and enums)
-
-    //For ultrasonic have first a boolean function of being within an inputted distance (use paramaters)
-    //Second, have a double function outputting the exact distance
-
-    //Have a simple boolean function (pressed or not) for the limit switch
-
 }

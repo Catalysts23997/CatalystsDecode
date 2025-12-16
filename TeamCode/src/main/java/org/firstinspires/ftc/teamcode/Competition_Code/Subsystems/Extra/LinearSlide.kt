@@ -16,8 +16,6 @@ class LinearSlide(hwMap: HardwareMap) {
         motor.direction = DcMotorSimple.Direction.REVERSE
     }
 
-    //todo: Create an opmode that uses this subsytem - and sets the pid controller's paramters to ftc Dashboard numbers
-
     private val pidController = PIDController(PIDParams(.0085, 0.0, 0.0007, 0.0))
 
 

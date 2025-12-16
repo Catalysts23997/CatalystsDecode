@@ -12,7 +12,6 @@ import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localiz
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Drivetrain
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
 
-//todo test after getting wheels in right directions
 @Disabled
 @TeleOp(name = "NoAutoTele", group = "Linear OpMode")
 class NoAutoTele : LinearOpMode() {
@@ -101,7 +100,7 @@ class NoAutoTele : LinearOpMode() {
             dash.sendTelemetryPacket(packet)
 
             if(gamepad1.a){
-                localizer.resetHeading()
+                localizer.resetOdo()
             }
 
             timer.reset()

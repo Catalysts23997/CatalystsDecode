@@ -16,7 +16,6 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Servo
 import org.firstinspires.ftc.teamcode.Competition_Code.Tele.TeleGlobals
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
 
-//todo test after getting wheels in right directions
 @TeleOp(name = "RedTele", group = "Linear OpMode")
 class RedTele : LinearOpMode() {
 
@@ -190,7 +189,7 @@ class RedTele : LinearOpMode() {
                         gamepad1.left_stick_x,
                         -gamepad1.left_stick_y,
                         gamepad1.right_stick_x
-                    ), Math.PI/2 // todo : Note that Blue opmode has - Pi/2 but this one doesnt
+                    ), Math.PI/2 // !!!! Note that Blue opmode has - Pi/2 but this one doesnt
                 )
             }
 

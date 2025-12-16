@@ -46,9 +46,11 @@ public class Launcher {
 
     /// This function will set the motor speed so that it can make the balls into the target from
     /// any location on the playing field.
+    ///
+    /// @deprecated This function has never been used and probably will never
+    /// be used.
     public void setSpeedFromLocation(double posX, double posY) {
         double motorSpeed = 0.0f;
-        // TODO: Actually add the code to calculate the motor speed
 
         setSpeed(motorSpeed);
     }

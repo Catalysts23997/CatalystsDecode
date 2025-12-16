@@ -16,14 +16,13 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Servo
 import org.firstinspires.ftc.teamcode.Competition_Code.Tele.TeleGlobals
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
 
-//todo test after getting wheels in right directions
 @TeleOp(name = "BlueTele", group = "Linear OpMode")
 class BlueTele : LinearOpMode() {
 
     override fun runOpMode() {
 
         if(AutoGlobals.AutonomousRan) {
-            TeleGlobals.currentPosition = AutoGlobals.locationOfRobot!!  //todo check if position is being transferred
+            TeleGlobals.currentPosition = AutoGlobals.locationOfRobot!!  // todo check if position is being transferred
         } else {
 
             TeleGlobals.currentPosition = AutoPoints.StartBlue.pose
@@ -66,11 +65,9 @@ class BlueTele : LinearOpMode() {
         var lastTriggerPressed = false
         telemetry.update()
 
-
-        //todo do we need that weird timer instance?
-
         waitForStart()
         buttonTimer.reset()
+
         while (opModeIsActive()) {
 
             // SHOOTING: A button triggers full Shoot3Balls sequence
@@ -199,7 +196,7 @@ class BlueTele : LinearOpMode() {
                         gamepad1.left_stick_x,
                         -gamepad1.left_stick_y,
                         gamepad1.right_stick_x
-                    ), -Math.PI/2 // todo note that red has + PI/2
+                    ), -Math.PI / 2 // !!!! note that red has + PI/2
                 )
             }
 

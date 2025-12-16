@@ -109,7 +109,6 @@ class AprilTag(hardwareMap: HardwareMap) : Camera {
      * robot
      */
     private fun fieldDistanceToTag(translateData: Vector2d): Vector2d {
-        //todo measure Camera Offset
         val relX = translateData.x + 0.0
         val relY = translateData.y + 1.0
         require(relY > 0)

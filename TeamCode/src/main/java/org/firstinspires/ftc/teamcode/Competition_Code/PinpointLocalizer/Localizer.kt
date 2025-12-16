@@ -77,7 +77,7 @@ class Localizer(hwmap: HardwareMap, private var offset: Poses) {
     } // 0,0,0
 
     fun transferToTele(){
-        //todo Check if the position is actually normal x, y, h or not
+        // todo Check if the position is actually normal x, y, h or not
         odo.setPosition(Pose2D(DistanceUnit.INCH,offset.x, offset.y, AngleUnit.RADIANS,offset.heading))
     }
 
