@@ -67,6 +67,10 @@ class Localizer(hwmap: HardwareMap, private var offset: Poses) {
 
         //odo.setEncoderResolution(13.26291192);
         odo.resetPosAndIMU()
+
+        odo.setPosition(Pose2D(DistanceUnit.INCH,offset.y, -offset.x, AngleUnit.RADIANS,offset.heading))
+
+//        update()
     }
 
     fun update(){
@@ -78,13 +82,14 @@ class Localizer(hwmap: HardwareMap, private var offset: Poses) {
 
     fun transferToTele(){
         // todo Check if the position is actually normal x, y, h or not
-        odo.setPosition(Pose2D(DistanceUnit.INCH,offset.x, offset.y, AngleUnit.RADIANS,offset.heading))
+        odo.setPosition(Pose2D(DistanceUnit.INCH,offset.y, -offset.x, AngleUnit.RADIANS,offset.heading))
     }
 
     fun resetOdo(){
         odo.resetPosAndIMU()
     }
     companion object{
-        lateinit var pose: Poses
+        @JvmField
+        var pose: Poses = Poses(40.00,40.0,.05)
     }
 }

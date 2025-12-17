@@ -27,11 +27,11 @@ public class LauncherTest extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            if (gamepad1.dpad_up && timer.seconds()>=0.5){
+            if (gamepad1.dpad_up && timer.milliseconds() >=100){
                 speed += 0.1;
                 timer.reset();
             }
-            if (gamepad1.dpad_down && timer.seconds()>=0.5){
+            if (gamepad1.dpad_down&& timer.milliseconds() >=100){
                 speed -= 0.1;
                 timer.reset();
 
@@ -41,6 +41,12 @@ public class LauncherTest extends LinearOpMode {
             }
             if(gamepad1.b){
                 speed = 0;
+            }
+            if(gamepad1.x){
+                position = 0.15;
+            }
+            if(gamepad1.y){
+                position = 0.53;
             }
 
             if (timer.milliseconds() > 100) {
@@ -60,6 +66,8 @@ public class LauncherTest extends LinearOpMode {
             servo.setPosition(position);
 
             telemetry.addData("Servo position: ", position);
+            telemetry.addData("power ", speed);
+
             telemetry.update();
         }
     }

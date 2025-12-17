@@ -8,7 +8,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit
 
 import org.firstinspires.ftc.teamcode.Competition_Code.Interfaces.Camera
-import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localizer
+//import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localizer
 
 import org.firstinspires.ftc.vision.VisionPortal
 import org.firstinspires.ftc.vision.VisionProcessor
@@ -113,7 +113,7 @@ class AprilTag(hardwareMap: HardwareMap) : Camera {
         val relY = translateData.y + 1.0
         require(relY > 0)
 
-        val h = -Localizer.pose.heading.toDouble()
+        val h = 0.0 //todo make this the right value
         val x = relX * cos(h) - relY * sin(h)
         val y = relX * sin(h) + relY * cos(h)
 

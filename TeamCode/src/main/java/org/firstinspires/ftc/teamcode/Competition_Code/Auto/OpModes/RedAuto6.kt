@@ -34,7 +34,8 @@ class RedAuto6 : LinearOpMode() {
         waitForStart()
 
         AutoGlobals.AutonomousRan = true
-
+        localizer.transferToTele()
+        localizer.update()
 
         runBlocking(
             ParallelAction(

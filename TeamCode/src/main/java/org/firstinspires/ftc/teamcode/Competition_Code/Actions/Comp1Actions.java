@@ -62,7 +62,6 @@ public class Comp1Actions {
 
         telemetry.addData("Launcher Speed", launcher.getSpeed());
 
-        telemetry.update();
     }
 
     public Comp1Actions(HardwareMap hardwareMap, Telemetry telemetry) {
@@ -259,7 +258,7 @@ public class Comp1Actions {
     public SequentialAction BallsIntake(){return new SequentialAction(StartIntake, Ball1Check(), Ball2Check(), WaitAction(ball3Timeout), StopIntake);}
 
     //shooting stuff
-    public double launchSpeed = 0.73;
+    public double launchSpeed = 0.62;
 
     double speedUpTime = 2000;      // time for flywheel to reach speed
     double servoShootTime = 700;    // ms for servo launch duration
@@ -442,17 +441,24 @@ public class Comp1Actions {
                 WaitAction(speedUpTime),
                 ReleaseBall,
                 WaitAction(servoReleaseTime),
-                Shoot(),
                 CycleShoot(),
                 StopShooter
         );
     }
-
+    public SequentialAction ShootNoServo() {
+        return new SequentialAction(
+                StartShooter,
+                WaitAction(speedUpTime),
+                ReleaseBall,
+                WaitAction(servoReleaseTime),
+                CycleShoot(),
+                StopShooter
+        );
+    }
     public SequentialAction AutoShoot() {
         return new SequentialAction(
                 ReleaseBall,
                 WaitAction(servoReleaseTime),
-                Shoot(),
                 CycleShoot(),
                 StopShooter
         );

@@ -35,6 +35,8 @@ class RedMoveFar : LinearOpMode() {
         waitForStart()
 
         AutoGlobals.AutonomousRan = true
+        localizer.transferToTele()
+        localizer.update()
 
 
         waitForStart()

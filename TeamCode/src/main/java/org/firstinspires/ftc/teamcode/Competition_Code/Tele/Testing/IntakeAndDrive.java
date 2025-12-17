@@ -45,10 +45,10 @@ public class IntakeAndDrive extends LinearOpMode {
                 intake.state = Intake.State.STOPPED;
             }
 
-            localizer.update(false);
+            localizer.update();
 
             if(gamepad1.y){
-                localizer.resetHeading();
+                localizer.resetOdo();
             }
 
             drive.update

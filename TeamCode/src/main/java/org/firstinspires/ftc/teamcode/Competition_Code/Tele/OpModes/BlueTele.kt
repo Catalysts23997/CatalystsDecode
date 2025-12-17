@@ -47,7 +47,8 @@ class BlueTele : LinearOpMode() {
         val localizer = Localizer(hardwareMap, TeleGlobals.currentPosition)
 
         telemetry.addData("Robot at zero:",  Localizer.pose)
-        localizer.transferToTele()
+        sleep(100)
+        localizer.update()
         telemetry.addData("Robot at original position:",  Localizer.pose)
 
         val driveOverride = DrivetrainOverride()
@@ -66,6 +67,11 @@ class BlueTele : LinearOpMode() {
         telemetry.update()
 
         waitForStart()
+
+        localizer.update()
+        localizer.transferToTele()
+
+        telemetry.clear()
         buttonTimer.reset()
 
         while (opModeIsActive()) {
@@ -84,6 +90,7 @@ class BlueTele : LinearOpMode() {
                 shotsRequested += 1
                 buttonTimer.reset()
             }
+
             lastTriggerPressed = triggerPressed
 
             if (!shooting && shotsRequested > 0) {
@@ -156,6 +163,7 @@ class BlueTele : LinearOpMode() {
                 }
             }
 
+
             // updatePID running actions
             val newActions = ArrayList<Action>()
             runningActions.forEach {
@@ -169,14 +177,15 @@ class BlueTele : LinearOpMode() {
             TeleGlobals.currentPosition = Localizer.pose
 
             //updatePID subsystems
-            if(gamepad1.a){
-                localizer.resetOdo()
-            }
+//            if(gamepad1.a ){
+//                localizer.resetOdo()
+//            }
+
 
 
             localizer.update()
-            robot.update()
 
+            robot.update()
             if(gamepad1.y){
                 driveOverride.beginOverriding(AutoPoints.LaunchBlue.pose)
             }
@@ -206,6 +215,7 @@ class BlueTele : LinearOpMode() {
             }
 
             telemetry.addData("Current Pose", Localizer.pose.toString())
+
             telemetry.update()
         }
     }

@@ -22,7 +22,7 @@ public class ServoTest extends LinearOpMode {
     @Override
     public void runOpMode() {
 
-        List<Servo> servoList = Arrays.asList(hardwareMap.get(Servo.class, "port1"),hardwareMap.get(Servo.class, "port2"));
+        List<Servo> servoList = Arrays.asList(hardwareMap.get(Servo.class, "kicker"),hardwareMap.get(Servo.class, "holder"));
 
         waitForStart();
         while (opModeIsActive()){

@@ -20,7 +20,7 @@ public class Servo {
         HOLD(0.2),
         LAUNCH(0.35),
         RESET(0.15),
-        STOP(0.6);
+        STOP(0.53);
         public final double servoPos;
         State(double servoPos) {
             this.servoPos = servoPos;
