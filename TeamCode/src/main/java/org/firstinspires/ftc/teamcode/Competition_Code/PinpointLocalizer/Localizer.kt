@@ -68,8 +68,7 @@ class Localizer(hwmap: HardwareMap, private var offset: Poses) {
         //odo.setEncoderResolution(13.26291192);
         odo.resetPosAndIMU()
 
-        odo.setPosition(Pose2D(DistanceUnit.INCH,offset.y, -offset.x, AngleUnit.RADIANS,offset.heading))
-
+        transferToTele()
 //        update()
     }
 
