@@ -29,6 +29,7 @@ class BlueAuto6 : LinearOpMode() {
         val drive = Drivetrain(hardwareMap)
         val robot = Comp1Actions(hardwareMap, telemetry)
 
+        sleep(100)
         localizer.update()
         robot.holder.state = Servo.State.STOP
         robot.update()
@@ -36,8 +37,10 @@ class BlueAuto6 : LinearOpMode() {
         waitForStart()
 
         AutoGlobals.AutonomousRan = true
-        localizer.transferToTele()
+
         localizer.update()
+        localizer.transferToTele()
+
         runBlocking(
             ParallelAction(
                 object : Action {

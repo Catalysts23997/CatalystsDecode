@@ -26,13 +26,14 @@ class RedTele : LinearOpMode() {
         } else {
             TeleGlobals.currentPosition = AutoPoints.StartRed.pose
         }
+        telemetry.addData("Robot at position ",  TeleGlobals.currentPosition)
 
         val dash: FtcDashboard = FtcDashboard.getInstance()
         val packet = TelemetryPacket()
         var runningActions = ArrayList<Action>()
 
         var balls = 0             // Tracks the next ball to intake
-        val buttonDebounce = 200 // ms minimum between button presses
+        val buttonDebounce = 100 // ms minimum between button presses
         val buttonTimer = ElapsedTime()
 
         var intaking = false
@@ -42,6 +43,11 @@ class RedTele : LinearOpMode() {
 
         val drive = Drivetrain(hardwareMap)
         val localizer = Localizer(hardwareMap, TeleGlobals.currentPosition)
+
+        telemetry.addData("Robot at zero:",  Localizer.pose)
+        sleep(100)
+        localizer.update()
+        telemetry.addData("Robot at original position:",  Localizer.pose)
 
 
         val driveOverride = DrivetrainOverride()
@@ -56,11 +62,18 @@ class RedTele : LinearOpMode() {
         var shotsRequested = 0
         var firstShot = false
         var shooting = false
-
         val shotTimer = ElapsedTime()
-
         var lastTriggerPressed = false
+
+        telemetry.update()
         waitForStart()
+
+        localizer.update()
+        localizer.transferToTele()
+
+        telemetry.clear()
+        buttonTimer.reset()
+
         while (opModeIsActive()) {
 
             // SHOOTING: A button triggers full Shoot3Balls sequence
@@ -162,9 +175,9 @@ class RedTele : LinearOpMode() {
             TeleGlobals.currentPosition = Localizer.pose
 
             //updatePID subsystems
-            if(gamepad1.a){
-                localizer.resetOdo()
-            }
+//            if(gamepad1.a){
+//                localizer.resetOdo()
+//            }
 
 
             localizer.update()
@@ -189,7 +202,7 @@ class RedTele : LinearOpMode() {
                         gamepad1.left_stick_x,
                         -gamepad1.left_stick_y,
                         gamepad1.right_stick_x
-                    ), Math.PI/2 // !!!! Note that Blue opmode has - Pi/2 but this one doesnt
+                    ), Math.PI/2
                 )
             }
 
@@ -198,17 +211,8 @@ class RedTele : LinearOpMode() {
                 telemetry.addData("Drive train override safety was tripped!", overrideTimeLeft)
             }
 
-            telemetry.addData("Running Actions", runningActions.size)
-            telemetry.addData("BallsIntake", balls)
+            telemetry.addData("Current Pose", Localizer.pose.toString())
 
-            telemetry.addData("Is intaking?", intaking)
-
-            telemetry.addData("x", gamepad1.left_stick_x)
-            telemetry.addData("y", gamepad1.left_stick_y)
-
-            telemetry.addData("Heading", Localizer.pose.heading)
-            telemetry.addData("X position", Localizer.pose.x)
-            telemetry.addData("Y position", Localizer.pose.y)
             telemetry.update()
         }
     }

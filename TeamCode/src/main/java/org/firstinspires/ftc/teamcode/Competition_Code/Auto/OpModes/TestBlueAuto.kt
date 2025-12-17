@@ -25,13 +25,13 @@ class TestBlueAuto : LinearOpMode() {
 
 
     override fun runOpMode() {
-        var motorPowerCoefficient = 1.0
         AutoGlobals.targetRobotPositon = AutoPoints.StartBlue.pose
 
         val localizer = Localizer(hardwareMap, AutoGlobals.targetRobotPositon)
         val drive = Drivetrain(hardwareMap)
         val robot = Comp1Actions(hardwareMap, telemetry)
 
+        sleep(100)
         localizer.update()
         robot.holder.state = Servo.State.STOP
         robot.update()
@@ -41,7 +41,8 @@ class TestBlueAuto : LinearOpMode() {
         waitForStart()
 
         AutoGlobals.AutonomousRan = true
-
+        localizer.update()
+        localizer.transferToTele()
 
 
         runBlocking(

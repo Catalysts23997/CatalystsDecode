@@ -22,7 +22,7 @@ class BlueTele : LinearOpMode() {
     override fun runOpMode() {
 
         if(AutoGlobals.AutonomousRan) {
-            TeleGlobals.currentPosition = AutoGlobals.locationOfRobot!!  // todo check if position is being transferred
+            TeleGlobals.currentPosition = AutoGlobals.locationOfRobot!!
         } else {
 
             TeleGlobals.currentPosition = AutoPoints.StartBlue.pose
@@ -182,10 +182,9 @@ class BlueTele : LinearOpMode() {
 //            }
 
 
-
             localizer.update()
-
             robot.update()
+
             if(gamepad1.y){
                 driveOverride.beginOverriding(AutoPoints.LaunchBlue.pose)
             }

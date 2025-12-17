@@ -21,13 +21,13 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
 class RedAuto9 : LinearOpMode() {
 
     override fun runOpMode() {
-        var motorPowerCoefficient = 1.0
         AutoGlobals.targetRobotPositon = AutoPoints.StartRed.pose
 
         val localizer = Localizer(hardwareMap, AutoGlobals.targetRobotPositon)
         val drive = Drivetrain(hardwareMap)
         val robot = Comp1Actions(hardwareMap, telemetry)
 
+        sleep(100)
         localizer.update()
         robot.holder.state = Servo.State.STOP
         robot.update()
@@ -35,8 +35,8 @@ class RedAuto9 : LinearOpMode() {
         waitForStart()
 
         AutoGlobals.AutonomousRan = true
-        localizer.transferToTele()
         localizer.update()
+        localizer.transferToTele()
 
         runBlocking(
             ParallelAction(
