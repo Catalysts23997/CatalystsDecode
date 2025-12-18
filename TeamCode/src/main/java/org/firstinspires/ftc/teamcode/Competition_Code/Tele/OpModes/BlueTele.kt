@@ -76,7 +76,7 @@ class BlueTele : LinearOpMode() {
         while (opModeIsActive()) {
 
             // SHOOTING: A button triggers full Shoot3Balls sequence
-            if (gamepad1.left_trigger >= 0.5 && buttonTimer.milliseconds() >= buttonDebounce) {
+            if (gamepad1.right_trigger >= 0.5 && buttonTimer.milliseconds() >= buttonDebounce) {
 
                 runningActions.add(robot.ShootThrough())
 
@@ -84,38 +84,44 @@ class BlueTele : LinearOpMode() {
                 buttonTimer.reset()
             }
 
-            val triggerPressed = gamepad1.right_trigger > 0.5
-            if (triggerPressed && !lastTriggerPressed && buttonTimer.milliseconds() > buttonDebounce) {
-                shotsRequested += 1
-                buttonTimer.reset()
+//            val triggerPressed = gamepad1.right_trigger > 0.5
+//            if (triggerPressed && !lastTriggerPressed && buttonTimer.milliseconds() > buttonDebounce) {
+//                shotsRequested += 1
+//                buttonTimer.reset()
+//            }
+//
+//            lastTriggerPressed = triggerPressed
+//
+//            if (!shooting && shotsRequested > 0) {
+//                runningActions.add(robot.ShootFirstBall())
+//                shotTimer.reset()
+//                shooting = true
+//                firstShot = true
+//            }
+//
+//            if (shooting) {
+//                val requiredTime = if (firstShot) 3.0 else 2.0
+//
+//                if (shotTimer.seconds() >= requiredTime) {
+//                    shotsRequested -= 1
+//
+//                    if (shotsRequested == 0) {
+//                        runningActions.add(robot.StopShooter)
+//                        shooting = false
+//                    } else {
+//                        runningActions.add(robot.ShootBall())
+//                        firstShot = false
+//                        shotTimer.reset()
+//                    }
+//                }
+//            }
+
+            if (gamepad1.dpad_right && buttonTimer.milliseconds() >= buttonDebounce){
+                robot.launchSpeed +=.05
             }
-
-            lastTriggerPressed = triggerPressed
-
-            if (!shooting && shotsRequested > 0) {
-                runningActions.add(robot.ShootFirstBall())
-                shotTimer.reset()
-                shooting = true
-                firstShot = true
+            if (gamepad1.dpad_left && buttonTimer.milliseconds() >= buttonDebounce){
+                robot.launchSpeed -=.05
             }
-
-            if (shooting) {
-                val requiredTime = if (firstShot) 3.0 else 2.0
-
-                if (shotTimer.seconds() >= requiredTime) {
-                    shotsRequested -= 1
-
-                    if (shotsRequested == 0) {
-                        runningActions.add(robot.StopShooter)
-                        shooting = false
-                    } else {
-                        runningActions.add(robot.ShootBall())
-                        firstShot = false
-                        shotTimer.reset()
-                    }
-                }
-            }
-
 
             if (gamepad1.dpad_down && buttonTimer.milliseconds() >= buttonDebounce) {
                 if(!reversing){
@@ -132,7 +138,7 @@ class BlueTele : LinearOpMode() {
                 buttonTimer.reset()
             }
 
-            if (gamepad1.dpad_up && buttonTimer.milliseconds() >= buttonDebounce) {
+            if (gamepad1.left_trigger >=0.5 && buttonTimer.milliseconds() >= buttonDebounce) {
                 if(!intaking){
                     runningActions.add(robot.StartIntake)
                     intaking = true
@@ -211,6 +217,8 @@ class BlueTele : LinearOpMode() {
             if (overrideTimeLeft < 5000) {
                 telemetry.addData("Drive train override safety was tripped!", overrideTimeLeft)
             }
+
+            telemetry.addData("Launcher power", robot.launchSpeed)
 
             telemetry.addData("Current Pose", Localizer.pose.toString())
 

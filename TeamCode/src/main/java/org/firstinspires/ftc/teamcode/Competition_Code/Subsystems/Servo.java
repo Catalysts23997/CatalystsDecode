@@ -19,8 +19,8 @@ public class Servo {
     public enum State {
         HOLD(0.2),
         LAUNCH(0.35),
-        RESET(0.10),
-        STOP(0.53);
+        RESET(0.11),
+        STOP(0.55);
         public final double servoPos;
         State(double servoPos) {
             this.servoPos = servoPos;

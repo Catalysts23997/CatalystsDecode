@@ -76,7 +76,7 @@ class RedTele : LinearOpMode() {
         while (opModeIsActive()) {
 
             // SHOOTING: A button triggers full Shoot3Balls sequence
-            if (gamepad1.left_trigger >= 0.5 && buttonTimer.milliseconds() >= buttonDebounce) {
+            if (gamepad1.right_trigger >= 0.5 && buttonTimer.milliseconds() >= buttonDebounce) {
 
                 runningActions.add(robot.ShootThrough())
 
@@ -84,36 +84,36 @@ class RedTele : LinearOpMode() {
                 buttonTimer.reset()
             }
 
-            val triggerPressed = gamepad1.right_trigger > 0.5
-            if (triggerPressed && !lastTriggerPressed && buttonTimer.milliseconds() > buttonDebounce) {
-                shotsRequested += 1
-                buttonTimer.reset()
-            }
-            lastTriggerPressed = triggerPressed
-
-            if (!shooting && shotsRequested > 0) {
-                runningActions.add(robot.ShootFirstBall())
-                shotTimer.reset()
-                shooting = true
-                firstShot = true
-            }
-
-            if (shooting) {
-                val requiredTime = if (firstShot) 3.0 else 2.0
-
-                if (shotTimer.seconds() >= requiredTime) {
-                    shotsRequested -= 1
-
-                    if (shotsRequested == 0) {
-                        runningActions.add(robot.StopShooter)
-                        shooting = false
-                    } else {
-                        runningActions.add(robot.ShootBall())
-                        firstShot = false
-                        shotTimer.reset()
-                    }
-                }
-            }
+//            val triggerPressed = gamepad1.right_trigger > 0.5
+//            if (triggerPressed && !lastTriggerPressed && buttonTimer.milliseconds() > buttonDebounce) {
+//                shotsRequested += 1
+//                buttonTimer.reset()
+//            }
+//            lastTriggerPressed = triggerPressed
+//
+//            if (!shooting && shotsRequested > 0) {
+//                runningActions.add(robot.ShootFirstBall())
+//                shotTimer.reset()
+//                shooting = true
+//                firstShot = true
+//            }
+//
+//            if (shooting) {
+//                val requiredTime = if (firstShot) 3.0 else 2.0
+//
+//                if (shotTimer.seconds() >= requiredTime) {
+//                    shotsRequested -= 1
+//
+//                    if (shotsRequested == 0) {
+//                        runningActions.add(robot.StopShooter)
+//                        shooting = false
+//                    } else {
+//                        runningActions.add(robot.ShootBall())
+//                        firstShot = false
+//                        shotTimer.reset()
+//                    }
+//                }
+//            }
 
 
             if (gamepad1.dpad_down && buttonTimer.milliseconds() >= buttonDebounce) {
@@ -131,7 +131,7 @@ class RedTele : LinearOpMode() {
                 buttonTimer.reset()
             }
 
-            if (gamepad1.dpad_up && buttonTimer.milliseconds() >= buttonDebounce) {
+            if (gamepad1.left_trigger >= 0.5 && buttonTimer.milliseconds() >= buttonDebounce) {
                 if(!intaking){
                     runningActions.add(robot.StartIntake)
                     intaking = true

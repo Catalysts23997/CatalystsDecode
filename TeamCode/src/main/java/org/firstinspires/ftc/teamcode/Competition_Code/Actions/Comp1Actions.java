@@ -60,7 +60,9 @@ public class Comp1Actions {
         telemetry.addData("Kicker State", kicker.state);
         telemetry.addData("Holder State", holder.state);
 
-        telemetry.addData("Launcher Speed", launcher.getSpeed());
+        telemetry.addData("Left Launcher Speed", launcher.getLeftRpm());
+        telemetry.addData("Right Launcher Speed", launcher.getRightRpm());
+
 
     }
 
@@ -258,11 +260,11 @@ public class Comp1Actions {
     public SequentialAction BallsIntake(){return new SequentialAction(StartIntake, Ball1Check(), Ball2Check(), WaitAction(ball3Timeout), StopIntake);}
 
     //shooting stuff
-    public double launchSpeed = 0.65;
+    public double launchSpeed = 0.70;
 
     double speedUpTime = 2000;      // time for flywheel to reach speed
     double servoShootTime = 700;    // ms for servo launch duration
-    double servoReleaseTime = 600;  // ms for servo release
+    double servoReleaseTime = 900;  // ms for servo release
     double shootingInterval = 500;  // ms between shots
     double pulleyShootTime = 2800;  // ms for pulley to shoot 2 balls
 
