@@ -45,6 +45,11 @@ class BlueAuto9 : LinearOpMode() {
             ParallelAction(
                 object : Action {
                     override fun run(p: TelemetryPacket): Boolean {
+                        if (isStopRequested) {
+                            AutoGlobals.started=false
+                            stop()
+                        }
+
                         localizer.update()
                         RunToExactForever(AutoGlobals.targetRobotPositon)
                         AutoGlobals.locationOfRobot = Poses(Localizer.pose.x, Localizer.pose.y, 0.0)
@@ -55,6 +60,7 @@ class BlueAuto9 : LinearOpMode() {
                         telemetry.addData("Drive speed", AutoGlobals.driveSpeed)
                         telemetry.update()
                         robot.update()
+
                         return true // keep looping
                     }
                 },

@@ -253,16 +253,16 @@ public class Comp1Actions {
         }
     };
 
-    public double ball3Timeout = 800;
+    public double ball3Timeout = 2000;
 
     public SequentialAction BallsIntake(){return new SequentialAction(StartIntake, Ball1Check(), Ball2Check(), WaitAction(ball3Timeout), StopIntake);}
 
     //shooting stuff
-    public double launchSpeed = 0.62;
+    public double launchSpeed = 0.65;
 
     double speedUpTime = 2000;      // time for flywheel to reach speed
     double servoShootTime = 700;    // ms for servo launch duration
-    double servoReleaseTime = 400;  // ms for servo release
+    double servoReleaseTime = 600;  // ms for servo release
     double shootingInterval = 500;  // ms between shots
     double pulleyShootTime = 2800;  // ms for pulley to shoot 2 balls
 

@@ -40,6 +40,10 @@ class BlueMove : LinearOpMode() {
         runBlocking(
             ParallelAction(
                 {
+                    if (isStopRequested) {
+                        AutoGlobals.started=false
+                        stop()
+                    }
                     localizer.update()
                     RunToExactForever(AutoGlobals.targetRobotPositon)
                     AutoGlobals.locationOfRobot = Poses(Localizer.pose.x, Localizer.pose.y, 0.0)

@@ -103,15 +103,18 @@ fun RunToExactForever(pose: Poses): Boolean {
 }
 
 class SetDriveTarget @JvmOverloads constructor( val pose: Poses, val driveSpeed: Double = 1.0, val maxTime: Double = 8.0): Action{
-    private var started = false
+    init {
+        AutoGlobals.started = false
+    }
     val timer = ElapsedTime()
 
     override fun run(p: TelemetryPacket): Boolean {
-        if (!started) {
+
+        if (!AutoGlobals.started) {
             AutoGlobals.driveSpeed = driveSpeed
             targetRobotPositon = pose
             timer.reset()
-            started = true
+            AutoGlobals.started = true
         }
 
         val targetReached: Boolean = (abs( targetRobotPositon.x - Localizer.pose.x) <= 3.0 &&
@@ -122,7 +125,7 @@ class SetDriveTarget @JvmOverloads constructor( val pose: Poses, val driveSpeed:
 
 
         if(isComplete){
-            started = false
+            AutoGlobals.started = false
         }
         return !isComplete
     }

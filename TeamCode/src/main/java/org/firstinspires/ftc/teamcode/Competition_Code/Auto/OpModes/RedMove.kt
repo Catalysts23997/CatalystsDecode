@@ -44,6 +44,10 @@ class RedMove : LinearOpMode() {
             ParallelAction(
                 object : Action {
                     override fun run(p: TelemetryPacket): Boolean {
+                        if (isStopRequested) {
+                            AutoGlobals.started=false
+                            stop()
+                        }
                         localizer.update()
                         RunToExactForever(AutoGlobals.targetRobotPositon)
                         AutoGlobals.locationOfRobot =

@@ -45,6 +45,11 @@ class BlueAuto6 : LinearOpMode() {
             ParallelAction(
                 object : Action {
                     override fun run(p: TelemetryPacket): Boolean {
+                        if (isStopRequested) {
+                            AutoGlobals.started=false
+                            stop()
+                        }
+
                         localizer.update()
                         RunToExactForever(AutoGlobals.targetRobotPositon)
                         AutoGlobals.locationOfRobot = Poses(Localizer.pose.x, Localizer.pose.y, Localizer.pose.heading)
