@@ -12,15 +12,15 @@ public enum AutoPoints {
     EndBlue(new Vector2d(-25,0.0), 0.0),
     OutOfTheWayBlue(new Vector2d(-50,30.0), 0.0),
 
-    PreIntakePPG(new Vector2d(-25,14), -Math.PI / 2, .5),
-    PPGIntake(new Vector2d(-56,14), -Math.PI / 2, 6.0),
+    PreIntakePPG(new Vector2d(-25,14), -Math.PI / 2, 1.0),
+    PPGIntake(new Vector2d(-56,14), -Math.PI / 2, 0.5, 6.0),
 
-    PreIntakePGP(new Vector2d(-25,-11), -Math.PI / 2,.5),
-    PGPIntake(new Vector2d(-64,-11), -Math.PI / 2, 1.0 , 6.0),
+    PreIntakePGP(new Vector2d(-25,-11), -Math.PI / 2,1.0),
+    PGPIntake(new Vector2d(-64,-11), -Math.PI / 2, 0.5 , 6.0),
     PGPMidPoint(new Vector2d(-25,-11), 9 * Math.PI / 8),
 
-    PreIntakeGPP(new Vector2d(-25,-33), -Math.PI / 2,.5),
-    GPPIntake(new Vector2d(-64,-33), -Math.PI / 2, 1.0, 6.0),
+    PreIntakeGPP(new Vector2d(-25,-33), -Math.PI / 2,1.0),
+    GPPIntake(new Vector2d(-64,-33), -Math.PI / 2, 0.5, 6.0),
     GPPMidPoint(new Vector2d(-25,-33), 9*Math.PI / 8),
 
     StartRed(new Vector2d(39,63), 0.0),
@@ -29,16 +29,16 @@ public enum AutoPoints {
     EndRed(new Vector2d(25,0.0), 0.0),
     OutOfTheWayRed(new Vector2d(50,30.0), 0.0),
 
-    PreIntakePPGRed(new Vector2d(25,14), Math.PI / 2,.5),
-    PPGIntakeRed(new Vector2d(56,14), Math.PI / 2, 1.0, 6.0),
+    PreIntakePPGRed(new Vector2d(25,14), Math.PI / 2,1.0),
+    PPGIntakeRed(new Vector2d(56,14), Math.PI / 2, 0.5, 6.0),
 
-    PreIntakePGPRed(new Vector2d(25,-11), Math.PI / 2,.5),
-    PGPIntakeRed(new Vector2d(64,-11), Math.PI / 2, 1.0, 6.0),
+    PreIntakePGPRed(new Vector2d(25,-11), Math.PI / 2,1.0),
+    PGPIntakeRed(new Vector2d(64,-11), Math.PI / 2, 0.5, 6.0),
     PGPMidPointRed(new Vector2d(25,-11), -9 * Math.PI / 8),
 
 
-    PreIntakeGPPRed(new Vector2d(25,-33), Math.PI / 2,.5),
-    GPPIntakeRed(new Vector2d(64,-33), Math.PI / 2, 1.0, 6.0),
+    PreIntakeGPPRed(new Vector2d(25,-33), Math.PI / 2, 1.0),
+    GPPIntakeRed(new Vector2d(64,-33), Math.PI / 2, 0.5, 6.0),
     GPPMidPointRed(new Vector2d(25,-33), -9 * Math.PI / 8),
 
     StartFarRed(new Vector2d(15,-63), 0.0),

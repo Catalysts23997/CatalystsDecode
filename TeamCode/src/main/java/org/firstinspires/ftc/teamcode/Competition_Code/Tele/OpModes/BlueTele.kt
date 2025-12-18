@@ -35,7 +35,7 @@ class BlueTele : LinearOpMode() {
         var runningActions = ArrayList<Action>()
 
         var balls = 0             // Tracks the next ball to intake
-        val buttonDebounce = 100 // ms minimum between button presses
+        val buttonDebounce = 200 // ms minimum between button presses
         val buttonTimer = ElapsedTime()
 
         var intaking = false
@@ -47,7 +47,6 @@ class BlueTele : LinearOpMode() {
         val localizer = Localizer(hardwareMap, TeleGlobals.currentPosition)
 
         telemetry.addData("Robot at zero:",  Localizer.pose)
-        sleep(100)
         localizer.update()
         telemetry.addData("Robot at original position:",  Localizer.pose)
 

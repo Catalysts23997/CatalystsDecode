@@ -120,6 +120,10 @@ class SetDriveTarget @JvmOverloads constructor( val pose: Poses, val driveSpeed:
 
         val isComplete = targetReached || timer.seconds() > maxTime
 
+
+        if(isComplete){
+            started = false
+        }
         return !isComplete
     }
 }

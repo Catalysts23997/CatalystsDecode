@@ -19,7 +19,7 @@ public class Servo {
     public enum State {
         HOLD(0.2),
         LAUNCH(0.35),
-        RESET(0.15),
+        RESET(0.12),
         STOP(0.53);
         public final double servoPos;
         State(double servoPos) {

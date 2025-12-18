@@ -45,7 +45,6 @@ class RedTele : LinearOpMode() {
         val localizer = Localizer(hardwareMap, TeleGlobals.currentPosition)
 
         telemetry.addData("Robot at zero:",  Localizer.pose)
-        sleep(100)
         localizer.update()
         telemetry.addData("Robot at original position:",  Localizer.pose)
 
