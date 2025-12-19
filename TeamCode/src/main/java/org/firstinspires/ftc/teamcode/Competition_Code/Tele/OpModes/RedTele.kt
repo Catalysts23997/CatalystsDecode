@@ -174,9 +174,9 @@ class RedTele : LinearOpMode() {
             TeleGlobals.currentPosition = Localizer.pose
 
             //updatePID subsystems
-//            if(gamepad1.a){
-//                localizer.resetOdo()
-//            }
+            if(gamepad1.a){
+                localizer.resetOdo()
+            }
 
 
             localizer.update()

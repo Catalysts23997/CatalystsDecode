@@ -118,9 +118,11 @@ class BlueTele : LinearOpMode() {
 
             if (gamepad1.dpad_right && buttonTimer.milliseconds() >= buttonDebounce){
                 robot.launchSpeed +=.05
+                buttonTimer.reset()
             }
             if (gamepad1.dpad_left && buttonTimer.milliseconds() >= buttonDebounce){
                 robot.launchSpeed -=.05
+                buttonTimer.reset()
             }
 
             if (gamepad1.dpad_down && buttonTimer.milliseconds() >= buttonDebounce) {
@@ -162,6 +164,7 @@ class BlueTele : LinearOpMode() {
                     }
                     1 -> {
                         if (robot.ball2.isGreen() || robot.ball2.isPurple()){
+
                             balls += 1
                         }
                     }
@@ -182,9 +185,9 @@ class BlueTele : LinearOpMode() {
             TeleGlobals.currentPosition = Localizer.pose
 
             //updatePID subsystems
-//            if(gamepad1.a ){
-//                localizer.resetOdo()
-//            }
+            if(gamepad1.a ){
+                localizer.resetOdo()
+            }
 
 
             localizer.update()

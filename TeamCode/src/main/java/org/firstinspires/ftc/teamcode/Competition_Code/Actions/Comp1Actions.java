@@ -254,6 +254,24 @@ public class Comp1Actions {
             return false;
         }
     };
+    public Action Block = new Action() {
+
+        @Override
+        public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+            kicker.state = Servo.State.Block;
+            // We return false because this only has to run once
+            return false;
+        }
+    };
+    public Action UnBlock = new Action() {
+
+        @Override
+        public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+            kicker.state = Servo.State.RESET;
+            // We return false because this only has to run once
+            return false;
+        }
+    };
 
     public double ball3Timeout = 2000;
 
@@ -407,8 +425,9 @@ public class Comp1Actions {
         };
     }
 
+    double blocktime = pulleyShootTime/3;
 
-    public Action CycleShoot() {
+        public Action CycleShoot() {
         return new Action() {
             final ElapsedTime timer = new ElapsedTime();
             boolean initialized = false;
@@ -423,6 +442,9 @@ public class Comp1Actions {
 
                     pulley.state = Pulley.State.On;
                     intake.state = State.INTAKING;
+                }
+                if(timer.milliseconds()>=blocktime){
+                    kicker.state = Servo.State.RESET;
                 }
 
                 if(timer.milliseconds()>=pulleyShootTime){
@@ -441,6 +463,7 @@ public class Comp1Actions {
         return new SequentialAction(
                 StartShooter,
                 WaitAction(speedUpTime),
+                Block,
                 ReleaseBall,
                 WaitAction(servoReleaseTime),
                 CycleShoot(),
@@ -459,6 +482,7 @@ public class Comp1Actions {
     }
     public SequentialAction AutoShoot() {
         return new SequentialAction(
+                Block,
                 ReleaseBall,
                 WaitAction(servoReleaseTime),
                 CycleShoot(),

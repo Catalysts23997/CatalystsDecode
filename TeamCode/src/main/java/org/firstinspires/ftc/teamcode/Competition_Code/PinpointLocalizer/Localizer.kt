@@ -85,7 +85,7 @@ class Localizer(hwmap: HardwareMap, private var offset: Poses) {
     }
 
     fun resetOdo(){
-        odo.resetPosAndIMU()
+        odo.setPosition(Pose2D(DistanceUnit.INCH,offset.y, -offset.x, AngleUnit.RADIANS,0.0))
     }
     companion object{
         @JvmField
