@@ -459,6 +459,51 @@ public class Comp1Actions {
         };
     }
 
+    public Action SuperShoot() {
+        return new Action() {
+            final ElapsedTime timer = new ElapsedTime();
+            boolean initialized = false;
+            double maxSpeed;
+
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+
+                // Phase 1: Wait for ball2 (the start signal)
+                if (!initialized) {
+                    timer.reset();
+                    initialized = true;
+                    maxSpeed = Math.max(
+                        launcher.getLeftRpm(),
+                        launcher.getRightRpm()
+                    );
+
+                    pulley.state = Pulley.State.On;
+                    intake.state = State.INTAKING;
+                }
+                if(timer.milliseconds()>=blocktime){
+                    kicker.state = Servo.State.RESET;
+                }
+
+                if(timer.milliseconds()>=pulleyShootTime){
+                    pulley.state = Pulley.State.Off;
+                    intake.state = State.STOPPED;
+                    holder.state = Servo.State.STOP;
+
+                    return false;
+                }
+
+                // Ensure that our launcher is up to speed
+                double speed = Math.max(launcher.getLeftRpm(), launcher.getRightRpm());
+
+                if (speed <= maxSpeed - 100) {
+                    launchSpeed += 0.05;
+                }
+
+                return true;
+            }
+        };
+    }
+
     public SequentialAction ShootThrough() {
         return new SequentialAction(
                 StartShooter,

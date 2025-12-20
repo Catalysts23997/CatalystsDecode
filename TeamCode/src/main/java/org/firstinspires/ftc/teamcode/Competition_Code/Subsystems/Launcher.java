@@ -53,9 +53,14 @@ public class Launcher {
         this.power = power;
     }
 
+    public double getSpeed() {
+        return this.power;
+    }
+
     public double getLeftRpm() {
         return leftRpm;
     }
+
     public double getRightRpm() {
         return rightRpm;
     }
