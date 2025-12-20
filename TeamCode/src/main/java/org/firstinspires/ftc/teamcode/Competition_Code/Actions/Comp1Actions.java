@@ -278,7 +278,8 @@ public class Comp1Actions {
     public SequentialAction BallsIntake(){return new SequentialAction(StartIntake, Ball1Check(), Ball2Check(), WaitAction(ball3Timeout), StopIntake);}
 
     //shooting stuff
-    public double launchSpeed = 0.70;
+    public static final double ORIGINAL_LAUNCH_SPEED = 0.70;
+    public double launchSpeed = ORIGINAL_LAUNCH_SPEED;
 
     double speedUpTime = 2000;      // time for flywheel to reach speed
     double servoShootTime = 700;    // ms for servo launch duration
@@ -463,6 +464,7 @@ public class Comp1Actions {
         return new Action() {
             final ElapsedTime timer = new ElapsedTime();
             boolean initialized = false;
+            boolean hasBoosted = false;
             double maxSpeed;
 
             @Override
@@ -489,14 +491,18 @@ public class Comp1Actions {
                     intake.state = State.STOPPED;
                     holder.state = Servo.State.STOP;
 
+                    launchSpeed = ORIGINAL_LAUNCH_SPEED;
                     return false;
                 }
 
                 // Ensure that our launcher is up to speed
-                double speed = Math.max(launcher.getLeftRpm(), launcher.getRightRpm());
+                if (!hasBoosted) {
+                    double speed = Math.max(launcher.getLeftRpm(), launcher.getRightRpm());
 
-                if (speed <= maxSpeed - 100) {
-                    launchSpeed += 0.05;
+                    if (speed <= maxSpeed - 100) {
+                        launchSpeed += 0.05;
+                        hasBoosted = true;
+                    }
                 }
 
                 return true;
