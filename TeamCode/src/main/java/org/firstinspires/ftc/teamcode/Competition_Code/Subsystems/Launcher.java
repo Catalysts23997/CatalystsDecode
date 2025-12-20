@@ -13,8 +13,8 @@ public class Launcher {
 
     /// The one motor that controls the launcher. There may be another one added in the
     /// future.
-    public DcMotor leftLauncher;
-    public DcMotor rightLauncher;
+    public DcMotorEx leftLauncher;
+    public DcMotorEx rightLauncher;
 
     public double leftPower = 0;
     public double rightPower = 0;
@@ -28,11 +28,11 @@ public class Launcher {
     ///
     /// # Only one instance should be active at a given time!
     public Launcher(HardwareMap hardwareMap) {
-        leftLauncher = hardwareMap.get(DcMotor.class, "leftLauncher");
+        leftLauncher = hardwareMap.get(DcMotorEx.class, "leftLauncher");
         // Make sure we know the default state of our motor
         leftLauncher.setDirection(DcMotorSimple.Direction.FORWARD);
         leftLauncher.setPower(0);
-        rightLauncher = hardwareMap.get(DcMotor.class, "rightLauncher");
+        rightLauncher = hardwareMap.get(DcMotorEx.class, "rightLauncher");
         // Make sure we know the default state of our motor
         rightLauncher.setDirection(DcMotorSimple.Direction.REVERSE);
         rightLauncher.setPower(0);
@@ -62,9 +62,8 @@ public class Launcher {
         DcMotorEx motor = (DcMotorEx) dcMotor;
 
         // (velocity / TICK_PER_ROTATION) * 60
-        double rpm = (motor.getVelocity() / 112) * 60;
 
-        return rpm;
+        return (motor.getVelocity() / 112) * 60;
     }
 
     public double getLeftRpm() {
@@ -84,16 +83,16 @@ public class Launcher {
     double rightLastPos = 0;
 
 
+
+
     public void update() {
-        double dt = timer.seconds();
-        if (dt < 0.05) return;  // updatePID every 50ms
-        timer.reset();
+
 
         double leftPos = leftLauncher.getCurrentPosition();
         double rightPos = rightLauncher.getCurrentPosition();
 
-        leftRpm = 60/dt * (leftPos-leftLastPos)/ticksPerRev;
-        rightRpm = 60/dt *(rightPos -rightLastPos)/ticksPerRev;
+        leftRpm = 60 /ticksPerRev * leftLauncher.getVelocity();
+        rightRpm = 60 /ticksPerRev * rightLauncher.getVelocity();
 
         leftLastPos = leftPos;
         rightLastPos = rightPos;
