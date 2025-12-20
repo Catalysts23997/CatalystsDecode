@@ -362,7 +362,7 @@ public class Comp1Actions {
                 if (!initialized) {
                     timer.reset();
 
-                    pulley.state = Pulley.State.On;
+                    pulley.state = Pulley.State.Slow;
                     intake.state = State.INTAKING;
                     holder.state = Servo.State.STOP;
 
@@ -463,7 +463,7 @@ public class Comp1Actions {
         return new SequentialAction(
                 StartShooter,
                 WaitAction(speedUpTime),
-                Block,
+//                Block,
                 ReleaseBall,
                 WaitAction(servoReleaseTime),
                 CycleShoot(),
@@ -482,7 +482,7 @@ public class Comp1Actions {
     }
     public SequentialAction AutoShoot() {
         return new SequentialAction(
-                Block,
+//                Block,
                 ReleaseBall,
                 WaitAction(servoReleaseTime),
                 CycleShoot(),

@@ -33,7 +33,7 @@ class RedTele : LinearOpMode() {
         var runningActions = ArrayList<Action>()
 
         var balls = 0             // Tracks the next ball to intake
-        val buttonDebounce = 100 // ms minimum between button presses
+        val buttonDebounce = 200 // ms minimum between button presses
         val buttonTimer = ElapsedTime()
 
         var intaking = false
@@ -183,10 +183,10 @@ class RedTele : LinearOpMode() {
             robot.update()
 
             if(gamepad1.y){
-                driveOverride.beginOverriding(AutoPoints.LaunchBlue.pose)
+                driveOverride.beginOverriding(AutoPoints.LaunchRed.pose)
             }
             if(gamepad1.b){
-                driveOverride.beginOverriding(Poses(34.0, -38.0, 0.0))
+                driveOverride.beginOverriding(Poses(-34.0, -38.0, 0.0))
             }
 
             if (driveOverride.shouldOverrideInput()) {

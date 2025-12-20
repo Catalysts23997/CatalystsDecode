@@ -116,12 +116,19 @@ class BlueTele : LinearOpMode() {
 //                }
 //            }
 
+            if (gamepad1.right_bumper && buttonTimer.milliseconds() >= buttonDebounce){
+              Servo.launchpos +=0.01
+            }
+            if (gamepad1.left_bumper && buttonTimer.milliseconds() >= buttonDebounce){
+                Servo.launchpos -=0.01
+            }
+
             if (gamepad1.dpad_right && buttonTimer.milliseconds() >= buttonDebounce){
-                robot.launchSpeed +=.05
+                robot.launchSpeed +=.025
                 buttonTimer.reset()
             }
             if (gamepad1.dpad_left && buttonTimer.milliseconds() >= buttonDebounce){
-                robot.launchSpeed -=.05
+                robot.launchSpeed -=.025
                 buttonTimer.reset()
             }
 
