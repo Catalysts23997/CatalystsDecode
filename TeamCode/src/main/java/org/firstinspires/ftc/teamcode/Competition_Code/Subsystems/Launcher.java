@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Competition_Code.Subsystems;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -12,8 +13,8 @@ public class Launcher {
 
     /// The one motor that controls the launcher. There may be another one added in the
     /// future.
-    DcMotor leftLauncher;
-    DcMotor rightLauncher;
+    public DcMotorEx leftLauncher;
+    public DcMotorEx rightLauncher;
 
     public double leftPower = 0;
     public double rightPower = 0;
@@ -27,11 +28,11 @@ public class Launcher {
     ///
     /// # Only one instance should be active at a given time!
     public Launcher(HardwareMap hardwareMap) {
-        leftLauncher = hardwareMap.get(DcMotor.class, "leftLauncher");
+        leftLauncher = hardwareMap.get(DcMotorEx.class, "leftLauncher");
         // Make sure we know the default state of our motor
         leftLauncher.setDirection(DcMotorSimple.Direction.FORWARD);
         leftLauncher.setPower(0);
-        rightLauncher = hardwareMap.get(DcMotor.class, "rightLauncher");
+        rightLauncher = hardwareMap.get(DcMotorEx.class, "rightLauncher");
         // Make sure we know the default state of our motor
         rightLauncher.setDirection(DcMotorSimple.Direction.REVERSE);
         rightLauncher.setPower(0);
@@ -53,9 +54,22 @@ public class Launcher {
         this.power = power;
     }
 
+    public double getSpeed() {
+        return this.power;
+    }
+
+    public static double getMotorRpm(DcMotor dcMotor) {
+        DcMotorEx motor = (DcMotorEx) dcMotor;
+
+        // (velocity / TICK_PER_ROTATION) * 60
+
+        return (motor.getVelocity() / 112) * 60;
+    }
+
     public double getLeftRpm() {
         return leftRpm;
     }
+
     public double getRightRpm() {
         return rightRpm;
     }
@@ -69,16 +83,16 @@ public class Launcher {
     double rightLastPos = 0;
 
 
+
+
     public void update() {
-        double dt = timer.seconds();
-        if (dt < 0.05) return;  // updatePID every 50ms
-        timer.reset();
+
 
         double leftPos = leftLauncher.getCurrentPosition();
         double rightPos = rightLauncher.getCurrentPosition();
 
-        leftRpm = 60/dt * (leftPos-leftLastPos)/ticksPerRev;
-        rightRpm = 60/dt *(rightPos -rightLastPos)/ticksPerRev;
+        leftRpm = 60 /ticksPerRev * leftLauncher.getVelocity();
+        rightRpm = 60 /ticksPerRev * rightLauncher.getVelocity();
 
         if (leftLauncher.getPower() >= .5 && (leftRpm < 160 || rightRpm<160)) {
             leftLauncher.setPower(1.0);
