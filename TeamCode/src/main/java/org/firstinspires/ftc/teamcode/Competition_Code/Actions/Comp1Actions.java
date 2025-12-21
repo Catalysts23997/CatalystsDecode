@@ -106,7 +106,7 @@ public class Comp1Actions {
     }
 
     //camera actions
-    double cameraTimeout = 2000;
+    double cameraTimeout = 1000;
 
     public Action CheckMotif() {
         return new Action() {
@@ -273,18 +273,18 @@ public class Comp1Actions {
         }
     };
 
-    public double ball3Timeout = 2000;
+    public double ball3Timeout = 1000;
 
     public SequentialAction BallsIntake(){return new SequentialAction(StartIntake, Ball1Check(), Ball2Check(), WaitAction(ball3Timeout), StopIntake);}
 
     //shooting stuff
-    public double launchSpeed = 0.70;
+    public double launchSpeed = 0.65;
 
     double speedUpTime = 2000;      // time for flywheel to reach speed
     double servoShootTime = 700;    // ms for servo launch duration
     double servoReleaseTime = 900;  // ms for servo release
     double shootingInterval = 500;  // ms between shots
-    double pulleyShootTime = 2800;  // ms for pulley to shoot 2 balls
+    double pulleyShootTime = 2600;  // ms for pulley to shoot 2 balls
 
     public Action StartShooter = new Action() {
 
@@ -425,7 +425,7 @@ public class Comp1Actions {
         };
     }
 
-    double blocktime = pulleyShootTime/3;
+    double blocktime = 1100;
 
         public Action CycleShoot() {
         return new Action() {
@@ -462,8 +462,9 @@ public class Comp1Actions {
     public SequentialAction ShootThrough() {
         return new SequentialAction(
                 StartShooter,
+                StopIntake,
                 WaitAction(speedUpTime),
-//                Block,
+                Block,
                 ReleaseBall,
                 WaitAction(servoReleaseTime),
                 CycleShoot(),
@@ -482,7 +483,9 @@ public class Comp1Actions {
     }
     public SequentialAction AutoShoot() {
         return new SequentialAction(
-//                Block,
+                StopIntake,
+                Block,
+                WaitAction(400),
                 ReleaseBall,
                 WaitAction(servoReleaseTime),
                 CycleShoot(),

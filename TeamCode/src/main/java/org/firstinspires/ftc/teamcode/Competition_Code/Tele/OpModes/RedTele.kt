@@ -115,6 +115,25 @@ class RedTele : LinearOpMode() {
 //                }
 //            }
 
+            if (gamepad1.right_bumper && buttonTimer.milliseconds() >= buttonDebounce){
+                robot.holder.launchpos +=0.01
+                buttonTimer.reset()
+
+            }
+            if (gamepad1.left_bumper && buttonTimer.milliseconds() >= buttonDebounce) {
+                robot.holder.launchpos -= 0.01
+                buttonTimer.reset()
+
+            }
+
+            if (gamepad1.dpad_right && buttonTimer.milliseconds() >= buttonDebounce){
+                robot.launchSpeed +=.025
+                buttonTimer.reset()
+            }
+            if (gamepad1.dpad_left && buttonTimer.milliseconds() >= buttonDebounce){
+                robot.launchSpeed -=.025
+                buttonTimer.reset()
+            }
 
             if (gamepad1.dpad_down && buttonTimer.milliseconds() >= buttonDebounce) {
                 if(!reversing){
@@ -186,7 +205,7 @@ class RedTele : LinearOpMode() {
                 driveOverride.beginOverriding(AutoPoints.LaunchRed.pose)
             }
             if(gamepad1.b){
-                driveOverride.beginOverriding(Poses(-34.0, -38.0, 0.0))
+                driveOverride.beginOverriding(AutoPoints.EndgameRed.pose)
             }
 
             if (driveOverride.shouldOverrideInput()) {

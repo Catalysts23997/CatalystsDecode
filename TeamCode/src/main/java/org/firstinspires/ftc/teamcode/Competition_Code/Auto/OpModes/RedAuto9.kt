@@ -117,6 +117,7 @@ class RedAuto9 : LinearOpMode() {
                         }
                     },
                     robot.StartShooter,
+                    robot.WaitAction(200.0),
                     AutoPoints.LaunchRed.runToExact,
                     robot.AutoShoot(),
 
@@ -156,6 +157,7 @@ class RedAuto9 : LinearOpMode() {
                         }
                     },
                     robot.StartShooter,
+                    robot.WaitAction(200.0),
                     AutoPoints.LaunchRed.runToExact,
                     robot.AutoShoot(),
                     AutoPoints.EndRed.runToExact

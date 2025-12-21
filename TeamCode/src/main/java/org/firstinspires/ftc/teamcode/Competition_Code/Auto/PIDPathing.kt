@@ -102,9 +102,10 @@ fun RunToExactForever(pose: Poses): Boolean {
     return true
 }
 
-class SetDriveTarget @JvmOverloads constructor( val pose: Poses, val driveSpeed: Double = 1.0, val maxTime: Double = 8.0): Action{
+class SetDriveTarget @JvmOverloads constructor( val pose: Poses, val driveSpeed: Double = 1.0, val maxTime: Double = 9.0): Action{
     init {
         AutoGlobals.started = false
+
     }
     val timer = ElapsedTime()
 
@@ -126,6 +127,7 @@ class SetDriveTarget @JvmOverloads constructor( val pose: Poses, val driveSpeed:
 
         if(isComplete){
             AutoGlobals.started = false
+            timer.reset()
         }
         return !isComplete
     }

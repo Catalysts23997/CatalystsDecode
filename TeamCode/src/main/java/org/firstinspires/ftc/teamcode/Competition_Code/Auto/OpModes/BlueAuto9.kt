@@ -120,6 +120,7 @@ class BlueAuto9 : LinearOpMode() {
                         }
                     },
                     robot.StartShooter,
+                    robot.WaitAction(200.0),
                     AutoPoints.LaunchBlue.runToExact,
                     robot.AutoShoot(),
 
@@ -156,6 +157,7 @@ class BlueAuto9 : LinearOpMode() {
                         }
                     },
                     robot.StartShooter,
+                    robot.WaitAction(200.0),
                     AutoPoints.LaunchBlue.runToExact,
                     robot.AutoShoot(),
                     AutoPoints.EndBlue.runToExact
