@@ -25,8 +25,8 @@ public class Launcher {
     public double rightPower = 0;
     double power = 0;
 
-    public static double rightMaxRPM = 6300;
-    public static double leftMaxRPM = 6700;
+    public static double rightMaxRPM = 6100;
+    public static double leftMaxRPM = 6500;
 
 
     final double ticksPerRev = 28;
@@ -110,6 +110,11 @@ public class Launcher {
         leftPower = 0;
         rightPower = 0;
         stop = true;
+    }
+
+    public boolean atTargetRPM(double target, double tolerance) {
+        return Math.abs(getLeftRpm() - target) <= tolerance &&
+                Math.abs(getRightRpm() - target) <= tolerance;
     }
 
 

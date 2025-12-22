@@ -5,7 +5,6 @@ import androidx.annotation.NonNull;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.SequentialAction;
-import com.acmerobotics.roadrunner.SleepAction;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -294,11 +293,46 @@ public class Comp2Actions {
         };
     }
 
+    double toleranceRPM = 100;
+
+    public Action WaitForLauncher() {
+        return new Action() {
+
+            private final ElapsedTime timer = new ElapsedTime();
+            private boolean initialized = false;
+
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+
+                if (!initialized) {
+                    timer.reset();
+                    initialized = true;
+                }
+
+                double left = launcher.getLeftRpm();
+                double right = launcher.getRightRpm();
+
+                boolean atSpeed = launcher.atTargetRPM(launchRPM, toleranceRPM);
+
+                packet.put("Launcher Left RPM", left);
+                packet.put("Launcher Right RPM", right);
+                packet.put("Launcher At Speed", atSpeed);
+                packet.put("Launcher Timer (ms)", timer.milliseconds());
+
+                // Keep running while:
+                //  - NOT at speed
+                //  - AND timeout not exceeded
+                return !atSpeed && timer.milliseconds() < speedUpTime;
+            }
+        };
+    }
+
+
     public SequentialAction ShootThrough() {
         return new SequentialAction(
                 StartShooter,
                 StopIntake,
-                WaitAction(speedUpTime-servoReleaseTime),
+                WaitForLauncher(),
                 Block,
                 ReleaseBall,
                 WaitAction(servoReleaseTime),

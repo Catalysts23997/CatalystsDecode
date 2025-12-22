@@ -104,7 +104,7 @@ class BlueAuto9 : LinearOpMode() {
                                         robot.StartIntake,
                                         AutoPoints.PPGIntake.runToExact,
                                         robot.WaitAction(200.0),
-                                        robot.StopIntake,
+                                        robot.StopIntake
                                         )
                                 }
                             }
@@ -114,7 +114,6 @@ class BlueAuto9 : LinearOpMode() {
                         }
                     },
                     robot.StartShooter,
-
                     AutoPoints.LaunchBlue.runToExact,
                     robot.AutoShoot(),
 

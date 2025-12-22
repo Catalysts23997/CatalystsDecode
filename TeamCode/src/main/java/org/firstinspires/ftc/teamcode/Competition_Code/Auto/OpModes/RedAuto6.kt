@@ -74,36 +74,28 @@ class RedAuto6 : LinearOpMode() {
                                 nextAction = when (robot.motif) {
                                     1 -> SequentialAction(
                                         AutoPoints.PreIntakeGPPRed.runToExact,
-
-                                        RaceAction(
-                                            SequentialAction(
-                                                robot.BallsIntake(),
-                                            ),
-                                            AutoPoints.GPPIntakeRed.runToExact,
-                                        ),
+                                        robot.StartIntake,
+                                        AutoPoints.GPPIntakeRed.runToExact,
+                                        robot.WaitAction(200.0),
+                                        robot.StopIntake,
                                         AutoPoints.GPPMidPointRed.runToExact
                                     )
 
                                     2 -> SequentialAction(
                                         AutoPoints.PreIntakePGPRed.runToExact,
-                                        RaceAction(
-                                            SequentialAction(
-                                                robot.BallsIntake(),
-                                            ),
-                                            AutoPoints.PGPIntakeRed.runToExact,
-
-                                            ),
+                                        robot.StartIntake,
+                                        AutoPoints.PGPIntakeRed.runToExact,
+                                        robot.WaitAction(200.0),
+                                        robot.StopIntake,
                                         AutoPoints.PGPMidPointRed.runToExact
                                     )
 
                                     else -> SequentialAction(
                                         AutoPoints.PreIntakePPGRed.runToExact,
-                                        RaceAction(
-                                            SequentialAction(
-                                                robot.BallsIntake(),
-                                            ),
-                                            AutoPoints.PPGIntakeRed.runToExact,
-                                        ),
+                                        robot.StartIntake,
+                                        AutoPoints.PPGIntakeRed.runToExact,
+                                        robot.WaitAction(200.0),
+                                        robot.StopIntake,
                                     )
                                 }
                             }
