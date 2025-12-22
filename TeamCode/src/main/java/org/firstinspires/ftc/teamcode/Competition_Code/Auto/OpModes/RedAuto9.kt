@@ -77,23 +77,26 @@ class RedAuto9 : LinearOpMode() {
                                 nextAction = when (robot.motif) {
                                     1 -> SequentialAction(
                                         AutoPoints.PreIntakeGPPRed.runToExact,
-                                        RaceAction(
+                                        ParallelAction(
                                             SequentialAction(
                                                 robot.BallsIntake(),
                                             ),
                                             AutoPoints.GPPIntakeRed.runToExact,
-                                        ),
+                                            robot.WaitAction(200.0),
+
+                                            ),
                                         AutoPoints.GPPMidPointRed.runToExact
                                     )
 
                                     2 -> SequentialAction(
                                         AutoPoints.PreIntakePGPRed.runToExact,
-                                        RaceAction(
+                                        ParallelAction(
                                             SequentialAction(
                                                 robot.BallsIntake(),
                                             ),
 
                                             AutoPoints.PGPIntakeRed.runToExact,
+                                            robot.WaitAction(200.0),
 
                                             ),
                                         AutoPoints.PGPMidPointRed.runToExact
@@ -101,13 +104,15 @@ class RedAuto9 : LinearOpMode() {
 
                                     else -> SequentialAction(
                                         AutoPoints.PreIntakePPGRed.runToExact,
-                                        RaceAction(
+                                        ParallelAction(
                                             SequentialAction(
                                                 robot.BallsIntake(),
                                             ),
 
-                                            AutoPoints.PPGIntakeRed.runToExact
-                                        ),
+                                            AutoPoints.PPGIntakeRed.runToExact,
+                                            robot.WaitAction(200.0),
+
+                                            ),
                                     )
                                 }
                             }
@@ -117,7 +122,6 @@ class RedAuto9 : LinearOpMode() {
                         }
                     },
                     robot.StartShooter,
-                    robot.WaitAction(200.0),
                     AutoPoints.LaunchRed.runToExact,
                     robot.AutoShoot(),
 
@@ -129,25 +133,29 @@ class RedAuto9 : LinearOpMode() {
                                 nextAction = when (robot.motif) {
                                     3 -> SequentialAction(
                                         AutoPoints.PreIntakePGPRed.runToExact,
-                                        RaceAction(
+                                        ParallelAction(
                                             SequentialAction(
                                                 robot.BallsIntake(),
                                             ),
-                                            AutoPoints.PGPIntakeRed.runToExact
+                                            AutoPoints.PGPIntakeRed.runToExact,
+                                            robot.WaitAction(200.0),
 
-                                        ),
+
+                                            ),
                                         AutoPoints.PGPMidPointRed.runToExact
                                     )
 
                                     else -> SequentialAction(
                                         AutoPoints.PreIntakePPGRed.runToExact,
-                                        RaceAction(
+                                        ParallelAction(
                                             SequentialAction(
                                                 robot.BallsIntake(),
                                             ),
-                                            AutoPoints.PPGIntakeRed.runToExact
+                                            AutoPoints.PPGIntakeRed.runToExact,
+                                            robot.WaitAction(200.0),
 
-                                        ),
+
+                                            ),
                                     )
                                 }
                             }
@@ -157,7 +165,6 @@ class RedAuto9 : LinearOpMode() {
                         }
                     },
                     robot.StartShooter,
-                    robot.WaitAction(200.0),
                     AutoPoints.LaunchRed.runToExact,
                     robot.AutoShoot(),
                     AutoPoints.EndRed.runToExact

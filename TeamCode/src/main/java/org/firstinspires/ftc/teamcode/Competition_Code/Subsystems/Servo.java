@@ -7,7 +7,7 @@ public class Servo {
 
     public com.qualcomm.robotcore.hardware.Servo servo;
     public State state =State.RESET;
-    public double launchpos = 0.09;
+    public double launchpos = 0.08;
 
     public Servo(HardwareMap hardwareMap, String name){
         servo = hardwareMap.get(com.qualcomm.robotcore.hardware.Servo.class, name);

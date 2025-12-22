@@ -94,7 +94,7 @@ public class Launcher {
         leftRpm = 60 /ticksPerRev * leftLauncher.getVelocity();
         rightRpm = 60 /ticksPerRev * rightLauncher.getVelocity();
 
-        if (leftLauncher.getPower() >= .5 && (leftRpm < 160 || rightRpm<160)) {
+        if (leftLauncher.getPower() >= .5 && (leftRpm < 175 || rightRpm<175)) {
             leftLauncher.setPower(1.0);
             rightLauncher.setPower(1.0);
         }else{

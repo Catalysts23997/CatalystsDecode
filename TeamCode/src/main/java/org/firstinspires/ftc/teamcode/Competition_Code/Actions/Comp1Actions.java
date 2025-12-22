@@ -278,7 +278,7 @@ public class Comp1Actions {
     public SequentialAction BallsIntake(){return new SequentialAction(StartIntake, Ball1Check(), Ball2Check(), WaitAction(ball3Timeout), StopIntake);}
 
     //shooting stuff
-    public double launchSpeed = 0.65;
+    public double launchSpeed = 0.525;
 
     double speedUpTime = 2000;      // time for flywheel to reach speed
     double servoShootTime = 700;    // ms for servo launch duration
