@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.util.ElapsedTime
 import org.firstinspires.ftc.teamcode.Competition_Code.Actions.Comp1Actions
+import org.firstinspires.ftc.teamcode.Competition_Code.Actions.Comp2Actions
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoGlobals
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoPoints
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Drivetrain
@@ -19,6 +20,8 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Tele.TeleGlobals
 class BlueTele : LinearOpMode() {
 
     override fun runOpMode() {
+        val dash: FtcDashboard = FtcDashboard.getInstance()
+        telemetry = dash.telemetry
 
         if(AutoGlobals.AutonomousRan) {
             TeleGlobals.currentPosition = AutoGlobals.locationOfRobot!!
@@ -29,7 +32,6 @@ class BlueTele : LinearOpMode() {
 
         telemetry.addData("Robot at position ",  TeleGlobals.currentPosition)
 
-        val dash: FtcDashboard = FtcDashboard.getInstance()
         val packet = TelemetryPacket()
         var runningActions = ArrayList<Action>()
 
@@ -40,7 +42,7 @@ class BlueTele : LinearOpMode() {
         var intaking = false
         var reversing = false
 
-        val robot = Comp1Actions(hardwareMap, telemetry)
+        val robot = Comp2Actions(hardwareMap, telemetry)
 
         val drive = Drivetrain(hardwareMap)
         val localizer = Localizer(hardwareMap, TeleGlobals.currentPosition)
@@ -127,11 +129,11 @@ class BlueTele : LinearOpMode() {
             }
 
             if (gamepad1.dpad_right && buttonTimer.milliseconds() >= buttonDebounce){
-                robot.launchSpeed +=.025
+                robot.launchRPM +=100
                 buttonTimer.reset()
             }
             if (gamepad1.dpad_left && buttonTimer.milliseconds() >= buttonDebounce){
-                robot.launchSpeed -=.025
+                robot.launchRPM -=100
                 buttonTimer.reset()
             }
 
@@ -231,8 +233,7 @@ class BlueTele : LinearOpMode() {
                 telemetry.addData("Drive train override safety was tripped!", overrideTimeLeft)
             }
 
-            telemetry.addData("Launcher power", robot.launchSpeed)
-            telemetry.addData("Launcher power", robot.launchSpeed)
+            telemetry.addData("Launcher power", robot.launchRPM)
             telemetry.addData("servopos", robot.holder.launchpos)
 
             telemetry.addData("Current Pose", Localizer.pose.toString())

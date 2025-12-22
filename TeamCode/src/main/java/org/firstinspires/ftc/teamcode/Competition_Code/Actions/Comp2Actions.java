@@ -19,7 +19,7 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Pulley;
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Servo;
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Intake.State;
 
-public class Comp1Actions {
+public class Comp2Actions {
     AprilTag aprilTag;
     public int motif;
 
@@ -32,7 +32,7 @@ public class Comp1Actions {
     Intake intake;
     Pulley pulley;
 
-    Launcher launcher;
+    public Launcher launcher;
 
     Telemetry telemetry;
 
@@ -66,7 +66,7 @@ public class Comp1Actions {
 
     }
 
-    public Comp1Actions(HardwareMap hardwareMap, Telemetry telemetry) {
+    public Comp2Actions(HardwareMap hardwareMap, Telemetry telemetry) {
         aprilTag = new AprilTag(hardwareMap);
 
         ball1 = new ColorSensors(hardwareMap, "ball1");
@@ -145,50 +145,6 @@ public class Comp1Actions {
         };
     }
 
-    //color sensor actions
-    double colorTimeout = 1000;
-
-    public Action Ball1Check() {
-        return new Action() {
-
-            final ElapsedTime timer = new ElapsedTime();
-            boolean initialized = false;
-
-            @Override
-            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-                if (!initialized) {
-                    timer.reset();
-                    initialized = true;
-                }
-
-                telemetry.addData("Ball1Check", "Waiting... " + timer.milliseconds() + "ms");
-
-                // If we don't see anything, stop checking
-                return !(ball1.isGreen() || ball1.isPurple()) && timer.milliseconds() <= colorTimeout;
-            }
-        };
-    }
-
-    public Action Ball2Check() {
-        return new Action() {
-
-            final ElapsedTime timer = new ElapsedTime();
-            boolean initialized = false;
-
-            @Override
-            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-                if (!initialized) {
-                    timer.reset();
-                    initialized = true;
-                }
-
-                telemetry.addData("Ball2Check", "Waiting... " + timer.milliseconds() + "ms");
-
-                // If we don't see anything, stop checking
-                return !(ball2.isGreen() || ball2.isPurple()) && timer.milliseconds() <= colorTimeout;
-            }
-        };
-    }
 
     //intake
     public Action StartIntake = new Action() {
@@ -273,19 +229,12 @@ public class Comp1Actions {
         }
     };
 
-    public double ball3Timeout = 1000;
-
-    public SequentialAction BallsIntake(){return new SequentialAction(StartIntake, Ball1Check(), Ball2Check(), WaitAction(ball3Timeout), StopIntake);}
-
     //shooting stuff
-    public double launchSpeed = 0.525;
     public double launchRPM = 3500;
 
-    double speedUpTime = 1500;      // time for flywheel to reach speed
-    double servoShootTime = 700;    // ms for servo launch duration
+    double speedUpTime = 1200;      // time for flywheel to reach speed
     double servoReleaseTime = 800;  // ms for servo release
-    double shootingInterval = 500;  // ms between shots
-    double pulleyShootTime = 2000;  // ms for pulley to shoot 3 balls
+    double pulleyShootTime = 2400;  // ms for pulley to shoot 3 balls
 
     public Action StartShooter = new Action() {
 
@@ -310,125 +259,10 @@ public class Comp1Actions {
         }
     };
 
-    public Action Shoot() {
-        return new Action() {
-            final ElapsedTime timer = new ElapsedTime();
-            boolean initialized = false;
-            boolean launched = false;
-
-            @Override
-            public boolean run(@NonNull TelemetryPacket packet) {
-                // Reset timer when action starts
-                if (!initialized) {
-                    timer.reset();
-                    initialized = true;
-
-                    holder.state = Servo.State.RESET;
-                    kicker.state = Servo.State.LAUNCH;
-
-                    launched = true;
-                    telemetry.addData("Shoot", "Initialized — launching ball");
-                }
-
-                // Launch phase
-                if (launched) {
-                    if (timer.milliseconds() >= servoShootTime) {
-                        kicker.state = Servo.State.RESET;
-
-                        telemetry.addData("Shoot", "Shot complete — servo reset");
-                        return false;
-                    } else {
-                        telemetry.addData("Shoot", "Launching... " + timer.milliseconds() + "ms");
-                        return true;
-                    }
-                }
-
-                return true;
-            }
-        };
-    }
-
-    double detectTimeout = 2000;   // ms to wait for ball detection
-
-    public Action Cycle() {
-        return new Action() {
-            final ElapsedTime timer = new ElapsedTime();
-            boolean initialized = false;
-            boolean ballFound = false;
-
-            @Override
-            public boolean run(@NonNull TelemetryPacket packet) {
-
-                // Phase 1: Wait for ball2 (the start signal)
-                if (!initialized) {
-                    timer.reset();
-
-                    pulley.state = Pulley.State.Slow;
-                    intake.state = State.INTAKING;
-                    holder.state = Servo.State.STOP;
-
-                    initialized = true;
-                    telemetry.addData("Cycle", "Waiting for ball2...");
-                }
-
-                if (!ballFound) {
-                    // If ball2 detected → start cycle
-                    if ((ball2.isGreen() || ball2.isPurple())) {
-                        timer.reset(); // restart timer for next phase
-
-                        ballFound = true;
-                        telemetry.addData("Cycle", "Ball2 detected");
-                    }
-                    // If timeout before detection → abort
-                    else if (timer.milliseconds() > detectTimeout) {
-                        pulley.state = Pulley.State.Off;
-                        intake.state = State.STOPPED;
-
-                        telemetry.addData("Cycle", "No ball2 detected → skipping cycle");
-                        return false;
-                    }
-                    // Still waiting
-                    else {
-                        telemetry.addData("Cycle", "Waiting for ball2... " + timer.milliseconds() + "ms");
-                        return true;
-                    }
-                }
-
-                // Phase 2: Running until ball1 detected or timeout
-                if (ballFound) {
-                    // If ball1 detected → stop and hold
-                    if ((ball1.isGreen() || ball1.isPurple())) {
-                        pulley.state = Pulley.State.Off;
-                        intake.state = State.STOPPED;
-                        holder.state = Servo.State.RESET;
-
-                        telemetry.addData("Cycle", "Ball1 detected → stopping");
-                        return false;
-                    }
-
-                    // If ran too long → stop
-                    if (timer.milliseconds() > detectTimeout) {
-                        pulley.state = Pulley.State.Off;
-                        intake.state = State.STOPPED;
-                        holder.state = Servo.State.RESET;
-
-                        telemetry.addData("Cycle", "Timeout → stopping");
-                        return false;
-                    }
-
-                    // Otherwise keep going
-                    telemetry.addData("Cycle", "Running... " + timer.milliseconds() + "ms");
-                    return true;
-                }
-
-                return true;
-            }
-        };
-    }
 
     double blocktime = 500;
 
-        public Action CycleShoot() {
+    public Action CycleShoot() {
         return new Action() {
             final ElapsedTime timer = new ElapsedTime();
             boolean initialized = false;
@@ -472,16 +306,7 @@ public class Comp1Actions {
                 StopShooter
         );
     }
-    public SequentialAction ShootNoServo() {
-        return new SequentialAction(
-                StartShooter,
-                WaitAction(speedUpTime),
-                ReleaseBall,
-                WaitAction(servoReleaseTime),
-                CycleShoot(),
-                StopShooter
-        );
-    }
+
     public SequentialAction AutoShoot() {
         return new SequentialAction(
                 StopIntake,
@@ -494,34 +319,5 @@ public class Comp1Actions {
         );
     }
 
-    public SequentialAction ShootFirstBall() {
-        return new SequentialAction(
-                StartShooter,
-                WaitAction(speedUpTime),
-                ReleaseBall,
-                WaitAction(servoReleaseTime),
-                Shoot(),
-                HoldBall
-        );
-    }
-
-    public SequentialAction ShootBall() {
-        return new SequentialAction(
-                Cycle(),
-                WaitAction(servoReleaseTime),
-                Shoot(),
-                HoldBall
-        );
-    }
-
-    public SequentialAction ShootLastBall() {
-        return new SequentialAction(
-                Cycle(),
-                WaitAction(servoReleaseTime),
-                Shoot(),
-                HoldBall,
-                StopShooter
-        );
-    }
 
 }

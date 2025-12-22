@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Competition_Code.Tele.Testing;
 
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.qualcomm.robotcore.eventloop.opmode.*;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -16,14 +17,16 @@ public class LauncherTest extends LinearOpMode {
     @Override
     public void runOpMode() {
         launcher = new Launcher(hardwareMap);
+        telemetry = FtcDashboard.getInstance().getTelemetry();
+
         double speed = 0;
         ElapsedTime timer = new ElapsedTime();
 
-        servo = hardwareMap.get(Servo.class, "holder");
+//        servo = hardwareMap.get(Servo.class, "holder");
         waitForStart();
 
 
-        position = servo.getPosition();
+//        position = servo.getPosition();
 
         while (opModeIsActive()) {
 
@@ -42,31 +45,34 @@ public class LauncherTest extends LinearOpMode {
             if(gamepad1.b){
                 speed = 0;
             }
-            if(gamepad1.x){
-                position = 0.15;
-            }
-            if(gamepad1.y){
-                position = 0.53;
-            }
-
-            if (timer.milliseconds() > 100) {
-                if (gamepad1.dpad_left) {
-                    position -= 0.01;
-                }
-
-                if (gamepad1.dpad_right) {
-                    position += 0.01;
-                }
-
-                timer.reset();
-            }
+//            if(gamepad1.x){
+//                position = 0.15;
+//            }
+//            if(gamepad1.y){
+//                position = 0.53;
+//            }
+//
+//            if (timer.milliseconds() > 100) {
+//                if (gamepad1.dpad_left) {
+//                    position -= 0.01;
+//                }
+//
+//                if (gamepad1.dpad_right) {
+//                    position += 0.01;
+//                }
+//
+//                timer.reset();
+//            }
             launcher.setSpeed(speed);
             launcher.update();
 
-            servo.setPosition(position);
-
-            telemetry.addData("Servo position: ", position);
+//            servo.setPosition(position);
+//
+//            telemetry.addData("Servo position: ", position);
             telemetry.addData("power ", speed);
+            telemetry.addData("leftrpm", launcher.getLeftRpm());
+            telemetry.addData("rightrpm", launcher.getRightRpm());
+
 
             telemetry.update();
         }

@@ -26,7 +26,7 @@ public class Servo {
         HOLD(0.2),
         Block(0.27),
         LAUNCH(0.12),
-        RESET(0.10),
+        RESET(0.08),
         STOP(0.61);
         public final double servoPos;
         State(double servoPos) {

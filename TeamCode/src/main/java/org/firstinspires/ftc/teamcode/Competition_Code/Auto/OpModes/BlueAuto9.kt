@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import org.firstinspires.ftc.teamcode.Competition_Code.Actions.Comp1Actions
 import com.acmerobotics.roadrunner.Action
 import com.acmerobotics.roadrunner.RaceAction
+import org.firstinspires.ftc.teamcode.Competition_Code.Actions.Comp2Actions
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoGlobals
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoPoints
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.RunToExactForever
@@ -25,7 +26,7 @@ class BlueAuto9 : LinearOpMode() {
 
         val localizer = Localizer(hardwareMap, AutoGlobals.targetRobotPositon)
         val drive = Drivetrain(hardwareMap)
-        val robot = Comp1Actions(hardwareMap, telemetry)
+        val robot = Comp2Actions(hardwareMap, telemetry)
 
         sleep(100)
         localizer.update()
@@ -82,42 +83,29 @@ class BlueAuto9 : LinearOpMode() {
                                 nextAction = when (robot.motif) {
                                     1 -> SequentialAction(
                                         AutoPoints.PreIntakeGPP.runToExact,
-                                        ParallelAction(
-                                            SequentialAction(
-                                                robot.BallsIntake(),
-                                            ),
-                                            AutoPoints.GPPIntake.runToExact,
-                                            robot.WaitAction(200.0),
-
-                                            ),
+                                        robot.StartIntake,
+                                        AutoPoints.GPPIntake.runToExact,
+                                        robot.WaitAction(200.0),
+                                        robot.StopIntake,
                                         AutoPoints.GPPMidPoint.runToExact
                                     )
 
                                     2 -> SequentialAction(
                                         AutoPoints.PreIntakePGP.runToExact,
-                                        ParallelAction(
-                                            SequentialAction(
-                                                robot.BallsIntake(),
-                                            ),
-                                            AutoPoints.PGPIntake.runToExact,
-                                            robot.WaitAction(200.0),
-
-                                            ),
+                                        robot.StartIntake,
+                                        AutoPoints.PGPIntake.runToExact,
+                                        robot.WaitAction(200.0),
+                                        robot.StopIntake,
                                         AutoPoints.PGPMidPoint.runToExact
                                     )
 
                                     else -> SequentialAction(
                                         AutoPoints.PreIntakePPG.runToExact,
-                                        ParallelAction(
-                                            SequentialAction(
-                                                robot.BallsIntake(),
-                                            ),
-                                            AutoPoints.PPGIntake.runToExact,
-                                            robot.WaitAction(200.0),
-
-                                            ),
-
-                                    )
+                                        robot.StartIntake,
+                                        AutoPoints.PPGIntake.runToExact,
+                                        robot.WaitAction(200.0),
+                                        robot.StopIntake,
+                                        )
                                 }
                             }
 
@@ -138,27 +126,19 @@ class BlueAuto9 : LinearOpMode() {
                                 nextAction = when (robot.motif) {
                                     3 -> SequentialAction(
                                         AutoPoints.PreIntakePGP.runToExact,
-                                        ParallelAction(
-                                            SequentialAction(
-                                                robot.BallsIntake(),
-                                            ),
-                                            AutoPoints.PGPIntake.runToExact,
-                                            robot.WaitAction(200.0),
-
-                                            ),
+                                        robot.StartIntake,
+                                        AutoPoints.PGPIntake.runToExact,
+                                        robot.WaitAction(200.0),
+                                        robot.StopIntake,
                                         AutoPoints.PGPMidPoint.runToExact
                                     )
                                     else -> SequentialAction(
                                         AutoPoints.PreIntakePPG.runToExact,
-                                        ParallelAction(
-                                            SequentialAction(
-                                            robot.BallsIntake(),
-                                            ),
-                                            AutoPoints.PPGIntake.runToExact,
-                                            robot.WaitAction(200.0),
-
-                                            ),
-                                    )
+                                        robot.StartIntake,
+                                        AutoPoints.PPGIntake.runToExact,
+                                        robot.WaitAction(200.0),
+                                        robot.StopIntake,
+                                        )
                                 }
                             }
 
@@ -167,7 +147,6 @@ class BlueAuto9 : LinearOpMode() {
                         }
                     },
                     robot.StartShooter,
-                    robot.WaitAction(200.0),
                     AutoPoints.LaunchBlue.runToExact,
                     robot.AutoShoot(),
                     AutoPoints.EndBlue.runToExact
