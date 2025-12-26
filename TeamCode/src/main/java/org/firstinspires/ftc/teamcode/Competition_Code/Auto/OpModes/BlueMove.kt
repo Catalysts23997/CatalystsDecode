@@ -41,7 +41,6 @@ class BlueMove : LinearOpMode() {
             ParallelAction(
                 {
                     if (isStopRequested) {
-                        AutoGlobals.started=false
                         stop()
                     }
                     localizer.update()
@@ -56,7 +55,7 @@ class BlueMove : LinearOpMode() {
                     true
                 },
                 SequentialAction(
-                    AutoPoints.OutOfTheWayBlue.runToExact
+                    AutoPoints.OutOfTheWayBlue.runToExact()
                 )
             )
         )

@@ -87,15 +87,8 @@ public class Launcher {
 
     public void update() {
 
-
-        double leftPos = leftLauncher.getCurrentPosition();
-        double rightPos = rightLauncher.getCurrentPosition();
-
         leftRpm = 60 /ticksPerRev * leftLauncher.getVelocity();
         rightRpm = 60 /ticksPerRev * rightLauncher.getVelocity();
-
-        leftLastPos = leftPos;
-        rightLastPos = rightPos;
 
         leftLauncher.setPower(power);
         rightLauncher.setPower(power);

@@ -50,7 +50,6 @@ class TestBlueAuto : LinearOpMode() {
                 object : Action {
                     override fun run(p: TelemetryPacket): Boolean {
                         if (isStopRequested) {
-                            AutoGlobals.started=false
                             stop()
                         }
                         localizer.update()
@@ -67,39 +66,39 @@ class TestBlueAuto : LinearOpMode() {
                     }
                 },
                 SequentialAction(
-                    AutoPoints.AprilTagBlue.runToExact,
-                    AutoPoints.LaunchBlue.runToExact,
+                    AutoPoints.AprilTagBlue.runToExact(),
+                    AutoPoints.LaunchBlue.runToExact(),
                     SleepAction(1.0),
 
                     when (motif) {
                         1 -> {
                             SequentialAction(
-                                AutoPoints.PreIntakeGPP.runToExact,
+                                AutoPoints.PreIntakeGPP.runToExact(),
 
-                                AutoPoints.GPPIntake.runToExact,
-                                AutoPoints.GPPMidPointRed.runToExact
+                                AutoPoints.GPPIntake.runToExact(),
+                                AutoPoints.GPPMidPointRed.runToExact()
                             )
                         }
 
                         2 -> {
                             SequentialAction(
-                                AutoPoints.PreIntakePGP.runToExact,
+                                AutoPoints.PreIntakePGP.runToExact(),
 
-                                AutoPoints.PGPIntake.runToExact,
-                                AutoPoints.PGPMidPoint.runToExact
+                                AutoPoints.PGPIntake.runToExact(),
+                                AutoPoints.PGPMidPoint.runToExact()
                             )
                         }
 
                         else -> {
                             SequentialAction(
-                                AutoPoints.PreIntakePPG.runToExact,
+                                AutoPoints.PreIntakePPG.runToExact(),
 
-                                AutoPoints.PPGIntake.runToExact,
+                                AutoPoints.PPGIntake.runToExact(),
                             )
                         }
                     },
-                    AutoPoints.LaunchBlue.runToExact,
-                    AutoPoints.EndBlue.runToExact
+                    AutoPoints.LaunchBlue.runToExact(),
+                    AutoPoints.EndBlue.runToExact()
                 )
             )
         )
