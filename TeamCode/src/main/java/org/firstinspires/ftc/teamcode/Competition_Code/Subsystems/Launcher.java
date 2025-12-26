@@ -87,8 +87,23 @@ public class Launcher {
 
     public void update() {
 
+
+        double leftPos = leftLauncher.getCurrentPosition();
+        double rightPos = rightLauncher.getCurrentPosition();
+
         leftRpm = 60 /ticksPerRev * leftLauncher.getVelocity();
         rightRpm = 60 /ticksPerRev * rightLauncher.getVelocity();
+
+        if (leftLauncher.getPower() >= .5 && (leftRpm < 175 || rightRpm<175)) {
+            leftLauncher.setPower(1.0);
+            rightLauncher.setPower(1.0);
+        }else{
+            leftLauncher.setPower(power);
+            rightLauncher.setPower(power);
+        }
+
+        leftLastPos = leftPos;
+        rightLastPos = rightPos;
 
         leftLauncher.setPower(power);
         rightLauncher.setPower(power);

@@ -106,7 +106,7 @@ public class Comp1Actions {
     }
 
     //camera actions
-    double cameraTimeout = 2000;
+    double cameraTimeout = 1000;
 
     public Action CheckMotif() {
         return new Action() {
@@ -273,19 +273,18 @@ public class Comp1Actions {
         }
     };
 
-    public double ball3Timeout = 2000;
+    public double ball3Timeout = 1000;
 
     public SequentialAction BallsIntake(){return new SequentialAction(StartIntake, Ball1Check(), Ball2Check(), WaitAction(ball3Timeout), StopIntake);}
 
     //shooting stuff
-    public static final double ORIGINAL_LAUNCH_SPEED = 0.70;
-    public double launchSpeed = ORIGINAL_LAUNCH_SPEED;
+    public double launchSpeed = 0.525;
 
     double speedUpTime = 2000;      // time for flywheel to reach speed
     double servoShootTime = 700;    // ms for servo launch duration
     double servoReleaseTime = 900;  // ms for servo release
     double shootingInterval = 500;  // ms between shots
-    double pulleyShootTime = 2800;  // ms for pulley to shoot 2 balls
+    double pulleyShootTime = 2600;  // ms for pulley to shoot 2 balls
 
     public Action StartShooter = new Action() {
 
@@ -426,7 +425,7 @@ public class Comp1Actions {
         };
     }
 
-    double blocktime = pulleyShootTime/3;
+    double blocktime = 1100;
 
         public Action CycleShoot() {
         return new Action() {
@@ -460,61 +459,12 @@ public class Comp1Actions {
         };
     }
 
-    public Action SuperShoot() {
-        return new Action() {
-            final ElapsedTime timer = new ElapsedTime();
-            boolean initialized = false;
-            boolean hasBoosted = false;
-            double maxSpeed;
-
-            @Override
-            public boolean run(@NonNull TelemetryPacket packet) {
-
-                // Phase 1: Wait for ball2 (the start signal)
-                if (!initialized) {
-                    timer.reset();
-                    initialized = true;
-                    maxSpeed = Math.max(
-                        launcher.getLeftRpm(),
-                        launcher.getRightRpm()
-                    );
-
-                    pulley.state = Pulley.State.On;
-                    intake.state = State.INTAKING;
-                }
-                if(timer.milliseconds()>=blocktime){
-                    kicker.state = Servo.State.RESET;
-                }
-
-                if(timer.milliseconds()>=pulleyShootTime){
-                    pulley.state = Pulley.State.Off;
-                    intake.state = State.STOPPED;
-                    holder.state = Servo.State.STOP;
-
-                    launchSpeed = ORIGINAL_LAUNCH_SPEED;
-                    return false;
-                }
-
-                // Ensure that our launcher is up to speed
-                if (!hasBoosted) {
-                    double speed = Math.max(launcher.getLeftRpm(), launcher.getRightRpm());
-
-                    if (speed <= maxSpeed - 100) {
-                        launchSpeed += 0.05;
-                        hasBoosted = true;
-                    }
-                }
-
-                return true;
-            }
-        };
-    }
-
     public SequentialAction ShootThrough() {
         return new SequentialAction(
                 StartShooter,
+                StopIntake,
                 WaitAction(speedUpTime),
-//                Block,
+                Block,
                 ReleaseBall,
                 WaitAction(servoReleaseTime),
                 CycleShoot(),
@@ -533,7 +483,9 @@ public class Comp1Actions {
     }
     public SequentialAction AutoShoot() {
         return new SequentialAction(
-//                Block,
+                StopIntake,
+                Block,
+                WaitAction(400),
                 ReleaseBall,
                 WaitAction(servoReleaseTime),
                 CycleShoot(),

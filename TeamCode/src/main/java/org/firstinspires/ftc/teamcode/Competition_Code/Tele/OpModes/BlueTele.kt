@@ -14,7 +14,6 @@ import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localiz
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.DrivetrainOverride
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Servo
 import org.firstinspires.ftc.teamcode.Competition_Code.Tele.TeleGlobals
-import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
 
 @TeleOp(name = "BlueTele", group = "Linear OpMode")
 class BlueTele : LinearOpMode() {
@@ -117,10 +116,14 @@ class BlueTele : LinearOpMode() {
 //            }
 
             if (gamepad1.right_bumper && buttonTimer.milliseconds() >= buttonDebounce){
-              Servo.launchpos +=0.01
+                robot.holder.launchpos +=0.01
+                buttonTimer.reset()
+
             }
-            if (gamepad1.left_bumper && buttonTimer.milliseconds() >= buttonDebounce){
-                Servo.launchpos -=0.01
+            if (gamepad1.left_bumper && buttonTimer.milliseconds() >= buttonDebounce) {
+                robot.holder.launchpos -= 0.01
+                buttonTimer.reset()
+
             }
 
             if (gamepad1.dpad_right && buttonTimer.milliseconds() >= buttonDebounce){
@@ -204,7 +207,7 @@ class BlueTele : LinearOpMode() {
                 driveOverride.beginOverriding(AutoPoints.LaunchBlue.pose)
             }
             if(gamepad1.b){
-                driveOverride.beginOverriding(Poses(34.0, -38.0, 0.0))
+                driveOverride.beginOverriding(AutoPoints.EndgameBlue.pose)
             }
 
             if (driveOverride.shouldOverrideInput()) {
@@ -229,6 +232,8 @@ class BlueTele : LinearOpMode() {
             }
 
             telemetry.addData("Launcher power", robot.launchSpeed)
+            telemetry.addData("Launcher power", robot.launchSpeed)
+            telemetry.addData("servopos", robot.holder.launchpos)
 
             telemetry.addData("Current Pose", Localizer.pose.toString())
 

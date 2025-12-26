@@ -46,12 +46,13 @@ class BlueAuto9 : LinearOpMode() {
                 object : Action {
                     override fun run(p: TelemetryPacket): Boolean {
                         if (isStopRequested) {
+                            AutoGlobals.started=false
                             stop()
                         }
 
                         localizer.update()
                         RunToExactForever(AutoGlobals.targetRobotPositon)
-                        AutoGlobals.locationOfRobot = Poses(Localizer.pose.x, Localizer.pose.y, 0.0)
+                        AutoGlobals.locationOfRobot = Poses(Localizer.pose.x, Localizer.pose.y, Localizer.pose.heading)
 
                         telemetry.addData("Target Position", AutoGlobals.targetRobotPositon.toString())
                         telemetry.addData("Current Pose", Localizer.pose.toString())
@@ -64,11 +65,11 @@ class BlueAuto9 : LinearOpMode() {
                     }
                 },
                 SequentialAction(
-                    AutoPoints.AprilTagBlue.runToExact(),
+                    AutoPoints.AprilTagBlue.runToExact,
                     robot.CheckMotif(),
                     robot.OffCamera(),
                     robot.StartShooter,
-                    AutoPoints.LaunchBlue.runToExact(),
+                    AutoPoints.LaunchBlue.runToExact,
                     robot.AutoShoot(),
                     object : Action {
                         var nextAction: Action? = null
@@ -80,35 +81,41 @@ class BlueAuto9 : LinearOpMode() {
                             if (nextAction == null) {
                                 nextAction = when (robot.motif) {
                                     1 -> SequentialAction(
-                                        AutoPoints.PreIntakeGPP.runToExact(),
-                                        RaceAction(
+                                        AutoPoints.PreIntakeGPP.runToExact,
+                                        ParallelAction(
                                             SequentialAction(
                                                 robot.BallsIntake(),
                                             ),
-                                            AutoPoints.GPPIntake.runToExact(),
-                                        ),
-                                        AutoPoints.GPPMidPoint.runToExact()
+                                            AutoPoints.GPPIntake.runToExact,
+                                            robot.WaitAction(200.0),
+
+                                            ),
+                                        AutoPoints.GPPMidPoint.runToExact
                                     )
 
                                     2 -> SequentialAction(
-                                        AutoPoints.PreIntakePGP.runToExact(),
-                                        RaceAction(
+                                        AutoPoints.PreIntakePGP.runToExact,
+                                        ParallelAction(
                                             SequentialAction(
                                                 robot.BallsIntake(),
                                             ),
-                                            AutoPoints.PGPIntake.runToExact(),
-                                        ),
-                                        AutoPoints.PGPMidPoint.runToExact()
+                                            AutoPoints.PGPIntake.runToExact,
+                                            robot.WaitAction(200.0),
+
+                                            ),
+                                        AutoPoints.PGPMidPoint.runToExact
                                     )
 
                                     else -> SequentialAction(
-                                        AutoPoints.PreIntakePPG.runToExact(),
-                                        RaceAction(
+                                        AutoPoints.PreIntakePPG.runToExact,
+                                        ParallelAction(
                                             SequentialAction(
                                                 robot.BallsIntake(),
                                             ),
-                                            AutoPoints.PPGIntake.runToExact(),
-                                        ),
+                                            AutoPoints.PPGIntake.runToExact,
+                                            robot.WaitAction(200.0),
+
+                                            ),
 
                                     )
                                 }
@@ -119,7 +126,8 @@ class BlueAuto9 : LinearOpMode() {
                         }
                     },
                     robot.StartShooter,
-                    AutoPoints.LaunchBlue.runToExact(),
+
+                    AutoPoints.LaunchBlue.runToExact,
                     robot.AutoShoot(),
 
                     object : Action {
@@ -129,23 +137,27 @@ class BlueAuto9 : LinearOpMode() {
                             if (nextAction == null) {
                                 nextAction = when (robot.motif) {
                                     3 -> SequentialAction(
-                                        AutoPoints.PreIntakePGP.runToExact(),
-                                        RaceAction(
+                                        AutoPoints.PreIntakePGP.runToExact,
+                                        ParallelAction(
                                             SequentialAction(
                                                 robot.BallsIntake(),
                                             ),
-                                            AutoPoints.PGPIntake.runToExact(),
-                                        ),
-                                        AutoPoints.PGPMidPoint.runToExact()
+                                            AutoPoints.PGPIntake.runToExact,
+                                            robot.WaitAction(200.0),
+
+                                            ),
+                                        AutoPoints.PGPMidPoint.runToExact
                                     )
                                     else -> SequentialAction(
-                                        AutoPoints.PreIntakePPG.runToExact(),
-                                        RaceAction(
+                                        AutoPoints.PreIntakePPG.runToExact,
+                                        ParallelAction(
                                             SequentialAction(
                                             robot.BallsIntake(),
                                             ),
-                                            AutoPoints.PPGIntake.runToExact(),
-                                        ),
+                                            AutoPoints.PPGIntake.runToExact,
+                                            robot.WaitAction(200.0),
+
+                                            ),
                                     )
                                 }
                             }
@@ -155,9 +167,10 @@ class BlueAuto9 : LinearOpMode() {
                         }
                     },
                     robot.StartShooter,
-                    AutoPoints.LaunchBlue.runToExact(),
+                    robot.WaitAction(200.0),
+                    AutoPoints.LaunchBlue.runToExact,
                     robot.AutoShoot(),
-                    AutoPoints.EndBlue.runToExact()
+                    AutoPoints.EndBlue.runToExact
 
                 )
             )
