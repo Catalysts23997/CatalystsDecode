@@ -48,7 +48,6 @@ class TestRedAuto : LinearOpMode() {
                 object : Action {
                     override fun run(p: TelemetryPacket): Boolean {
                         if (isStopRequested) {
-                            AutoGlobals.started=false
                             stop()
                         }
                         localizer.update()
@@ -65,35 +64,35 @@ class TestRedAuto : LinearOpMode() {
                     }
                 },
                 SequentialAction(
-                    AutoPoints.AprilTagRed.runToExact,
-                    AutoPoints.LaunchRed.runToExact,
+                    AutoPoints.AprilTagRed.runToExact(),
+                    AutoPoints.LaunchRed.runToExact(),
 
                     when (motif) {
                         1 -> {
                             SequentialAction(
-                                AutoPoints.PreIntakeGPPRed.runToExact,
-                                AutoPoints.GPPIntakeRed.runToExact,
-                                AutoPoints.GPPMidPointRed.runToExact
+                                AutoPoints.PreIntakeGPPRed.runToExact(),
+                                AutoPoints.GPPIntakeRed.runToExact(),
+                                AutoPoints.GPPMidPointRed.runToExact()
                             )
                         }
 
                         2 -> {
                             SequentialAction(
-                                AutoPoints.PreIntakePGPRed.runToExact,
-                                AutoPoints.PGPIntakeRed.runToExact,
-                                AutoPoints.PGPMidPointRed.runToExact
+                                AutoPoints.PreIntakePGPRed.runToExact(),
+                                AutoPoints.PGPIntakeRed.runToExact(),
+                                AutoPoints.PGPMidPointRed.runToExact()
                             )
                         }
 
                         else -> {
                             SequentialAction(
-                                AutoPoints.PreIntakePPGRed.runToExact,
-                                AutoPoints.PPGIntakeRed.runToExact,
+                                AutoPoints.PreIntakePPGRed.runToExact(),
+                                AutoPoints.PPGIntakeRed.runToExact(),
                             )
                         }
                     },
-                    AutoPoints.LaunchRed.runToExact,
-                    AutoPoints.EndRed.runToExact
+                    AutoPoints.LaunchRed.runToExact(),
+                    AutoPoints.EndRed.runToExact()
                 )
             )
         )

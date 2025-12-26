@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Competition_Code.Auto;
 
+import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Vector2d;
 
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses;
@@ -54,20 +55,37 @@ public enum AutoPoints {
     Test3(new Vector2d(-44,63), 0.0),
     Test4(new Vector2d(-39,58), 0.0);
 
+    public final double x,y, heading;
+    public double driveSpeed = 1.0, maxTime = 11.0;
+
     AutoPoints(Vector2d vector, Double rotation) {
-        runToExact = new SetDriveTarget(new Poses(vector,rotation));
+        this.x = vector.x;
+        this.y = vector.y;
+        this.heading = rotation;
+
         pose = new Poses(vector.x, vector.y, rotation);
     }
     AutoPoints(Vector2d vector, Double rotation, Double driveSpeed) {
-        runToExact = new SetDriveTarget(new Poses(vector,rotation), driveSpeed);
+        this.x = vector.x;
+        this.y = vector.y;
+        this.heading = rotation;
+        this.driveSpeed = driveSpeed;
+
         pose = new Poses(vector.x, vector.y, rotation);
     }
     AutoPoints(Vector2d vector, Double rotation, Double driveSpeed, Double maxTime) {
-        runToExact = new SetDriveTarget(new Poses(vector, rotation), driveSpeed, maxTime);
+        this.x = vector.x;
+        this.y = vector.y;
+        this.heading = rotation;
+        this.driveSpeed = driveSpeed;
+        this.maxTime = maxTime;
+
         pose = new Poses(vector.x, vector.y, rotation);
     }
 
+    public SetDriveTarget runToExact(){
+        return new SetDriveTarget(new Poses(this.x, this.y, this.heading), this.driveSpeed, this.maxTime);
+    }
 
-    public final SetDriveTarget runToExact;
     public final Poses pose;
 }

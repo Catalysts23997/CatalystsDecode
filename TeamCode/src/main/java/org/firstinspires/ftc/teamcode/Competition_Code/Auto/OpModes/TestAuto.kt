@@ -47,7 +47,6 @@ class TestAuto : LinearOpMode() {
                 object : Action {
                     override fun run(p: TelemetryPacket): Boolean {
                         if (isStopRequested) {
-                            AutoGlobals.started=false
                             stop()
                         }
                         localizer.update()
@@ -64,10 +63,10 @@ class TestAuto : LinearOpMode() {
                     }
                 },
                 SequentialAction(
-                    AutoPoints.Test1.runToExact,
-                    AutoPoints.Test2.runToExact,
-                    AutoPoints.Test3.runToExact,
-                    AutoPoints.Test4.runToExact
+                    AutoPoints.Test1.runToExact(),
+                    AutoPoints.Test2.runToExact(),
+                    AutoPoints.Test3.runToExact(),
+                    AutoPoints.Test4.runToExact()
                 )
             )
         )

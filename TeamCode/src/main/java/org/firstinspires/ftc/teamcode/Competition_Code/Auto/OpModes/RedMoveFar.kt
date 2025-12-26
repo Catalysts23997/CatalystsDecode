@@ -47,7 +47,6 @@ class RedMoveFar : LinearOpMode() {
                 object : Action {
                     override fun run(p: TelemetryPacket): Boolean {
                         if (isStopRequested) {
-                            AutoGlobals.started=false
                             stop()
                         }
                         localizer.update()
@@ -64,7 +63,7 @@ class RedMoveFar : LinearOpMode() {
                     }
                 },
                 SequentialAction(
-                    AutoPoints.MoveFarRed.runToExact
+                    AutoPoints.MoveFarRed.runToExact()
                 )
             )
         )

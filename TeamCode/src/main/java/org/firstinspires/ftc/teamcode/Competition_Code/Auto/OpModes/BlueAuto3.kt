@@ -48,7 +48,6 @@ class BlueAuto3 : LinearOpMode() {
                 object : Action {
                     override fun run(p: TelemetryPacket): Boolean {
                         if (isStopRequested) {
-                            AutoGlobals.started=false
                             stop()
                         }
                         localizer.update()
@@ -65,9 +64,9 @@ class BlueAuto3 : LinearOpMode() {
                 },
                 SequentialAction(
                     robot.StartShooter,
-                    AutoPoints.LaunchBlue.runToExact,
+                    AutoPoints.LaunchBlue.runToExact(),
                     robot.AutoShoot(),
-                    AutoPoints.OutOfTheWayBlue.runToExact
+                    AutoPoints.OutOfTheWayBlue.runToExact()
                 )
             )
         )
