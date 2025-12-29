@@ -9,7 +9,6 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.PIDControllerVelocity;
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.PIDParams;
 
@@ -50,8 +49,8 @@ public class Launcher {
 
     VoltageSensor voltageSensor;
 
-    PIDFCoefficients leftCoefficients = new PIDFCoefficients();
-    PIDFCoefficients rightCoefficients = new PIDFCoefficients();
+    PIDFCoefficients leftCoefficients = new PIDFCoefficients(105.0, 0.0, 8.4, 32767.0/leftMaxTPS);
+    PIDFCoefficients rightCoefficients = new PIDFCoefficients(105.0, 0.0, 8.4, 32767.0/rightMaxTPS);
 
 
     /// Declare a new instance of the launcher system.
@@ -74,19 +73,22 @@ public class Launcher {
         leftLauncher.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         rightLauncher.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
+        voltageSensor = hardwareMap.voltageSensor.iterator().next();
+
+        leftController.setPID(leftPidParams);
+        rightController.setPID(rightPidParams);
+
         leftCoefficients.algorithm = MotorControlAlgorithm.PIDF;
         rightCoefficients.algorithm = MotorControlAlgorithm.PIDF;
 
-        voltageSensor = hardwareMap.voltageSensor.iterator().next();
+        leftLauncher.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, leftCoefficients);
+        rightLauncher.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, rightCoefficients);
     }
 
     public void setLeftPidParams(PIDParams params) {
         leftPidParams = params;
 
-        leftCoefficients.p = params.getKp();
-        leftCoefficients.i = params.getKi();
-        leftCoefficients.d = params.getKd();
-        leftCoefficients.f = 32767.0/leftMaxTPS;
+        leftCoefficients = new PIDFCoefficients(params.getKp(),params.getKi(), params.getKd(), params.getKf());
 
         leftController.setPID(leftPidParams);
         leftLauncher.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, leftCoefficients);
@@ -95,10 +97,7 @@ public class Launcher {
     public void setRightPidParams(PIDParams params) {
         rightPidParams = params;
 
-        rightCoefficients.p = params.getKp();
-        rightCoefficients.i = params.getKi();
-        rightCoefficients.d = params.getKd();
-        rightCoefficients.f = 32767.0/rightMaxTPS;
+        rightCoefficients = new PIDFCoefficients(params.getKp(),params.getKi(), params.getKd(), params.getKf());
 
         rightController.setPID(rightPidParams);
         rightLauncher.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, rightCoefficients);
