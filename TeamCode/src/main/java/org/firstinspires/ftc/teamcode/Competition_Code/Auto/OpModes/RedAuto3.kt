@@ -30,7 +30,7 @@ class RedAuto3 : LinearOpMode() {
 
         sleep(100)
         localizer.update()
-        robot.holder.state = Servo.State.STOP
+        robot.holder.state = Servo.State.STOP1
         robot.update()
 
         waitForStart()
@@ -61,7 +61,7 @@ class RedAuto3 : LinearOpMode() {
                 },
                 SequentialAction(
                     robot.StartShooter,
-                    AutoPoints.LaunchRed.runToExact(),
+                    AutoPoints.LaunchOffRed.runToExact(),
                     robot.AutoShoot(),
                     AutoPoints.OutOfTheWayRed.runToExact()
                 )

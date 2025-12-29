@@ -5,7 +5,6 @@ import androidx.annotation.NonNull;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.SequentialAction;
-import com.acmerobotics.roadrunner.SleepAction;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -45,7 +44,7 @@ public class Comp1Actions {
         kicker.update();
         holder.update();
 
-        launcher.updatePID();
+        launcher.update();
 
         telemetry.addData("Ball1 Is Green?", ball1.isGreen());
         telemetry.addData("Ball1 Is Purple?", ball1.isPurple());
@@ -236,7 +235,7 @@ public class Comp1Actions {
 
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-            holder.state = Servo.State.STOP;
+            holder.state = Servo.State.STOP1;
 
             // We return false because this only has to run once
             return false;
@@ -258,7 +257,7 @@ public class Comp1Actions {
 
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-            kicker.state = Servo.State.Block;
+            kicker.state = Servo.State.STOP2;
             // We return false because this only has to run once
             return false;
         }
@@ -324,7 +323,7 @@ public class Comp1Actions {
                     initialized = true;
 
                     holder.state = Servo.State.RESET;
-                    kicker.state = Servo.State.LAUNCH;
+//                    kicker.state = Servo.State.LAUNCH;
 
                     launched = true;
                     telemetry.addData("Shoot", "Initialized — launching ball");
@@ -365,7 +364,7 @@ public class Comp1Actions {
 
                     pulley.state = Pulley.State.Slow;
                     intake.state = State.INTAKING;
-                    holder.state = Servo.State.STOP;
+                    holder.state = Servo.State.STOP1;
 
                     initialized = true;
                     telemetry.addData("Cycle", "Waiting for ball2...");
@@ -451,7 +450,7 @@ public class Comp1Actions {
                 if(timer.milliseconds()>=pulleyShootTime){
                     pulley.state = Pulley.State.Off;
                     intake.state = State.STOPPED;
-                    holder.state = Servo.State.STOP;
+                    holder.state = Servo.State.STOP1;
 
                     return false;
                 }

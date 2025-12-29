@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.Competition_Code.Auto.OpModes;
 
-import com.acmerobotics.dashboard.FtcDashboard
 import com.acmerobotics.roadrunner.ParallelAction
 import com.acmerobotics.roadrunner.SequentialAction
 import com.acmerobotics.roadrunner.ftc.runBlocking
@@ -28,7 +27,7 @@ class BlueMove : LinearOpMode() {
 
         sleep(100)
         localizer.update()
-        robot.holder.state = Servo.State.STOP
+        robot.holder.state = Servo.State.STOP1
         robot.update()
 
         waitForStart()

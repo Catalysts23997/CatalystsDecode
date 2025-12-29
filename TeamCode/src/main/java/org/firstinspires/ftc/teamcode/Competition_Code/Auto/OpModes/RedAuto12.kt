@@ -6,28 +6,25 @@ import com.acmerobotics.roadrunner.SequentialAction
 import com.acmerobotics.roadrunner.ftc.runBlocking
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
-import org.firstinspires.ftc.teamcode.Competition_Code.Actions.Comp1Actions
 import com.acmerobotics.roadrunner.Action
+import org.firstinspires.ftc.teamcode.Competition_Code.Actions.Comp2Actions
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoGlobals
-
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoPoints
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.RunToExactForever
-import org.firstinspires.ftc.teamcode.Competition_Code.Auto.SetDriveTarget
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Drivetrain
 import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localizer
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Servo
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
 
-@Autonomous(name = "BlueAuto3", group = "Auto")
-class BlueAuto3 : LinearOpMode() {
+@Autonomous(name = "RedAuto12", group = "Auto")
+class RedAuto12 : LinearOpMode() {
 
     override fun runOpMode() {
-
-        AutoGlobals.targetRobotPositon = AutoPoints.StartBlue.pose
+        AutoGlobals.targetRobotPositon = AutoPoints.StartRed.pose
 
         val localizer = Localizer(hardwareMap, AutoGlobals.targetRobotPositon)
         val drive = Drivetrain(hardwareMap)
-        val robot = Comp1Actions(hardwareMap, telemetry)
+        val robot = Comp2Actions(hardwareMap, telemetry)
 
         sleep(100)
         localizer.update()
@@ -50,23 +47,59 @@ class BlueAuto3 : LinearOpMode() {
                         if (isStopRequested) {
                             stop()
                         }
+
                         localizer.update()
                         RunToExactForever(AutoGlobals.targetRobotPositon)
                         AutoGlobals.locationOfRobot = Poses(Localizer.pose.x, Localizer.pose.y, Localizer.pose.heading)
-                        telemetry.addData("goalPos", AutoGlobals.targetRobotPositon)
-                        telemetry.addData("heading", Localizer.pose.heading)
-                        telemetry.addData("x", Localizer.pose.x)
-                        telemetry.addData("y", Localizer.pose.y)
+
+                        telemetry.addData("Target Position", AutoGlobals.targetRobotPositon.toString())
+                        telemetry.addData("Current Pose", Localizer.pose.toString())
+                        telemetry.addData("Location of robot being transferred", AutoGlobals.locationOfRobot.toString())
+                        telemetry.addData("Drive speed", AutoGlobals.driveSpeed)
                         telemetry.update()
                         robot.update()
+
                         return true // keep looping
                     }
                 },
                 SequentialAction(
                     robot.StartShooter,
-                    AutoPoints.LaunchOffBlue.runToExact(),
+                    AutoPoints.LaunchRed.runToExact(),
                     robot.AutoShoot(),
-                    AutoPoints.OutOfTheWayBlue.runToExact()
+
+                    AutoPoints.PreIntakePPGRed.runToFast(),
+                    robot.StartIntake,
+                    AutoPoints.PPGIntakeRed.runToExact(),
+                    robot.WaitAction(200.0),
+                    robot.StopIntake,
+
+                    robot.StartShooter,
+                    AutoPoints.LaunchRed.runToExact(),
+                    robot.AutoShoot(),
+
+                    AutoPoints.PreIntakePGPRed.runToFast(),
+                    robot.StartIntake,
+                    AutoPoints.PGPIntakeRed.runToExact(),
+                    robot.WaitAction(200.0),
+                    robot.StopIntake,
+                    AutoPoints.PGPMidPointRed.runToFast(),
+
+                    robot.StartShooter,
+                    AutoPoints.LaunchRed.runToExact(),
+                    robot.AutoShoot(),
+
+                    AutoPoints.PreIntakeGPPRed.runToFast(),
+                    robot.StartIntake,
+                    AutoPoints.GPPIntakeRed.runToExact(),
+                    robot.WaitAction(200.0),
+                    robot.StopIntake,
+                    AutoPoints.GPPMidPointRed.runToFast(),
+
+                    robot.StartShooter,
+                    AutoPoints.LaunchRed.runToExact(),
+                    robot.AutoShoot(),
+                    AutoPoints.EndRed.runToExact()
+
                 )
             )
         )

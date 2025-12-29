@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.Competition_Code.Auto.OpModes;
 
-import com.acmerobotics.dashboard.FtcDashboard
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket
 import com.acmerobotics.roadrunner.Action
 import com.acmerobotics.roadrunner.ParallelAction
@@ -32,7 +31,7 @@ class TestAuto : LinearOpMode() {
 
         sleep(100)
         localizer.update()
-        robot.holder.state = Servo.State.STOP
+        robot.holder.state = Servo.State.STOP1
         robot.update()
 
         waitForStart()

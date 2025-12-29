@@ -8,39 +8,41 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses;
 
 public enum AutoPoints {
     StartBlue(new Vector2d(-39,63), 0.0), // todo update new start position (robto has to touch tape)
-    AprilTagBlue(new Vector2d(-15,45), Math.PI/8, 1.2),
+    AprilTagBlue(new Vector2d(-15,45), Math.PI/8),
     LaunchBlue(new Vector2d(-18,17.5), 3*Math.PI/4),
-    EndBlue(new Vector2d(-25,0.0), 0.0, 1.2),
+    LaunchOffBlue(new Vector2d(-12,55), 9*Math.PI/16),
+    EndBlue(new Vector2d(-25,0.0), 0.0),
     OutOfTheWayBlue(new Vector2d(-29,60.0), 0.0),
 
-    PreIntakePPG(new Vector2d(-25,16), -Math.PI / 2),
-    PPGIntake(new Vector2d(-57,16), -Math.PI / 2, .5, 3.0),
+    PreIntakePPG(new Vector2d(-25,16), -Math.PI / 2, 1.5),
+    PPGIntake(new Vector2d(-57,16), -Math.PI / 2, .6, 3.0),
 
-    PreIntakePGP(new Vector2d(-25,-11), -Math.PI / 2),
-    PGPIntake(new Vector2d(-66,-11), -Math.PI / 2, 0.5 , 3.0),
-    PGPMidPoint(new Vector2d(-25,-11), 9 * Math.PI / 8),
+    PreIntakePGP(new Vector2d(-25,-11), -Math.PI / 2, 1.5),
+    PGPIntake(new Vector2d(-66,-11), -Math.PI / 2, 0.6 , 3.0),
+    PGPMidPoint(new Vector2d(-25,-11), 9 * Math.PI / 8, 1.5),
 
-    PreIntakeGPP(new Vector2d(-25,-33), -Math.PI / 2),
+    PreIntakeGPP(new Vector2d(-25,-33), -Math.PI / 2, 1.5),
     GPPIntake(new Vector2d(-66,-33), -Math.PI / 2, 0.6, 3.0),
-    GPPMidPoint(new Vector2d(-25,-33), 9*Math.PI / 8),
+    GPPMidPoint(new Vector2d(-25,-33), 9*Math.PI / 8, 1.5),
 
     StartRed(new Vector2d(39,63), 0.0),
-    AprilTagRed(new Vector2d(15,45), -Math.PI / 8, 1.2),
+    AprilTagRed(new Vector2d(15,45), -Math.PI / 8),
     LaunchRed(new Vector2d(18.0,17.5), -3 * Math.PI / 4),
-    EndRed(new Vector2d(25,0.0), 0.0, 1.2),
+    LaunchOffRed(new Vector2d(12,55), -9*Math.PI/16),
+    EndRed(new Vector2d(25,0.0), 0.0),
     OutOfTheWayRed(new Vector2d(29,60.0), 0.0),
 
-    PreIntakePPGRed(new Vector2d(25,16), Math.PI / 2),
-    PPGIntakeRed(new Vector2d(57,16), Math.PI / 2, 0.5, 3.0),
+    PreIntakePPGRed(new Vector2d(25,16), Math.PI / 2, 1.5),
+    PPGIntakeRed(new Vector2d(57,16), Math.PI / 2, 0.6, 3.0),
 
-    PreIntakePGPRed(new Vector2d(25,-11), Math.PI / 2,1.0),
-    PGPIntakeRed(new Vector2d(66,-11), Math.PI / 2, 0.5, 3.0),
-    PGPMidPointRed(new Vector2d(25,-11), -9 * Math.PI / 8),
+    PreIntakePGPRed(new Vector2d(25,-11), Math.PI / 2,1.5),
+    PGPIntakeRed(new Vector2d(66,-11), Math.PI / 2, 0.6, 3.0),
+    PGPMidPointRed(new Vector2d(25,-11), -9 * Math.PI / 8, 1.5),
 
 
-    PreIntakeGPPRed(new Vector2d(25,-33), Math.PI / 2),
+    PreIntakeGPPRed(new Vector2d(25,-33), Math.PI / 2, 1.5),
     GPPIntakeRed(new Vector2d(66,-33), Math.PI / 2, 0.6, 3.0),
-    GPPMidPointRed(new Vector2d(25,-33), -9 * Math.PI / 8),
+    GPPMidPointRed(new Vector2d(25,-33), -9 * Math.PI / 8, 1.5),
 
     StartFarRed(new Vector2d(15,-63), 0.0),
     StartFarBlue(new Vector2d(-15,-63), 0.0),
@@ -85,6 +87,10 @@ public enum AutoPoints {
 
     public SetDriveTarget runToExact(){
         return new SetDriveTarget(new Poses(this.x, this.y, this.heading), this.driveSpeed, this.maxTime);
+    }
+
+    public SetDriveTarget runToFast(){
+        return new SetDriveTarget(new Poses(this.x, this.y, this.heading), this.driveSpeed, this.maxTime, 10.0, 15.0);
     }
 
     public final Poses pose;

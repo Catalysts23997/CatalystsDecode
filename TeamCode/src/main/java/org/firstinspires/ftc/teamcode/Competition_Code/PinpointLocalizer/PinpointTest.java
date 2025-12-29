@@ -103,7 +103,7 @@ public class PinpointTest extends LinearOpMode {
         resetRuntime();
 
 
-        // run until the end of the match (driver presses STOP)
+        // run until the end of the match (driver presses STOP1)
         while (opModeIsActive()) {
 
             /*

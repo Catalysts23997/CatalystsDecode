@@ -3,10 +3,10 @@ package org.firstinspires.ftc.teamcode.Competition_Code.Auto.OpModes;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket
 import com.acmerobotics.roadrunner.Action
 import com.acmerobotics.roadrunner.ParallelAction
-import com.acmerobotics.roadrunner.RaceAction
 import com.acmerobotics.roadrunner.SequentialAction
 import com.acmerobotics.roadrunner.ftc.runBlocking
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
+import com.qualcomm.robotcore.eventloop.opmode.Disabled
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import org.firstinspires.ftc.teamcode.Competition_Code.Actions.Comp1Actions
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoGlobals
@@ -17,6 +17,7 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Drivetrain
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Servo
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
 
+@Disabled
 @Autonomous(name = "RedAuto6", group = "Auto")
 class RedAuto6 : LinearOpMode() {
 
@@ -29,7 +30,7 @@ class RedAuto6 : LinearOpMode() {
 
         sleep(100)
         localizer.update()
-        robot.holder.state = Servo.State.STOP
+        robot.holder.state = Servo.State.STOP1
         robot.update()
 
         waitForStart()
@@ -72,25 +73,25 @@ class RedAuto6 : LinearOpMode() {
                             if (nextAction == null) {
                                 nextAction = when (robot.motif) {
                                     1 -> SequentialAction(
-                                        AutoPoints.PreIntakeGPPRed.runToExact(),
+                                        AutoPoints.PreIntakeGPPRed.runToFast(),
                                         robot.StartIntake,
                                         AutoPoints.GPPIntakeRed.runToExact(),
                                         robot.WaitAction(200.0),
                                         robot.StopIntake,
-                                        AutoPoints.GPPMidPointRed.runToExact()
+                                        AutoPoints.GPPMidPointRed.runToFast()
                                     )
 
                                     2 -> SequentialAction(
-                                        AutoPoints.PreIntakePGPRed.runToExact(),
+                                        AutoPoints.PreIntakePGPRed.runToFast(),
                                         robot.StartIntake,
                                         AutoPoints.PGPIntakeRed.runToExact(),
                                         robot.WaitAction(200.0),
                                         robot.StopIntake,
-                                        AutoPoints.PGPMidPointRed.runToExact()
+                                        AutoPoints.PGPMidPointRed.runToFast()
                                     )
 
                                     else -> SequentialAction(
-                                        AutoPoints.PreIntakePPGRed.runToExact(),
+                                        AutoPoints.PreIntakePPGRed.runToFast(),
                                         robot.StartIntake,
                                         AutoPoints.PPGIntakeRed.runToExact(),
                                         robot.WaitAction(200.0),

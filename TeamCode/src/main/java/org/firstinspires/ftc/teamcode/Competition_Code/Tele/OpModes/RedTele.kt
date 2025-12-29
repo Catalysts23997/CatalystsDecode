@@ -14,7 +14,6 @@ import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localiz
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.DrivetrainOverride
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Servo
 import org.firstinspires.ftc.teamcode.Competition_Code.Tele.TeleGlobals
-import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
 
 @TeleOp(name = "RedTele", group = "Linear OpMode")
 class RedTele : LinearOpMode() {
@@ -56,7 +55,7 @@ class RedTele : LinearOpMode() {
          */
         var driveOverrideSafetyTimer = 0L
 
-        robot.holder.state = Servo.State.STOP
+        robot.holder.state = Servo.State.STOP1
 
         var shotsRequested = 0
         var firstShot = false

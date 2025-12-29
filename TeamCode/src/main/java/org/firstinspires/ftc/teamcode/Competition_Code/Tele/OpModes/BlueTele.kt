@@ -6,7 +6,6 @@ import com.acmerobotics.roadrunner.Action
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.util.ElapsedTime
-import org.firstinspires.ftc.teamcode.Competition_Code.Actions.Comp1Actions
 import org.firstinspires.ftc.teamcode.Competition_Code.Actions.Comp2Actions
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoGlobals
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoPoints
@@ -58,7 +57,7 @@ class BlueTele : LinearOpMode() {
          * This is only used for telemetry, nothing more
          */
         var driveOverrideSafetyTimer = 0L
-        robot.holder.state = Servo.State.STOP
+        robot.holder.state = Servo.State.STOP1
         var shotsRequested = 0
         var firstShot = false
         var shooting = false

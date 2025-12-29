@@ -44,7 +44,7 @@ public class Comp2Actions {
         kicker.update();
         holder.update();
 
-        launcher.updatePID();
+        launcher.update();
 
         telemetry.addData("Ball1 Is Green?", ball1.isGreen());
         telemetry.addData("Ball1 Is Purple?", ball1.isPurple());
@@ -166,6 +166,7 @@ public class Comp2Actions {
             // reverse intake system
             intake.state = State.REVERSE;
             pulley.state = Pulley.State.Reverse;
+            launcher.reverse();
 
             // We return false because this only has to run once
             return false;
@@ -191,7 +192,7 @@ public class Comp2Actions {
 
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-            holder.state = Servo.State.STOP;
+            holder.state = Servo.State.STOP1;
 
             // We return false because this only has to run once
             return false;
@@ -213,7 +214,7 @@ public class Comp2Actions {
 
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-            kicker.state = Servo.State.Block;
+            kicker.state = Servo.State.STOP2;
             // We return false because this only has to run once
             return false;
         }
@@ -284,7 +285,7 @@ public class Comp2Actions {
                 if(timer.milliseconds()>=pulleyShootTime){
                     pulley.state = Pulley.State.Off;
                     intake.state = State.STOPPED;
-                    holder.state = Servo.State.STOP;
+                    holder.state = Servo.State.STOP1;
 
                     return false;
                 }
