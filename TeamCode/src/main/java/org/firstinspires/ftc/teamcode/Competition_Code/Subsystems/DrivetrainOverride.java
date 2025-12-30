@@ -55,11 +55,12 @@ public class DrivetrainOverride {
         drive.getRightFront().setPower(rotY + rotX - turn);
         drive.getRightBack().setPower(rotY - rotX - turn);
 
-        if (abs(axialError) <= 1.0 &&
-            abs(latError) <= 1.0 &&
-            abs(headingError) <= Math.toRadians(5.0)) {
-            stopOverriding();
-        }
+        //removed so that it will continue to hold the position if bumped
+//        if (abs(axialError) <= 1.0 &&
+//            abs(latError) <= 1.0 &&
+//            abs(headingError) <= Math.toRadians(5.0)) {
+//            stopOverriding();
+//        }
     }
 
     /// This function just checks to see if the user would like

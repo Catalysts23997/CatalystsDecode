@@ -27,7 +27,7 @@ class TestBlueAuto : LinearOpMode() {
         AutoGlobals.targetRobotPositon = AutoPoints.StartBlue.pose
 
         val localizer = Localizer(hardwareMap, AutoGlobals.targetRobotPositon)
-        val drive = Drivetrain(hardwareMap)
+        val drive = Drivetrain(hardwareMap, Drivetrain.Alliance.Red)
         val robot = Comp1Actions(hardwareMap, telemetry)
 
         sleep(100)

@@ -15,7 +15,6 @@ import kotlin.math.cos
 import kotlin.math.sin
 
 
-//todo Make Java version
 class DrivetrainNoOdo(hwMap: HardwareMap) : SubSystems {
     enum class States {
         Manual, Auto
@@ -31,7 +30,6 @@ class DrivetrainNoOdo(hwMap: HardwareMap) : SubSystems {
 
     override var state = States.Manual
 
-    //todo note it will differ on new dt - (use customTest)
     val leftFront: DcMotor = hwMap.get(DcMotor::class.java, "backRight") //good
     val rightBack: DcMotor = hwMap.get(DcMotor::class.java, "frontLeft") // good
     val leftBack: DcMotor = hwMap.get(DcMotor::class.java, "frontRight") // good
@@ -103,7 +101,6 @@ class DrivetrainNoOdo(hwMap: HardwareMap) : SubSystems {
         val rotX = -axial * cos(h.yaw) - lateral * sin(h.yaw)
         val rotY = -axial * sin(h.yaw) + lateral * cos(h.yaw)
 
-        //todo add rotational pid
 
         leftFront.power = (rotY - rotX + turn)
         leftBack.power = (rotY + rotX + turn)

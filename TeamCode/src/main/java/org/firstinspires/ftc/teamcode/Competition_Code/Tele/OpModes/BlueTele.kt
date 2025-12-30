@@ -43,7 +43,7 @@ class BlueTele : LinearOpMode() {
 
         val robot = Comp2Actions(hardwareMap, telemetry)
 
-        val drive = Drivetrain(hardwareMap)
+        val drive = Drivetrain(hardwareMap, Drivetrain.Alliance.Blue)
         val localizer = Localizer(hardwareMap, TeleGlobals.currentPosition)
 
         telemetry.addData("Robot at zero:",  Localizer.pose)
@@ -83,59 +83,6 @@ class BlueTele : LinearOpMode() {
                 balls = 0  // Reset intake counter after shooting
                 buttonTimer.reset()
             }
-
-//            val triggerPressed = gamepad1.right_trigger > 0.5
-//            if (triggerPressed && !lastTriggerPressed && buttonTimer.milliseconds() > buttonDebounce) {
-//                shotsRequested += 1
-//                buttonTimer.reset()
-//            }
-//
-//            lastTriggerPressed = triggerPressed
-//
-//            if (!shooting && shotsRequested > 0) {
-//                runningActions.add(robot.ShootFirstBall())
-//                shotTimer.reset()
-//                shooting = true
-//                firstShot = true
-//            }
-//
-//            if (shooting) {
-//                val requiredTime = if (firstShot) 3.0 else 2.0
-//
-//                if (shotTimer.seconds() >= requiredTime) {
-//                    shotsRequested -= 1
-//
-//                    if (shotsRequested == 0) {
-//                        runningActions.add(robot.StopShooter)
-//                        shooting = false
-//                    } else {
-//                        runningActions.add(robot.ShootBall())
-//                        firstShot = false
-//                        shotTimer.reset()
-//                    }
-//                }
-//            }
-
-            if (gamepad1.right_bumper && buttonTimer.milliseconds() >= buttonDebounce){
-                robot.holder.launchpos +=0.01
-                buttonTimer.reset()
-
-            }
-            if (gamepad1.left_bumper && buttonTimer.milliseconds() >= buttonDebounce) {
-                robot.holder.launchpos -= 0.01
-                buttonTimer.reset()
-
-            }
-
-            if (gamepad1.dpad_right && buttonTimer.milliseconds() >= buttonDebounce){
-                robot.launchRPM +=100
-                buttonTimer.reset()
-            }
-            if (gamepad1.dpad_left && buttonTimer.milliseconds() >= buttonDebounce){
-                robot.launchRPM -=100
-                buttonTimer.reset()
-            }
-
             if (gamepad1.dpad_down && buttonTimer.milliseconds() >= buttonDebounce) {
                 if(!reversing){
                     runningActions.add(robot.ReverseIntake)
@@ -163,6 +110,26 @@ class BlueTele : LinearOpMode() {
                     reversing = false
                 }
 
+                buttonTimer.reset()
+            }
+
+//            if (gamepad1.right_bumper && buttonTimer.milliseconds() >= buttonDebounce){
+//                robot.holder.launchpos +=0.01
+//                buttonTimer.reset()
+//
+//            }
+//            if (gamepad1.left_bumper && buttonTimer.milliseconds() >= buttonDebounce) {
+//                robot.holder.launchpos -= 0.01
+//                buttonTimer.reset()
+//
+//            }
+
+            if (gamepad1.right_bumper && buttonTimer.milliseconds() >= buttonDebounce){
+                robot.launchRPM +=100
+                buttonTimer.reset()
+            }
+            if (gamepad1.left_bumper && buttonTimer.milliseconds() >= buttonDebounce){
+                robot.launchRPM -=100
                 buttonTimer.reset()
             }
 
@@ -200,7 +167,6 @@ class BlueTele : LinearOpMode() {
                 localizer.resetOdo()
             }
 
-
             localizer.update()
             robot.update()
 
@@ -223,7 +189,7 @@ class BlueTele : LinearOpMode() {
                         gamepad1.left_stick_x,
                         -gamepad1.left_stick_y,
                         gamepad1.right_stick_x
-                    ), -Math.PI / 2 // !!!! note that red has + PI/2
+                    )
                 )
             }
 

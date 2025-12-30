@@ -22,7 +22,7 @@ class BlueMoveFar : LinearOpMode() {
         AutoGlobals.targetRobotPositon = AutoPoints.StartFarBlue.pose
 
         val localizer = Localizer(hardwareMap, AutoGlobals.targetRobotPositon)
-        val drive = Drivetrain(hardwareMap)
+        val drive = Drivetrain(hardwareMap, Drivetrain.Alliance.Blue)
         val robot = Comp1Actions(hardwareMap, telemetry)
 
         sleep(100)

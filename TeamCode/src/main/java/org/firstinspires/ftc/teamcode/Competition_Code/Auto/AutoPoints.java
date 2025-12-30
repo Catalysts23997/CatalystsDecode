@@ -1,13 +1,12 @@
 package org.firstinspires.ftc.teamcode.Competition_Code.Auto;
 
-import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Vector2d;
 
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses;
 
 
 public enum AutoPoints {
-    StartBlue(new Vector2d(-39,63), 0.0), // todo update new start position (robto has to touch tape)
+    StartBlue(new Vector2d(-39,63), 0.0),
     AprilTagBlue(new Vector2d(-15,45), Math.PI/8),
     LaunchBlue(new Vector2d(-18,17.5), 3*Math.PI/4),
     LaunchOffBlue(new Vector2d(-12,55), 9*Math.PI/16),

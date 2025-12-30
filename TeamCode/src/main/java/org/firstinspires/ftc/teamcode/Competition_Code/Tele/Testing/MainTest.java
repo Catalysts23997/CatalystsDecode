@@ -30,7 +30,7 @@ public class MainTest extends LinearOpMode {
     public void runOpMode() {
         // Get the handles to our subsystems!
         intake = new Intake(hardwareMap);
-        drive = new Drivetrain(hardwareMap);
+        drive = new Drivetrain(hardwareMap, Drivetrain.Alliance.Blue);
         launcher = new Launcher(hardwareMap);
 
         Localizer localizer = new Localizer(hardwareMap, new Poses(0.0, 0.0, 0.0));

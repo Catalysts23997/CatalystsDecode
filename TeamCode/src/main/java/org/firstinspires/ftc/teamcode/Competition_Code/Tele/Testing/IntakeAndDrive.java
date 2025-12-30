@@ -26,10 +26,9 @@ public class IntakeAndDrive extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         // Create a new instance of the Intake subsystem
         intake = new Intake(hardwareMap);
-        drive = new Drivetrain(hardwareMap);
+        drive = new Drivetrain(hardwareMap, Drivetrain.Alliance.Blue);
 
         Localizer localizer = new Localizer(hardwareMap, new Poses(0.0, 0.0, 0.0));
-        Drivetrain drive = new Drivetrain(hardwareMap);
 
         // Wait for the user to start the opmode
         waitForStart();

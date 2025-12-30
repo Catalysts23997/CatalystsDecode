@@ -15,10 +15,10 @@ import kotlin.math.cos
 import kotlin.math.sin
 
 
-//todo Make Java version
-class Drivetrain(hwMap: HardwareMap) : SubSystems {
-    enum class States {
-        Manual, Auto
+class Drivetrain(hwMap: HardwareMap, alliance: Alliance) : SubSystems {
+
+    enum class Alliance {
+        Blue, Red
     }
 
     companion object {
@@ -29,32 +29,18 @@ class Drivetrain(hwMap: HardwareMap) : SubSystems {
     val Ypid = PIDController(PIDParams(0.2, 0.0001, 0.02, 0.0))
     val Rpid = PIDController(PIDParams(1.4, 0.0001, 0.08, 0.0))
 
-    override var state = States.Manual
-
-    //todo note it will differ on new dt - (use customTest)
     val leftFront: DcMotor = hwMap.get(DcMotor::class.java, "frontLeft") //good
     val rightBack: DcMotor = hwMap.get(DcMotor::class.java, "backRight") // good
     val leftBack: DcMotor = hwMap.get(DcMotor::class.java, "backLeft") // good
     val rightFront: DcMotor = hwMap.get(DcMotor::class.java, "frontRight")
 
-    fun update(gamepadInput: ArrayList<Float>, offset: Double) {
+    var offset: Double = 0.0
 
-        when (state) {
-            States.Auto -> {
-                //leave empty
-            }
+    override fun update(gamepadInput: ArrayList<Float>) {
 
-            States.Manual -> {
-                driveManual(gamepadInput, offset)
-            }
-        }
+        driveManual(gamepadInput)
+
     }
-//    fun setPID(p: DoubleArray, i: DoubleArray, d: DoubleArray) {
-//        val controllers = listOf(Xpid, Ypid, Rpid)
-//        controllers.forEachIndexed { index, leftController ->
-//            leftController.params = PIDParams(p[index], i[index], d[index], 0.0)
-//        }
-//    }
 
     init {
         leftBack.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
@@ -66,8 +52,11 @@ class Drivetrain(hwMap: HardwareMap) : SubSystems {
         rightFront.direction = DcMotorSimple.Direction.FORWARD
         rightBack.direction = DcMotorSimple.Direction.FORWARD
 
-        instance = this
+        offset = if (alliance == Alliance.Red){
+            Math.PI
+        } else -Math.PI
 
+        instance = this
     }
 
     fun WheelDebugger(x: Int) {
@@ -82,12 +71,12 @@ class Drivetrain(hwMap: HardwareMap) : SubSystems {
         rightBack.power = 0.0
     }
 
-    private fun driveManual(gamepadInput: ArrayList<Float>, offset:Double) {
+    private fun driveManual(gamepadInput: ArrayList<Float>) {
         val input = gamepadInput.map { smoothGamepadInput(it.toDouble()) }
         Log.d("f", input.toString())
         val (axial, lateral, turn) = input
 
-        val h = -Localizer.pose.heading +offset // todo Why is there offset here??????
+        val h = -Localizer.pose.heading + offset
         val rotX = -axial * cos(h) - lateral * sin(h)
         val rotY = -axial * sin(h) + lateral * cos(h)
 
@@ -97,7 +86,4 @@ class Drivetrain(hwMap: HardwareMap) : SubSystems {
         rightFront.power = (rotY + rotX - turn)
         rightBack.power = (rotY - rotX - turn)
     }
-
-
-
 }
