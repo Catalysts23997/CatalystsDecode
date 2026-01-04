@@ -10,12 +10,9 @@ public class LauncherPoint {
     // in one place.
     public static final LauncherPoint[] blueLauncherPoints = new LauncherPoint[] {
         new LauncherPoint(new Vector2d(-18, 17.5), 3 * Math.PI / 4, 3500, true, "Blue Main"),
-        new LauncherPoint(new Vector2d(-12, 55), 9 * Math.PI / 16, 3500, true, "Blue Alternative 1"),
-        new LauncherPoint(new Vector2d(-57, 16.3), 0, 3500, true, "Blue Alternative 2"),
-        new LauncherPoint(new Vector2d(-29.4, 63.2), -(Math.PI / 3), 3500, true, "Blue Alternative 3"),
-        new LauncherPoint(new Vector2d(0, -21.3), -(Math.PI / 2), 3500, true, "Blue Alternative 4"),
-        new LauncherPoint(new Vector2d(38, 38), -(Math.PI / 2.3), 3500, true, "Blue Alternative 5"),
-        new LauncherPoint(new Vector2d(18, 17.5), -(3 * Math.PI / 4), 3500, true, "Blue Alternative 6"), // yes, this is usually going to be the other team's main point :D
+        new LauncherPoint(new Vector2d(-12, 55), 9 * Math.PI / 16, 3000, false, "Blue Alternative 1"),
+        new LauncherPoint(new Vector2d(25, 55), 17*Math.PI/32, 4000, false, "Blue Alternative 2"),
+        new LauncherPoint(new Vector2d(18, 17.5), 11*Math.PI/16, 4000, false, "Blue Alternative 3"), // yes, this is usually going to be the other team's main point :D
     };
 
     public static final LauncherPoint[] redLauncherPoints = flipPoints(blueLauncherPoints, "Blue", "Red");
@@ -28,7 +25,7 @@ public class LauncherPoint {
             LauncherPoint point = points[i];
 
             newPoints[i] = new LauncherPoint(
-                new Vector2d(-point.location.x, -point.location.y),
+                new Vector2d(-point.location.x, point.location.y),
                 -point.rotation,
                 point.launcherRPM,
                 point.takePriority,
@@ -41,14 +38,14 @@ public class LauncherPoint {
 
     private final Vector2d location;
     private final double rotation;
-    private final int launcherRPM;
+    private final double launcherRPM;
     private final boolean takePriority;
     public final String displayName;
 
     public LauncherPoint(
         Vector2d location,
         double rotation,
-        int launcherRPM,
+        double launcherRPM,
         boolean takePriority,
         String displayName
     ) {
@@ -71,7 +68,7 @@ public class LauncherPoint {
         return takePriority;
     }
 
-    public int getLauncherRPM() {
+    public double getLauncherRPM() {
         return launcherRPM;
     }
 

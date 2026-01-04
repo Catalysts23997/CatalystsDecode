@@ -67,6 +67,12 @@ class PIDControllerVelocity(private var params: PIDParams) {
         return controlEffort
     }
 
+    fun reset(){
+        prevError = 0.0
+        integral = 0.0
+        pastTime = 0.0
+    }
+
     fun setPID(p: Double, i: Double, d: Double, f: Double) {
         params = PIDParams(p, i, d, f)
     }

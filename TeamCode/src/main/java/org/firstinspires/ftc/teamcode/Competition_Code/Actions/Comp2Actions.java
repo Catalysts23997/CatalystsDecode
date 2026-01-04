@@ -313,7 +313,7 @@ public class Comp2Actions {
                 double left = launcher.getLeftRpm();
                 double right = launcher.getRightRpm();
 
-                boolean atSpeed = launcher.atTargetRPM(launcher.position.rpm + launcher.change, toleranceRPM);
+                boolean atSpeed = launcher.atTargetRPM(launcher.getGoalRPM(), toleranceRPM);
 
                 telemetry.addData("Launcher Left RPM", left);
                 telemetry.addData("Launcher Right RPM", right);

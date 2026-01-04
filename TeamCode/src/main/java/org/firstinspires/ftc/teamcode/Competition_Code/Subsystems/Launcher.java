@@ -36,7 +36,7 @@ public class Launcher {
 
     Mode mode = Mode.POWER;
 
-    public int targetRPM = 3500;
+    public double baseRPM = 3500.0;
 
     ElapsedTime timer = new ElapsedTime();
 
@@ -51,8 +51,6 @@ public class Launcher {
 
 //    PIDFCoefficients leftCoefficients = new PIDFCoefficients(105.0, 0.0, 8.4, 32767.0/leftMaxTPS);
 //    PIDFCoefficients rightCoefficients = new PIDFCoefficients(105.0, 0.0, 8.4, 32767.0/rightMaxTPS);
-
-    boolean testing = false;
 
     /// Declare a new instance of the launcher system.
     ///
@@ -104,15 +102,11 @@ public class Launcher {
 //        rightLauncher.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, rightCoefficients);
     }
 
-    public void setRPM(double rpm) {
-        // Clamp the proportion between 0.0 and 1.0
-        this.goalRpm = rpm;
-        goalTps = (rpm/60.0)*ticksPerRev;
-        mode = Mode.VELOCITY;
-        testing = true;
+    public double getGoalRPM() {
+        return goalRpm;
     }
+
     public void start() {
-        testing = false;
         mode = Mode.VELOCITY;
     }
 
@@ -181,15 +175,22 @@ public class Launcher {
 //    }
 
     public int change = 0;
+    double lastRPM;
 
     public void update(){
         leftRpm = 60.0 /ticksPerRev * leftLauncher.getVelocity();
         rightRpm = 60.0 /ticksPerRev * rightLauncher.getVelocity();
 
-        if(!testing){
-            goalRpm = targetRPM + change;
-            goalTps = (goalRpm/60.0)*ticksPerRev;
+        goalRpm = baseRPM + change;
+        goalTps = (goalRpm/60.0)*ticksPerRev;
+
+        if(lastRPM!=goalRpm){
+            leftController.reset();
+            rightController.reset();
         }
+
+        lastRPM = goalRpm;
+
 
         switch (mode){
             case VELOCITY: updatePID(); break;

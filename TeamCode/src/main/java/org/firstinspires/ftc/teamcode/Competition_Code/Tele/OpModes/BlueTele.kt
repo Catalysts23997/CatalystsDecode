@@ -165,10 +165,12 @@ class BlueTele : LinearOpMode() {
 
             // BEGIN LAUNCHER DRIVETRAIN CODE
 
-            if (gamepad1.dpad_right) {
+            if (gamepad1.dpad_right && buttonTimer.milliseconds() >= buttonDebounce) {
                 cycleLauncherPoint(true)
-            } else if (gamepad1.dpad_left) {
+                buttonTimer.reset()
+            } else if (gamepad1.dpad_left && buttonTimer.milliseconds() >= buttonDebounce) {
                 cycleLauncherPoint(false)
+                buttonTimer.reset()
             }
 
             if(gamepad1.y){
@@ -203,8 +205,8 @@ class BlueTele : LinearOpMode() {
             }
 
             telemetry.addData("Current Launcher Point", currentLaunchPoint.displayName)
-            telemetry.addData("Launcher rpm goal", robot.launcher.targetRPM + robot.launcher.change)
-            telemetry.addData("Launcher at RPM?", robot.launcher.atTargetRPM((robot.launcher.targetRPM + robot.launcher.change).toDouble(), 100.0))
+            telemetry.addData("Launcher rpm goal", robot.launcher.goalRPM)
+            telemetry.addData("Launcher at RPM?", robot.launcher.atTargetRPM(robot.launcher.goalRPM, 100.0))
             telemetry.addData("servopos", robot.holder.launchpos)
 
             telemetry.addData("Current Pose", Localizer.pose.toString())
@@ -229,6 +231,6 @@ class BlueTele : LinearOpMode() {
         }
 
         currentLaunchPoint = LauncherPoint.blueLauncherPoints[currentLaunchPointIndex]
-        robot.launcher.targetRPM = currentLaunchPoint.launcherRPM
+        robot.launcher.baseRPM = currentLaunchPoint.launcherRPM
     }
 }

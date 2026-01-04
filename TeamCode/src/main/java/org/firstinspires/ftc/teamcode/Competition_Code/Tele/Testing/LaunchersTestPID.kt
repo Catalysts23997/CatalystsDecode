@@ -43,7 +43,7 @@ LaunchersTestPID: LinearOpMode() {
             launcher.setLeftPidParams(leftParams)
             launcher.setRightPidParams(rightParams)
 
-            launcher.setRPM(targetRpm)
+            launcher.baseRPM = targetRpm
             launcher.update()
 
             val packet = TelemetryPacket()

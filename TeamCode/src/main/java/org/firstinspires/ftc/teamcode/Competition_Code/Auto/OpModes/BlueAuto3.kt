@@ -36,7 +36,7 @@ class BlueAuto3 : LinearOpMode() {
         robot.holder.state = Servo.State.STOP1
         robot.update()
 
-        robot.launcher.position = Launcher.Positions.Alternate
+        robot.launcher.change = -400
 
         waitForStart()
 
