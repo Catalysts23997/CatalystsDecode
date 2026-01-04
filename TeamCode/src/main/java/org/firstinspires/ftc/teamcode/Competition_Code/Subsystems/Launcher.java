@@ -4,8 +4,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.MotorControlAlgorithm;
-import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -38,7 +36,7 @@ public class Launcher {
 
     Mode mode = Mode.POWER;
 
-    public Positions position = Positions.Normal;
+    public int targetRPM = 3500;
 
     ElapsedTime timer = new ElapsedTime();
 
@@ -189,7 +187,7 @@ public class Launcher {
         rightRpm = 60.0 /ticksPerRev * rightLauncher.getVelocity();
 
         if(!testing){
-            goalRpm = position.rpm + change;
+            goalRpm = targetRPM + change;
             goalTps = (goalRpm/60.0)*ticksPerRev;
         }
 
@@ -208,15 +206,4 @@ public class Launcher {
         POWER,
         VELOCITY
     }
-
-    public enum Positions {
-        Normal(3500),
-        Alternate(3000);
-
-        public final int rpm;
-        Positions(int rpm) {
-            this.rpm = rpm;
-        }
-    }
-
 }

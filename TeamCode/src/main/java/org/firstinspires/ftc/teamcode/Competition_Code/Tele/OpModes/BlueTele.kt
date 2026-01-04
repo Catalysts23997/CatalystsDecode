@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.util.ElapsedTime
 import org.firstinspires.ftc.teamcode.Competition_Code.Actions.Comp2Actions
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoGlobals
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoPoints
-import org.firstinspires.ftc.teamcode.Competition_Code.Auto.LauncherPoint
+import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.LauncherPoint
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Drivetrain
 import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localizer
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.DrivetrainOverride
@@ -23,7 +23,8 @@ class BlueTele : LinearOpMode() {
     // get the current launcher point
     var currentLaunchPointIndex = LauncherPoint.getPriorityPoint(LauncherPoint.blueLauncherPoints)
     var currentLaunchPoint: LauncherPoint = LauncherPoint.blueLauncherPoints[currentLaunchPointIndex]
-    
+    lateinit var robot: Comp2Actions // TODO: verify that this works
+
     override fun runOpMode() {
         val dash: FtcDashboard = FtcDashboard.getInstance()
         telemetry = dash.telemetry
@@ -44,7 +45,7 @@ class BlueTele : LinearOpMode() {
         val buttonDebounce = 200 // ms minimum between button presses
         val buttonTimer = ElapsedTime()
 
-        val robot = Comp2Actions(hardwareMap, telemetry)
+        robot = Comp2Actions(hardwareMap, telemetry)
 
         val drive = Drivetrain(hardwareMap, Drivetrain.Alliance.Blue)
         val localizer = Localizer(hardwareMap, TeleGlobals.currentPosition)
@@ -202,8 +203,8 @@ class BlueTele : LinearOpMode() {
             }
 
             telemetry.addData("Current Launcher Point", currentLaunchPoint.displayName)
-            telemetry.addData("Launcher rpm goal", robot.launcher.position.rpm + robot.launcher.change)
-            telemetry.addData("Launcher at RPM?", robot.launcher.atTargetRPM((robot.launcher.position.rpm + robot.launcher.change).toDouble(), 100.0))
+            telemetry.addData("Launcher rpm goal", robot.launcher.targetRPM + robot.launcher.change)
+            telemetry.addData("Launcher at RPM?", robot.launcher.atTargetRPM((robot.launcher.targetRPM + robot.launcher.change).toDouble(), 100.0))
             telemetry.addData("servopos", robot.holder.launchpos)
 
             telemetry.addData("Current Pose", Localizer.pose.toString())
@@ -228,5 +229,6 @@ class BlueTele : LinearOpMode() {
         }
 
         currentLaunchPoint = LauncherPoint.blueLauncherPoints[currentLaunchPointIndex]
+        robot.launcher.targetRPM = currentLaunchPoint.launcherRPM
     }
 }
