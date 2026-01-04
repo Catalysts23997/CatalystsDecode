@@ -31,8 +31,6 @@ class RedAuto12 : LinearOpMode() {
         robot.holder.state = Servo.State.STOP1
         robot.update()
 
-
-
         waitForStart()
 
         AutoGlobals.AutonomousRan = true

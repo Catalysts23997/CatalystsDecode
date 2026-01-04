@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import org.firstinspires.ftc.teamcode.Competition_Code.Actions.Comp1Actions
 import com.acmerobotics.roadrunner.Action
+import org.firstinspires.ftc.teamcode.Competition_Code.Actions.Comp2Actions
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoGlobals
 
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoPoints
@@ -15,6 +16,7 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Auto.RunToExactForever
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.SetDriveTarget
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Drivetrain
 import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localizer
+import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Launcher
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Servo
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
 
@@ -27,14 +29,14 @@ class BlueAuto3 : LinearOpMode() {
 
         val localizer = Localizer(hardwareMap, AutoGlobals.targetRobotPositon)
         val drive = Drivetrain(hardwareMap, Drivetrain.Alliance.Blue)
-        val robot = Comp1Actions(hardwareMap, telemetry)
+        val robot = Comp2Actions(hardwareMap, telemetry)
 
         sleep(100)
         localizer.update()
         robot.holder.state = Servo.State.STOP1
         robot.update()
 
-
+        robot.launcher.position = Launcher.Positions.Alternate
 
         waitForStart()
 

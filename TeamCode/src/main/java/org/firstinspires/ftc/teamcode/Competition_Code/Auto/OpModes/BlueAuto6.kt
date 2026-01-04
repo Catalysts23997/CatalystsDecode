@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import org.firstinspires.ftc.teamcode.Competition_Code.Actions.Comp1Actions
 import com.acmerobotics.roadrunner.Action
 import com.qualcomm.robotcore.eventloop.opmode.Disabled
+import org.firstinspires.ftc.teamcode.Competition_Code.Actions.Comp2Actions
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoGlobals
 
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoPoints
@@ -28,7 +29,7 @@ class BlueAuto6 : LinearOpMode() {
 
         val localizer = Localizer(hardwareMap, AutoGlobals.targetRobotPositon)
         val drive = Drivetrain(hardwareMap, Drivetrain.Alliance.Blue)
-        val robot = Comp1Actions(hardwareMap, telemetry)
+        val robot = Comp2Actions(hardwareMap, telemetry)
 
         sleep(100)
         localizer.update()
