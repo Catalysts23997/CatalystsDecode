@@ -10,6 +10,7 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Actions.Comp1Actions
 import org.firstinspires.ftc.teamcode.Competition_Code.Actions.Comp2Actions
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoGlobals
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoPoints
+import org.firstinspires.ftc.teamcode.Competition_Code.Auto.LauncherPoint
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Drivetrain
 import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localizer
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.DrivetrainOverride
@@ -18,6 +19,10 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Tele.TeleGlobals
 
 @TeleOp(name = "RedTele", group = "Linear OpMode")
 class RedTele : LinearOpMode() {
+
+    // get the current launcher point
+    var currentLaunchPointIndex = LauncherPoint.getPriorityPoint(LauncherPoint.redLauncherPoints)
+    var currentLaunchPoint: LauncherPoint = LauncherPoint.redLauncherPoints[currentLaunchPointIndex]
 
     override fun runOpMode() {
 
@@ -172,9 +177,20 @@ class RedTele : LinearOpMode() {
             localizer.update()
             robot.update()
 
-            if(gamepad1.y){
-                driveOverride.beginOverriding(AutoPoints.LaunchRed.pose)
+            // BEGIN LAUNCHER DRIVETRAIN CODE
+
+            if (gamepad1.dpad_right) {
+                cycleLauncherPoint(true)
+            } else if (gamepad1.dpad_left) {
+                cycleLauncherPoint(false)
             }
+
+            if(gamepad1.y){
+                driveOverride.beginOverriding(currentLaunchPoint.pose)
+            }
+
+            // END LAUNCHER DRIVETRAIN CODE
+
             if(gamepad1.b){
                 driveOverride.beginOverriding(AutoPoints.EndgameRed.pose)
             }
@@ -204,5 +220,23 @@ class RedTele : LinearOpMode() {
 
             telemetry.update()
         }
+    }
+
+    fun cycleLauncherPoint(forwards: Boolean) {
+        if (forwards) {
+            currentLaunchPointIndex += 1
+
+            if (currentLaunchPointIndex >= LauncherPoint.redLauncherPoints.size) {
+                currentLaunchPointIndex = 0;
+            }
+        } else {
+            currentLaunchPointIndex -= 1
+
+            if (currentLaunchPointIndex < 0) {
+                currentLaunchPointIndex = LauncherPoint.redLauncherPoints.size - 1;
+            }
+        }
+
+        currentLaunchPoint = LauncherPoint.redLauncherPoints[currentLaunchPointIndex]
     }
 }

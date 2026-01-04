@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.util.ElapsedTime
 import org.firstinspires.ftc.teamcode.Competition_Code.Actions.Comp2Actions
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoGlobals
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoPoints
+import org.firstinspires.ftc.teamcode.Competition_Code.Auto.LauncherPoint
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Drivetrain
 import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localizer
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.DrivetrainOverride
@@ -18,6 +19,10 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Tele.TeleGlobals
 @TeleOp(name = "BlueTele", group = "Linear OpMode")
 class BlueTele : LinearOpMode() {
 
+    // get the current launcher point
+    var currentLaunchPointIndex = LauncherPoint.getPriorityPoint(LauncherPoint.blueLauncherPoints)
+    var currentLaunchPoint: LauncherPoint = LauncherPoint.blueLauncherPoints[currentLaunchPointIndex]
+    
     override fun runOpMode() {
         val dash: FtcDashboard = FtcDashboard.getInstance()
         telemetry = dash.telemetry
@@ -51,7 +56,6 @@ class BlueTele : LinearOpMode() {
         telemetry.addData("Robot at original position:",  Localizer.pose)
 
         val driveOverride = DrivetrainOverride()
-
 
         /**
          * This is only used for telemetry, nothing more
@@ -170,9 +174,20 @@ class BlueTele : LinearOpMode() {
             localizer.update()
             robot.update()
 
-            if(gamepad1.y){
-                driveOverride.beginOverriding(AutoPoints.LaunchBlue.pose)
+            // BEGIN LAUNCHER DRIVETRAIN CODE
+
+            if (gamepad1.dpad_right) {
+                cycleLauncherPoint(true)
+            } else if (gamepad1.dpad_left) {
+                cycleLauncherPoint(false)
             }
+
+            if(gamepad1.y){
+                driveOverride.beginOverriding(currentLaunchPoint.pose)
+            }
+
+            // END LAUNCHER DRIVETRAIN CODE
+
             if(gamepad1.b){
                 driveOverride.beginOverriding(AutoPoints.EndgameBlue.pose)
             }
@@ -198,6 +213,7 @@ class BlueTele : LinearOpMode() {
                 telemetry.addData("Drive train override safety was tripped!", overrideTimeLeft)
             }
 
+            telemetry.addData("Current Launcher Point", currentLaunchPoint.displayName)
             telemetry.addData("Launcher power", robot.launchRPM)
             telemetry.addData("servopos", robot.holder.launchpos)
 
@@ -205,7 +221,23 @@ class BlueTele : LinearOpMode() {
 
             telemetry.update()
         }
+    }
 
+    fun cycleLauncherPoint(forwards: Boolean) {
+        if (forwards) {
+            currentLaunchPointIndex += 1
 
+            if (currentLaunchPointIndex >= LauncherPoint.blueLauncherPoints.size) {
+                currentLaunchPointIndex = 0;
+            }
+        } else {
+            currentLaunchPointIndex -= 1
+
+            if (currentLaunchPointIndex < 0) {
+                currentLaunchPointIndex = LauncherPoint.blueLauncherPoints.size - 1;
+            }
+        }
+
+        currentLaunchPoint = LauncherPoint.blueLauncherPoints[currentLaunchPointIndex]
     }
 }
