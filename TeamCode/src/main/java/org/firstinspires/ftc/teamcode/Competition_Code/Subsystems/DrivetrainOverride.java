@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Competition_Code.Subsystems;
 
+import static org.firstinspires.ftc.teamcode.Competition_Code.Utilities.NormalizeKt.normalize;
 import static java.lang.Math.abs;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
@@ -12,6 +13,8 @@ public class DrivetrainOverride {
 
     private boolean shouldOverridingInput = false;
     private Poses target;
+
+    double k = 1.0;
 
     public boolean shouldOverrideInput() {
         return shouldOverridingInput;
@@ -50,10 +53,19 @@ public class DrivetrainOverride {
         double rotX = -axial * Math.cos(heading) - lateral * Math.sin(heading);
         double rotY = -axial * Math.sin(heading) + lateral * Math.cos(heading);
 
-        drive.getLeftFront().setPower(rotY - rotX + turn);
-        drive.getLeftBack().setPower(rotY + rotX + turn);
-        drive.getRightFront().setPower(rotY + rotX - turn);
-        drive.getRightBack().setPower(rotY - rotX - turn);
+        double powerLF = k*(rotY - rotX + turn);
+        double powerLB = k*(rotY + rotX + turn);
+        double powerRF = k*(rotY + rotX - turn);
+        double powerRB= k*(rotY - rotX - turn);
+
+        double[] powers = {powerLF, powerLB, powerRF, powerRB};
+
+        powers = normalize(powers, 1.0);
+
+        drive.getLeftFront().setPower(powers[0]);
+        drive.getLeftBack().setPower(powers[1]);
+        drive.getRightFront().setPower(powers[2]);
+        drive.getRightBack().setPower(powers[3]);
 
         //removed so that it will continue to hold the position if bumped
 //        if (abs(axialError) <= 1.0 &&
@@ -77,6 +89,10 @@ public class DrivetrainOverride {
 
             return true;
         }
+
+        if(gamepad.y || gamepad.b){
+            k = 1.5;
+        } else k = 1;
 
         return false;
     }

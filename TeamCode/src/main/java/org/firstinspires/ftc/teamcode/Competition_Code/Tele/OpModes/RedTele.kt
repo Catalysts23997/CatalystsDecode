@@ -63,12 +63,6 @@ class RedTele : LinearOpMode() {
 
         robot.holder.state = Servo.State.STOP1
 
-        var shotsRequested = 0
-        var firstShot = false
-        var shooting = false
-        val shotTimer = ElapsedTime()
-        var lastTriggerPressed = false
-
         telemetry.update()
         waitForStart()
 
@@ -133,11 +127,11 @@ class RedTele : LinearOpMode() {
 //            }
 
             if (gamepad1.right_bumper && buttonTimer.milliseconds() >= buttonDebounce){
-                robot.launchRPM += 100
+                robot.launcher.change += 100
                 buttonTimer.reset()
             }
             if (gamepad1.left_bumper && buttonTimer.milliseconds() >= buttonDebounce){
-                robot.launchRPM -= 100
+                robot.launcher.change -= 100
                 buttonTimer.reset()
             }
 
@@ -216,6 +210,9 @@ class RedTele : LinearOpMode() {
                 telemetry.addData("Drive train override safety was tripped!", overrideTimeLeft)
             }
 
+            telemetry.addData("Launcher rpm goal", robot.launcher.position.rpm + robot.launcher.change)
+            telemetry.addData("Launcher at RPM?", robot.launcher.atTargetRPM((robot.launcher.position.rpm + robot.launcher.change).toDouble(), 100.0))
+            telemetry.addData("servopos", robot.holder.launchpos)
             telemetry.addData("Current Pose", Localizer.pose.toString())
 
             telemetry.update()

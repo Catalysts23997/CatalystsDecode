@@ -28,7 +28,7 @@ public class Comp2Actions {
     public Servo kicker;
     public Servo holder;
 
-    Intake intake;
+    public Intake intake;
     Pulley pulley;
 
     public Launcher launcher;
@@ -230,9 +230,7 @@ public class Comp2Actions {
     };
 
     //shooting stuff
-    public double launchRPM = 3500;
-
-    double speedUpTime = 1200;      // time for flywheel to reach speed
+    double speedUpTime = 1300;      // time for flywheel to reach speed
     double servoReleaseTime = 800;  // ms for servo release
     double pulleyShootTime = 2400;  // ms for pulley to shoot 3 balls
 
@@ -240,7 +238,7 @@ public class Comp2Actions {
 
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-            launcher.setRPM(launchRPM);
+            launcher.start();
 
             // We return false because this only has to run once
             return false;
@@ -300,6 +298,8 @@ public class Comp2Actions {
         return new Action() {
 
             private final ElapsedTime timer = new ElapsedTime();
+            private final ElapsedTime stableTimer = new ElapsedTime();
+
             private boolean initialized = false;
 
             @Override
@@ -313,17 +313,17 @@ public class Comp2Actions {
                 double left = launcher.getLeftRpm();
                 double right = launcher.getRightRpm();
 
-                boolean atSpeed = launcher.atTargetRPM(launchRPM, toleranceRPM);
+                boolean atSpeed = launcher.atTargetRPM(launcher.position.rpm + launcher.change, toleranceRPM);
 
-                packet.put("Launcher Left RPM", left);
-                packet.put("Launcher Right RPM", right);
-                packet.put("Launcher At Speed", atSpeed);
-                packet.put("Launcher Timer (ms)", timer.milliseconds());
+                telemetry.addData("Launcher Left RPM", left);
+                telemetry.addData("Launcher Right RPM", right);
+                telemetry.addData("Launcher At Speed", atSpeed);
+                telemetry.addData("Launcher Timer (ms)", timer.milliseconds());
 
                 // Keep running while:
                 //  - NOT at speed
                 //  - AND timeout not exceeded
-                return !atSpeed && timer.milliseconds() < speedUpTime;
+                return !atSpeed && timer.milliseconds() < speedUpTime -  servoReleaseTime;
             }
         };
     }
@@ -333,10 +333,10 @@ public class Comp2Actions {
         return new SequentialAction(
                 StartShooter,
                 StopIntake,
-                WaitForLauncher(),
                 Block,
                 ReleaseBall,
                 WaitAction(servoReleaseTime),
+                WaitForLauncher(),
                 CycleShoot(),
                 StopShooter
         );
@@ -346,7 +346,7 @@ public class Comp2Actions {
         return new SequentialAction(
                 StopIntake,
                 Block,
-                WaitAction(400),
+                WaitAction(300),
                 ReleaseBall,
                 WaitAction(servoReleaseTime),
                 CycleShoot(),

@@ -13,6 +13,7 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Auto.LauncherPoint
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Drivetrain
 import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localizer
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.DrivetrainOverride
+import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Intake
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Servo
 import org.firstinspires.ftc.teamcode.Competition_Code.Tele.TeleGlobals
 
@@ -43,9 +44,6 @@ class BlueTele : LinearOpMode() {
         val buttonDebounce = 200 // ms minimum between button presses
         val buttonTimer = ElapsedTime()
 
-        var intaking = false
-        var reversing = false
-
         val robot = Comp2Actions(hardwareMap, telemetry)
 
         val drive = Drivetrain(hardwareMap, Drivetrain.Alliance.Blue)
@@ -62,11 +60,7 @@ class BlueTele : LinearOpMode() {
          */
         var driveOverrideSafetyTimer = 0L
         robot.holder.state = Servo.State.STOP1
-        var shotsRequested = 0
-        var firstShot = false
-        var shooting = false
-        val shotTimer = ElapsedTime()
-        var lastTriggerPressed = false
+
         telemetry.update()
 
         waitForStart()
@@ -78,9 +72,11 @@ class BlueTele : LinearOpMode() {
         buttonTimer.reset()
 
         while (opModeIsActive()) {
+            val intaking = robot.intake.state == Intake.State.INTAKING
+            val reversing = robot.intake.state == Intake.State.REVERSE
 
             // SHOOTING: A button triggers full Shoot3Balls sequence
-            if (gamepad1.right_trigger >= 0.5 && buttonTimer.milliseconds() >= buttonDebounce) {
+            if (gamepad1.right_trigger >= 0.5 && buttonTimer.milliseconds() >= buttonDebounce && runningActions.isEmpty()) {
 
                 runningActions.add(robot.ShootThrough())
 
@@ -90,13 +86,9 @@ class BlueTele : LinearOpMode() {
             if (gamepad1.dpad_down && buttonTimer.milliseconds() >= buttonDebounce) {
                 if(!reversing){
                     runningActions.add(robot.ReverseIntake)
-                    reversing = true
-                    intaking = false
                 }
                 else{
                     runningActions.add(robot.StopIntake)
-                    reversing = false
-                    intaking = false
                 }
 
                 buttonTimer.reset()
@@ -105,13 +97,9 @@ class BlueTele : LinearOpMode() {
             if (gamepad1.left_trigger >=0.5 && buttonTimer.milliseconds() >= buttonDebounce) {
                 if(!intaking){
                     runningActions.add(robot.StartIntake)
-                    intaking = true
-                    reversing = false
                 }
                 else{
                     runningActions.add(robot.StopIntake)
-                    intaking = false
-                    reversing = false
                 }
 
                 buttonTimer.reset()
@@ -129,11 +117,11 @@ class BlueTele : LinearOpMode() {
 //            }
 
             if (gamepad1.right_bumper && buttonTimer.milliseconds() >= buttonDebounce){
-                robot.launchRPM +=100
+                robot.launcher.change +=100
                 buttonTimer.reset()
             }
             if (gamepad1.left_bumper && buttonTimer.milliseconds() >= buttonDebounce){
-                robot.launchRPM -=100
+                robot.launcher.change -=100
                 buttonTimer.reset()
             }
 
@@ -214,7 +202,8 @@ class BlueTele : LinearOpMode() {
             }
 
             telemetry.addData("Current Launcher Point", currentLaunchPoint.displayName)
-            telemetry.addData("Launcher power", robot.launchRPM)
+            telemetry.addData("Launcher rpm goal", robot.launcher.position.rpm + robot.launcher.change)
+            telemetry.addData("Launcher at RPM?", robot.launcher.atTargetRPM((robot.launcher.position.rpm + robot.launcher.change).toDouble(), 100.0))
             telemetry.addData("servopos", robot.holder.launchpos)
 
             telemetry.addData("Current Pose", Localizer.pose.toString())

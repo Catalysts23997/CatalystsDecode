@@ -28,7 +28,7 @@ public class Launcher {
     public double rightPower = 0;
     double power = 0;
 
-    static final double ticksPerRev = 28;
+    static final double ticksPerRev = 28.0;
 
     public static double rightMaxRPM = 6100;
     public static double leftMaxRPM = 6500;
@@ -37,6 +37,8 @@ public class Launcher {
     public static double leftMaxTPS = leftMaxRPM/60.0 * ticksPerRev;
 
     Mode mode = Mode.POWER;
+
+    public Positions position = Positions.Normal;
 
     ElapsedTime timer = new ElapsedTime();
 
@@ -49,9 +51,10 @@ public class Launcher {
 
     VoltageSensor voltageSensor;
 
-    PIDFCoefficients leftCoefficients = new PIDFCoefficients(105.0, 0.0, 8.4, 32767.0/leftMaxTPS);
-    PIDFCoefficients rightCoefficients = new PIDFCoefficients(105.0, 0.0, 8.4, 32767.0/rightMaxTPS);
+//    PIDFCoefficients leftCoefficients = new PIDFCoefficients(105.0, 0.0, 8.4, 32767.0/leftMaxTPS);
+//    PIDFCoefficients rightCoefficients = new PIDFCoefficients(105.0, 0.0, 8.4, 32767.0/rightMaxTPS);
 
+    boolean testing = false;
 
     /// Declare a new instance of the launcher system.
     ///
@@ -67,8 +70,8 @@ public class Launcher {
         rightLauncher.setPower(0);
         timer.reset();
 
-        leftLauncher.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightLauncher.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftLauncher.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightLauncher.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         leftLauncher.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         rightLauncher.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
@@ -78,35 +81,40 @@ public class Launcher {
         leftController.setPID(leftPidParams);
         rightController.setPID(rightPidParams);
 
-        leftCoefficients.algorithm = MotorControlAlgorithm.PIDF;
-        rightCoefficients.algorithm = MotorControlAlgorithm.PIDF;
-
-        leftLauncher.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, leftCoefficients);
-        rightLauncher.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, rightCoefficients);
+//        leftCoefficients.algorithm = MotorControlAlgorithm.PIDF;
+//        rightCoefficients.algorithm = MotorControlAlgorithm.PIDF;
+//
+//        leftLauncher.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, leftCoefficients);
+//        rightLauncher.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, rightCoefficients);
     }
 
     public void setLeftPidParams(PIDParams params) {
         leftPidParams = params;
 
-        leftCoefficients = new PIDFCoefficients(params.getKp(),params.getKi(), params.getKd(), params.getKf());
+//        leftCoefficients = new PIDFCoefficients(params.getKp(),params.getKi(), params.getKd(), params.getKf());
 
         leftController.setPID(leftPidParams);
-        leftLauncher.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, leftCoefficients);
+//        leftLauncher.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, leftCoefficients);
     }
 
     public void setRightPidParams(PIDParams params) {
         rightPidParams = params;
 
-        rightCoefficients = new PIDFCoefficients(params.getKp(),params.getKi(), params.getKd(), params.getKf());
+//        rightCoefficients = new PIDFCoefficients(params.getKp(),params.getKi(), params.getKd(), params.getKf());
 
         rightController.setPID(rightPidParams);
-        rightLauncher.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, rightCoefficients);
+//        rightLauncher.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, rightCoefficients);
     }
 
     public void setRPM(double rpm) {
         // Clamp the proportion between 0.0 and 1.0
         this.goalRpm = rpm;
         goalTps = (rpm/60.0)*ticksPerRev;
+        mode = Mode.VELOCITY;
+        testing = true;
+    }
+    public void start() {
+        testing = false;
         mode = Mode.VELOCITY;
     }
 
@@ -156,30 +164,37 @@ public class Launcher {
 
 
     public void updatePID(){
-
         double voltage = voltageSensor.getVoltage();
         leftPower = leftController.calculate(goalRpm, leftRpm, voltage);
         rightPower = rightController.calculate(goalRpm, rightRpm, voltage);
 
-        leftPower = Math.max(0.0, Math.min(1.0, leftPower));
-        rightPower = Math.max(0.0, Math.min(1.0, rightPower));
+        leftPower = Math.max(-1.0, Math.min(1.0, leftPower));
+        rightPower = Math.max(-1.0, Math.min(1.0, rightPower));
 
 
         leftLauncher.setPower(leftPower);
         rightLauncher.setPower(rightPower);
     }
 
-    public void updateVelocity(){
-        leftLauncher.setVelocity(goalTps);
-        rightLauncher.setVelocity(goalTps);
-    }
+//    public void updateVelocity(){
+//
+//        leftLauncher.setVelocity(goalTps);
+//        rightLauncher.setVelocity(goalTps);
+//    }
+
+    public int change = 0;
 
     public void update(){
-        leftRpm = 60 /ticksPerRev * leftLauncher.getVelocity();
-        rightRpm = 60 /ticksPerRev * rightLauncher.getVelocity();
+        leftRpm = 60.0 /ticksPerRev * leftLauncher.getVelocity();
+        rightRpm = 60.0 /ticksPerRev * rightLauncher.getVelocity();
+
+        if(!testing){
+            goalRpm = position.rpm + change;
+            goalTps = (goalRpm/60.0)*ticksPerRev;
+        }
 
         switch (mode){
-            case VELOCITY: updateVelocity(); break;
+            case VELOCITY: updatePID(); break;
             case POWER: updatePower(); break;
         }
     }
@@ -192,6 +207,16 @@ public class Launcher {
     enum Mode {
         POWER,
         VELOCITY
+    }
+
+    public enum Positions {
+        Normal(3500),
+        Alternate(3000);
+
+        public final int rpm;
+        Positions(int rpm) {
+            this.rpm = rpm;
+        }
     }
 
 }
