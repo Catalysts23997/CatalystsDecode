@@ -2,20 +2,21 @@ package org.firstinspires.ftc.teamcode.Competition_Code.Subsystems;
 
 import com.acmerobotics.roadrunner.Vector2d;
 
+import org.firstinspires.ftc.teamcode.Competition_Code.AllianceColor;
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses;
 
 public class LauncherPoint {
 
     // These variables store all the information from around the project
     // in one place.
-    public static final LauncherPoint[] blueLauncherPoints = new LauncherPoint[] {
+    private static final LauncherPoint[] blueLauncherPoints = new LauncherPoint[] {
         new LauncherPoint(new Vector2d(-18, 17.5), 3 * Math.PI / 4, 3600, true, "Blue Main"),
         new LauncherPoint(new Vector2d(-12, 53), 9*Math.PI/16, 3200, false, "Blue Alternative 1"),
         new LauncherPoint(new Vector2d(25, 55), 17*Math.PI/32, 4600, false, "Blue Alternative 2"),
         new LauncherPoint(new Vector2d(18, 17.5), 10.75*Math.PI/16, 4800, false, "Blue Alternative 3"), // yes, this is usually going to be the other team's main point :D
     };
 
-    public static final LauncherPoint[] redLauncherPoints = flipPoints(blueLauncherPoints, "Blue", "Red");
+    private static final LauncherPoint[] redLauncherPoints = flipPoints(blueLauncherPoints, "Blue", "Red");
 
     // nice helper function
     public static LauncherPoint[] flipPoints(LauncherPoint[] points, String nameReplaceSource, String nameReplaceValue) {
@@ -34,6 +35,26 @@ public class LauncherPoint {
         }
 
         return newPoints;
+    }
+
+    public static LauncherPoint[] getLauncherPoints(AllianceColor color) {
+        switch (color) {
+            case Red: return redLauncherPoints;
+            case Blue: return blueLauncherPoints;
+        }
+
+        // how did we get here????
+        throw new IllegalStateException();
+    }
+
+    public static int getPriorityPoint(AllianceColor color) {
+        LauncherPoint[] points = getLauncherPoints(color);
+
+        for (int i = 0; i < points.length; i++) {
+            if (points[i].takePriority) return i;
+        }
+
+        return 0; // default with the first one
     }
 
     private final Vector2d location;
@@ -76,11 +97,4 @@ public class LauncherPoint {
         return new Poses(this.location, this.rotation);
     }
 
-    public static int getPriorityPoint(LauncherPoint[] points) {
-        for (int i = 0; i < points.length; i++) {
-            if (points[i].takePriority) return i;
-        }
-
-        return 0; // default with the first one
-    }
 }
