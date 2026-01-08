@@ -76,7 +76,7 @@ class PIDDrive : LinearOpMode() {
         val telemetry = FtcDashboard.getInstance().telemetry
 
         val localizer = Localizer(hardwareMap, Poses(0.0, 0.0, 0.0))
-        val drive = Drivetrain(hardwareMap)
+        val drive = Drivetrain(hardwareMap, Drivetrain.Alliance.Blue)
 
         waitForStart()
         runBlocking(

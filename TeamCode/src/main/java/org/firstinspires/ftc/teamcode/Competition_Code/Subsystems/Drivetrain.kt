@@ -53,8 +53,8 @@ class Drivetrain(hwMap: HardwareMap, alliance: Alliance) : SubSystems {
         rightBack.direction = DcMotorSimple.Direction.FORWARD
 
         offset = if (alliance == Alliance.Red){
-            Math.PI
-        } else -Math.PI
+            Math.PI/2
+        } else -Math.PI/2
 
         instance = this
     }

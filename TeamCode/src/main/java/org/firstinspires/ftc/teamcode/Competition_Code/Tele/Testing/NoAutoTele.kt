@@ -29,7 +29,7 @@ class NoAutoTele : LinearOpMode() {
         val robot = Comp1Actions(hardwareMap, telemetry)
         val timer = ElapsedTime()
 
-        val drive = Drivetrain(hardwareMap)
+        val drive = Drivetrain(hardwareMap, Drivetrain.Alliance.Blue)
         val localizer = Localizer(hardwareMap, Poses(0.0, 0.0, 0.0))
 
 

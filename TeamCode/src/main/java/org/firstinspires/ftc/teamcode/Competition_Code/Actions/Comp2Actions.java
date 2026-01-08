@@ -273,7 +273,7 @@ public class Comp2Actions {
                     timer.reset();
                     initialized = true;
 
-                    pulley.state = Pulley.State.On;
+                    pulley.state = Pulley.State.Slow;
                     intake.state = State.INTAKING;
                 }
                 if(timer.milliseconds()>=blocktime){
@@ -333,10 +333,10 @@ public class Comp2Actions {
         return new SequentialAction(
                 StartShooter,
                 StopIntake,
-                Block,
                 ReleaseBall,
                 WaitAction(servoReleaseTime),
                 WaitForLauncher(),
+                WaitAction(100),
                 CycleShoot(),
                 StopShooter
         );
@@ -345,8 +345,6 @@ public class Comp2Actions {
     public SequentialAction AutoShoot() {
         return new SequentialAction(
                 StopIntake,
-                Block,
-                WaitAction(300),
                 ReleaseBall,
                 WaitAction(servoReleaseTime),
                 CycleShoot(),

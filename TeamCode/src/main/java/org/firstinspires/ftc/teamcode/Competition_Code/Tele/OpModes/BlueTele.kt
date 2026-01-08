@@ -27,7 +27,7 @@ class BlueTele : LinearOpMode() {
 
     override fun runOpMode() {
         val dash: FtcDashboard = FtcDashboard.getInstance()
-        telemetry = dash.telemetry
+//        telemetry = dash.telemetry
 
         if(AutoGlobals.AutonomousRan) {
             TeleGlobals.currentPosition = AutoGlobals.locationOfRobot!!

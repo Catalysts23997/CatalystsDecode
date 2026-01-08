@@ -290,7 +290,7 @@ public class Comp1Actions {
 
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-            launcher.setRPM(launchRPM);
+            launcher.start();
 
             // We return false because this only has to run once
             return false;
