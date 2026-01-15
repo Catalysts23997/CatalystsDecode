@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoGlobals;
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.AprilTag;
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.ColorSensors;
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Intake;
@@ -20,6 +21,8 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Intake.State;
 
 public class Comp2Actions {
     AprilTag aprilTag;
+
+
     public int motif;
 
     public ColorSensors ball1;
@@ -36,7 +39,10 @@ public class Comp2Actions {
     Telemetry telemetry;
 
     public void update() {
-        aprilTag.update();
+        if (!AutoGlobals.INSTANCE.getAutonomousRan()){
+            aprilTag.update();
+        }
+        ;
 
         intake.update();
         pulley.update();
@@ -66,7 +72,9 @@ public class Comp2Actions {
     }
 
     public Comp2Actions(HardwareMap hardwareMap, Telemetry telemetry) {
-        aprilTag = new AprilTag(hardwareMap);
+        if (!AutoGlobals.INSTANCE.getAutonomousRan()){
+            aprilTag = new AprilTag(hardwareMap);
+        }
 
         ball1 = new ColorSensors(hardwareMap, "ball1");
         ball2 = new ColorSensors(hardwareMap, "ball2");
@@ -232,7 +240,7 @@ public class Comp2Actions {
     //shooting stuff
     double speedUpTime = 1300;      // time for flywheel to reach speed
     double servoReleaseTime = 800;  // ms for servo release
-    double pulleyShootTime = 2400;  // ms for pulley to shoot 3 balls
+    double pulleyShootTime = 1600;  // ms for pulley to shoot 3 balls
 
     public Action StartShooter = new Action() {
 
@@ -257,9 +265,6 @@ public class Comp2Actions {
         }
     };
 
-
-    double blocktime = 500;
-
     public Action CycleShoot() {
         return new Action() {
             final ElapsedTime timer = new ElapsedTime();
@@ -275,9 +280,6 @@ public class Comp2Actions {
 
                     pulley.state = Pulley.State.Slow;
                     intake.state = State.INTAKING;
-                }
-                if(timer.milliseconds()>=blocktime){
-                    kicker.state = Servo.State.RESET;
                 }
 
                 if(timer.milliseconds()>=pulleyShootTime){
@@ -315,6 +317,7 @@ public class Comp2Actions {
 
                 boolean atSpeed = launcher.atTargetRPM(launcher.getGoalRPM(), toleranceRPM);
 
+
                 telemetry.addData("Launcher Left RPM", left);
                 telemetry.addData("Launcher Right RPM", right);
                 telemetry.addData("Launcher At Speed", atSpeed);
@@ -323,7 +326,7 @@ public class Comp2Actions {
                 // Keep running while:
                 //  - NOT at speed
                 //  - AND timeout not exceeded
-                return !atSpeed && timer.milliseconds() < speedUpTime -  servoReleaseTime;
+                return !(atSpeed || timer.milliseconds() > (speedUpTime -  servoReleaseTime));
             }
         };
     }
@@ -335,8 +338,8 @@ public class Comp2Actions {
                 StopIntake,
                 ReleaseBall,
                 WaitAction(servoReleaseTime),
-                WaitForLauncher(),
                 WaitAction(100),
+                WaitForLauncher(),
                 CycleShoot(),
                 StopShooter
         );

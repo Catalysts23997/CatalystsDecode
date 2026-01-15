@@ -23,11 +23,11 @@ class BlueTele : LinearOpMode() {
     // get the current launcher point
     var currentLaunchPointIndex = LauncherPoint.getPriorityPoint(LauncherPoint.blueLauncherPoints)
     var currentLaunchPoint: LauncherPoint = LauncherPoint.blueLauncherPoints[currentLaunchPointIndex]
-    lateinit var robot: Comp2Actions // TODO: verify that this works
+    lateinit var robot: Comp2Actions
 
     override fun runOpMode() {
         val dash: FtcDashboard = FtcDashboard.getInstance()
-//        telemetry = dash.telemetry
+        telemetry = dash.telemetry
 
         if(AutoGlobals.AutonomousRan) {
             TeleGlobals.currentPosition = AutoGlobals.locationOfRobot!!
@@ -106,16 +106,16 @@ class BlueTele : LinearOpMode() {
                 buttonTimer.reset()
             }
 
-//            if (gamepad1.right_bumper && buttonTimer.milliseconds() >= buttonDebounce){
-//                robot.holder.launchpos +=0.01
-//                buttonTimer.reset()
-//
-//            }
-//            if (gamepad1.left_bumper && buttonTimer.milliseconds() >= buttonDebounce) {
-//                robot.holder.launchpos -= 0.01
-//                buttonTimer.reset()
-//
-//            }
+            if (gamepad2.right_bumper && buttonTimer.milliseconds() >= buttonDebounce){
+                robot.holder.launchpos +=0.01
+                buttonTimer.reset()
+
+            }
+            if (gamepad2.left_bumper && buttonTimer.milliseconds() >= buttonDebounce) {
+                robot.holder.launchpos -= 0.01
+                buttonTimer.reset()
+
+            }
 
             if (gamepad1.right_bumper && buttonTimer.milliseconds() >= buttonDebounce){
                 robot.launcher.change +=100
@@ -172,6 +172,12 @@ class BlueTele : LinearOpMode() {
                 cycleLauncherPoint(false)
                 buttonTimer.reset()
             }
+            if (gamepad1.dpad_up && buttonTimer.milliseconds() >= buttonDebounce){
+                currentLaunchPointIndex = 0
+                currentLaunchPoint = LauncherPoint.blueLauncherPoints[currentLaunchPointIndex]
+                robot.launcher.baseRPM = currentLaunchPoint.launcherRPM
+                buttonTimer.reset()
+            }
 
             if(gamepad1.y){
                 driveOverride.beginOverriding(currentLaunchPoint.pose)
@@ -210,6 +216,8 @@ class BlueTele : LinearOpMode() {
             telemetry.addData("servopos", robot.holder.launchpos)
 
             telemetry.addData("Current Pose", Localizer.pose.toString())
+            telemetry.addData("Motor Power", robot.launcher.rightLauncher.power)
+            telemetry.addData("Motor Velo", robot.launcher.rightLauncher.velocity)
 
             telemetry.update()
         }

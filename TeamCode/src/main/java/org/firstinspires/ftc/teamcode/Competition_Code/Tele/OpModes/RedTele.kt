@@ -22,7 +22,7 @@ class RedTele : LinearOpMode() {
     // get the current launcher point
     var currentLaunchPointIndex = LauncherPoint.getPriorityPoint(LauncherPoint.redLauncherPoints)
     var currentLaunchPoint: LauncherPoint = LauncherPoint.redLauncherPoints[currentLaunchPointIndex]
-    lateinit var robot: Comp2Actions // TODO: verify that this works
+    lateinit var robot: Comp2Actions
 
     override fun runOpMode() {
 
@@ -34,6 +34,8 @@ class RedTele : LinearOpMode() {
         telemetry.addData("Robot at position ",  TeleGlobals.currentPosition)
 
         val dash: FtcDashboard = FtcDashboard.getInstance()
+        telemetry = dash.telemetry
+
         val packet = TelemetryPacket()
         var runningActions = ArrayList<Action>()
 
@@ -115,16 +117,16 @@ class RedTele : LinearOpMode() {
 
             //testing
 
-//            if (gamepad1.right_bumper && buttonTimer.milliseconds() >= buttonDebounce){
-//                robot.holder.launchpos +=0.01
-//                buttonTimer.reset()
-//
-//            }
-//            if (gamepad1.left_bumper && buttonTimer.milliseconds() >= buttonDebounce) {
-//                robot.holder.launchpos -= 0.01
-//                buttonTimer.reset()
-//
-//            }
+            if (gamepad2.right_bumper && buttonTimer.milliseconds() >= buttonDebounce){
+                robot.holder.launchpos +=0.01
+                buttonTimer.reset()
+
+            }
+            if (gamepad2.left_bumper && buttonTimer.milliseconds() >= buttonDebounce) {
+                robot.holder.launchpos -= 0.01
+                buttonTimer.reset()
+
+            }
 
             if (gamepad1.right_bumper && buttonTimer.milliseconds() >= buttonDebounce){
                 robot.launcher.change += 100
@@ -178,6 +180,13 @@ class RedTele : LinearOpMode() {
                 buttonTimer.reset()
             } else if (gamepad1.dpad_left && buttonTimer.milliseconds() >= buttonDebounce) {
                 cycleLauncherPoint(false)
+                buttonTimer.reset()
+            }
+
+            if (gamepad1.dpad_up && buttonTimer.milliseconds() >= buttonDebounce){
+                currentLaunchPointIndex = 0
+                currentLaunchPoint = LauncherPoint.redLauncherPoints[currentLaunchPointIndex]
+                robot.launcher.baseRPM = currentLaunchPoint.launcherRPM
                 buttonTimer.reset()
             }
 

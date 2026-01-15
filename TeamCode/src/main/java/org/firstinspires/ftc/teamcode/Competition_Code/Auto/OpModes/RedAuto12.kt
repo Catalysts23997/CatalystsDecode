@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Competition_Code.Auto.OpModes;
 
+import com.acmerobotics.dashboard.FtcDashboard
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket
 import com.acmerobotics.roadrunner.ParallelAction
 import com.acmerobotics.roadrunner.SequentialAction
@@ -20,6 +21,10 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
 class RedAuto12 : LinearOpMode() {
 
     override fun runOpMode() {
+
+        val dash: FtcDashboard = FtcDashboard.getInstance()
+        telemetry = dash.telemetry
+
         AutoGlobals.targetRobotPositon = AutoPoints.StartRed.pose
 
         val localizer = Localizer(hardwareMap, AutoGlobals.targetRobotPositon)
@@ -53,6 +58,8 @@ class RedAuto12 : LinearOpMode() {
                         telemetry.addData("Target Position", AutoGlobals.targetRobotPositon.toString())
                         telemetry.addData("Current Pose", Localizer.pose.toString())
                         telemetry.addData("Location of robot being transferred", AutoGlobals.locationOfRobot.toString())
+
+                        telemetry.addData("Launcher rpm goal", robot.launcher.goalRPM)
                         telemetry.addData("Drive speed", AutoGlobals.driveSpeed)
                         telemetry.update()
                         robot.update()
