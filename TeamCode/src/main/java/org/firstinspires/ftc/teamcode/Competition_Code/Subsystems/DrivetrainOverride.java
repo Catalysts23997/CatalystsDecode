@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode.Competition_Code.Subsystems;
 import static org.firstinspires.ftc.teamcode.Competition_Code.Utilities.NormalizeKt.normalize;
 import static java.lang.Math.abs;
 
+import androidx.core.math.MathUtils;
+
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localizer;
@@ -30,7 +32,6 @@ public class DrivetrainOverride {
         this.shouldOverridingInput = false;
     }
 
-//    boolean turnOnly;
     /// This code does updatePID the drivetrain, and should only be called
     /// when the override is active
     public void update(Drivetrain drive) {
@@ -80,6 +81,56 @@ public class DrivetrainOverride {
 //            abs(headingError) <= Math.toRadians(5.0)) {
 //            stopOverriding();
 //        }
+    }
+
+    /// This function is like `update`, but it only rotates the robot,
+    /// instead of making the robot drive to the target
+    ///
+    /// `softLock` allows this function to slightly move the robot into the
+    /// `target` position
+    public void rotate(Drivetrain drive, Poses target, boolean softLock, float softLockResistance) {
+        // prevent this from running if we don't have a target!
+        if (null == target) return;
+
+        float resistance = 0.0f;
+
+        if (softLock) {
+            resistance = softLockResistance;
+        }
+
+        // Calculate some math
+        Poses current = Localizer.pose;
+
+        double latError = target.getY() - current.getY();
+        double axialError = target.getX() - current.getX();
+        double headingError = Angles.INSTANCE.wrap(
+                target.getHeading() - current.getHeading()
+        );
+
+        double lateral = drive.getYpid().calculate(latError);
+        double axial = drive.getXpid().calculate(axialError);
+        double turn = drive.getRpid().calculate(headingError);
+
+        double heading = -current.getHeading();
+        double rotX = -axial * Math.cos(heading) - lateral * Math.sin(heading);
+        double rotY = -axial * Math.sin(heading) + lateral * Math.cos(heading);
+
+        rotX = MathUtils.clamp(rotX, -1.0, 1.0);
+        rotY = MathUtils.clamp(rotY, -1.0, 1.0);
+
+        double powerLF = k * (((rotY - rotX) * resistance) + turn);
+        double powerLB = k * (((rotY + rotX) * resistance) + turn);
+        double powerRF = k * (((rotY + rotX) * resistance) - turn);
+        double powerRB= k * (((rotY - rotX) * resistance) - turn);
+
+        double[] powers = {powerLF, powerLB, powerRF, powerRB};
+
+        powers = normalize(powers, 1.0);
+
+        drive.getLeftFront().setPower(powers[0]);
+        drive.getLeftBack().setPower(powers[1]);
+        drive.getRightFront().setPower(powers[2]);
+        drive.getRightBack().setPower(powers[3]);
     }
 
     /// This function just checks to see if the user would like

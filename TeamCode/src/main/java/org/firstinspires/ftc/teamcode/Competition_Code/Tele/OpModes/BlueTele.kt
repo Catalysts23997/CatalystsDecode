@@ -25,6 +25,10 @@ class BlueTele : LinearOpMode() {
     var currentLaunchPoint: LauncherPoint = LauncherPoint.blueLauncherPoints[currentLaunchPointIndex]
     lateinit var robot: Comp2Actions
 
+    var driveShouldRotate = false
+    var driveRotateResistance = 0.6f;
+    var driveRotateSoftLock = false
+
     override fun runOpMode() {
         val dash: FtcDashboard = FtcDashboard.getInstance()
         telemetry = dash.telemetry
@@ -179,8 +183,36 @@ class BlueTele : LinearOpMode() {
                 buttonTimer.reset()
             }
 
-            if(gamepad1.y){
+            if (gamepad1.y && buttonTimer.milliseconds() >= buttonDebounce) {
                 driveOverride.beginOverriding(currentLaunchPoint.pose)
+                buttonTimer.reset()
+
+                // TODO:
+                // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+                // @              should this button have debounce?              @
+                // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+            }
+
+            if (/* the control to toggle the rotation*/ false && buttonTimer.milliseconds() >= buttonDebounce) {
+                // when changing modes in the drivetrain override,
+                // just stop overriding
+                driveOverride.stopOverriding()
+
+                driveShouldRotate = !driveShouldRotate
+                buttonTimer.reset()
+            }
+
+            if (/* the control to toggle soft lock */ false && buttonTimer.milliseconds() >= buttonDebounce) {
+                driveRotateSoftLock = !driveRotateSoftLock
+                buttonTimer.reset()
+            }
+
+            if (/* the control to increase the resistance */ false && buttonTimer.milliseconds() >= buttonDebounce) {
+                driveRotateResistance += 0.1f
+                buttonTimer.reset()
+            } else if (/* the control to decrease the resistance */ false && buttonTimer.milliseconds() >= buttonDebounce) {
+                driveRotateResistance -= 0.1f
+                buttonTimer.reset()
             }
 
             // END LAUNCHER DRIVETRAIN CODE
@@ -203,6 +235,12 @@ class BlueTele : LinearOpMode() {
                         gamepad1.right_stick_x
                     )
                 )
+
+                if (driveShouldRotate) {
+                    driveOverride.rotate(
+                        drive, currentLaunchPoint.pose, driveRotateSoftLock, driveRotateResistance
+                    )
+                }
             }
 
             val overrideTimeLeft = System.currentTimeMillis() - driveOverrideSafetyTimer
