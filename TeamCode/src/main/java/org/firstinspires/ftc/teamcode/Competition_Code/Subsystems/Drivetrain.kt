@@ -4,6 +4,7 @@ import android.util.Log
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorSimple
 import com.qualcomm.robotcore.hardware.HardwareMap
+import org.firstinspires.ftc.teamcode.Competition_Code.AllianceColor
 
 import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localizer
 
@@ -15,11 +16,7 @@ import kotlin.math.cos
 import kotlin.math.sin
 
 
-class Drivetrain(hwMap: HardwareMap, alliance: Alliance) : SubSystems {
-
-    enum class Alliance {
-        Blue, Red
-    }
+class Drivetrain(hwMap: HardwareMap, alliance: AllianceColor) : SubSystems {
 
     companion object {
         lateinit var instance: Drivetrain
@@ -52,7 +49,7 @@ class Drivetrain(hwMap: HardwareMap, alliance: Alliance) : SubSystems {
         rightFront.direction = DcMotorSimple.Direction.FORWARD
         rightBack.direction = DcMotorSimple.Direction.FORWARD
 
-        offset = if (alliance == Alliance.Red){
+        offset = if (alliance == AllianceColor.Red){
             Math.PI/2
         } else -Math.PI/2
 
