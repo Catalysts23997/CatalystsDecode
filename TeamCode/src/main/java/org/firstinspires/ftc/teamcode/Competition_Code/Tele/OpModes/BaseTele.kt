@@ -38,6 +38,7 @@ class BaseTele(opmode: LinearOpMode, color: AllianceColor) {
     var telemetry: Telemetry = opmode.telemetry
     var hardwareMap: HardwareMap = opmode.hardwareMap
     var gamepad1: Gamepad = opmode.gamepad1
+    var gamepad2: Gamepad = opmode.gamepad2
 
     // Variables
     val packet: TelemetryPacket
@@ -178,6 +179,16 @@ class BaseTele(opmode: LinearOpMode, color: AllianceColor) {
             buttonTimer.reset()
         }
 
+        if (gamepad2.right_bumper && buttonTimer.milliseconds() >= buttonDebounce){
+            robot.holder.launchpos +=0.01
+            buttonTimer.reset()
+        }
+
+        if (gamepad2.left_bumper && buttonTimer.milliseconds() >= buttonDebounce) {
+            robot.holder.launchpos -= 0.01
+            buttonTimer.reset()
+        }
+
         if (gamepad1.right_bumper && buttonTimer.milliseconds() >= buttonDebounce) {
             robot.launcher.change += 100
             buttonTimer.reset()
@@ -232,6 +243,13 @@ class BaseTele(opmode: LinearOpMode, color: AllianceColor) {
             buttonTimer.reset()
         }
 
+        if (gamepad1.dpad_up && buttonTimer.milliseconds() >= buttonDebounce){
+            currentLaunchPointIndex = 0
+            currentLaunchPoint = launcherPoints[currentLaunchPointIndex]
+            robot.launcher.baseRPM = currentLaunchPoint.launcherRPM
+            buttonTimer.reset()
+        }
+
         if(gamepad1.y){
             driveOverride.beginOverriding(currentLaunchPoint.pose)
         }
@@ -274,6 +292,9 @@ class BaseTele(opmode: LinearOpMode, color: AllianceColor) {
         telemetry.addData("servopos", robot.holder.launchpos)
 
         telemetry.addData("Current Pose", Localizer.pose.toString())
+        telemetry.addData("Motor Power", robot.launcher.rightLauncher.power)
+        telemetry.addData("Motor Velo", robot.launcher.rightLauncher.velocity)
+
 
         telemetry.update()
     }
