@@ -36,15 +36,15 @@ public class Launcher {
 
     Mode mode = Mode.POWER;
 
-    public double baseRPM = 3500.0;
+    public double baseRPM = 3600;
 
     ElapsedTime timer = new ElapsedTime();
 
-    PIDParams leftPidParams = new PIDParams(0.0015,0,0.00012,1.0/leftMaxRPM);
+    PIDParams leftPidParams = new PIDParams(0.00365,0,0.000105,1.0/leftMaxRPM);
     PIDControllerVelocity leftController = new PIDControllerVelocity(leftPidParams);
 
 
-    PIDParams rightPidParams = new PIDParams(0.0015,0,0.00012,1.0/rightMaxRPM);
+    PIDParams rightPidParams = new PIDParams(0.00365,0,0.000105,1.0/rightMaxRPM);
     PIDControllerVelocity rightController = new PIDControllerVelocity(rightPidParams);
 
     VoltageSensor voltageSensor;

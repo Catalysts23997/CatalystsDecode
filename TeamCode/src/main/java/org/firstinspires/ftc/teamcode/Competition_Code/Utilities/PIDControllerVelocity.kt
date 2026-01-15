@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Competition_Code.Utilities
 
+import android.util.Log
 import com.qualcomm.robotcore.util.ElapsedTime
 import kotlin.math.PI
 import kotlin.math.max
@@ -53,7 +54,7 @@ class PIDControllerVelocity(private var params: PIDParams) {
         pastTime = timer.seconds()
 
         val ff =
-            if (params.kf != 0.0) params.kf * targetVelocity * 13.0/voltage else 0.0
+            if (params.kf != 0.0) params.kf * targetVelocity  * 12.5/voltage else 0.0
 
 
         val controlEffort =
@@ -61,7 +62,7 @@ class PIDControllerVelocity(private var params: PIDParams) {
                 -1.0,
                 1.0
             )
-
+        Log.d("HELLO","D: ${derivative * params.kd} , f: ${ff}, P: ${error * params.kp}")
 //        Log.d("errorsss", ff.toString())
 //        Log.d("errorsss", Math.toDegrees(armAngle).toString())
         return controlEffort

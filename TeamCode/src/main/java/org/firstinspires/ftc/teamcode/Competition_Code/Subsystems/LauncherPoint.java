@@ -11,9 +11,9 @@ public class LauncherPoint {
     // in one place.
     private static final LauncherPoint[] blueLauncherPoints = new LauncherPoint[] {
         new LauncherPoint(new Vector2d(-18, 17.5), 3 * Math.PI / 4, 3600, true, "Blue Main"),
-        new LauncherPoint(new Vector2d(-12, 53), 9*Math.PI/16, 3200, false, "Blue Alternative 1"),
-        new LauncherPoint(new Vector2d(25, 55), 17*Math.PI/32, 4600, false, "Blue Alternative 2"),
-        new LauncherPoint(new Vector2d(18, 17.5), 10.75*Math.PI/16, 4800, false, "Blue Alternative 3"), // yes, this is usually going to be the other team's main point :D
+        new LauncherPoint(new Vector2d(0, 53), 9.2*Math.PI/16, 3600, false, "Blue Alternative 1"),
+        new LauncherPoint(new Vector2d(25, 55), 17*Math.PI/32, 4700, false, "Blue Alternative 2"),
+        new LauncherPoint(new Vector2d(18, 17.5), 10.75*Math.PI/16, 5000, false, "Blue Alternative 3"), // yes, this is usually going to be the other team's main point :D
     };
 
     private static final LauncherPoint[] redLauncherPoints = flipPoints(blueLauncherPoints, "Blue", "Red");

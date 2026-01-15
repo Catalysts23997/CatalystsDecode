@@ -30,6 +30,7 @@ public class DrivetrainOverride {
         this.shouldOverridingInput = false;
     }
 
+//    boolean turnOnly;
     /// This code does updatePID the drivetrain, and should only be called
     /// when the override is active
     public void update(Drivetrain drive) {
@@ -52,6 +53,12 @@ public class DrivetrainOverride {
         double heading = -current.getHeading();
         double rotX = -axial * Math.cos(heading) - lateral * Math.sin(heading);
         double rotY = -axial * Math.sin(heading) + lateral * Math.cos(heading);
+
+//        this.turnOnly = turnOnly;
+//        if(turnOnly){
+//            rotX = 0;
+//            rotY = 0;
+//        }
 
         double powerLF = k*(rotY - rotX + turn);
         double powerLB = k*(rotY + rotX + turn);
@@ -82,8 +89,7 @@ public class DrivetrainOverride {
     /// disabled because the user requested control or `false`
     /// if not.
     public boolean safetyMeasures(Gamepad gamepad) {
-        if (gamepad.x ||
-            abs(gamepad.right_stick_x) >= 0.1 || abs(gamepad.right_stick_y) >= 0.1 ||
+        if (abs(gamepad.right_stick_x) >= 0.1 || abs(gamepad.right_stick_y) >= 0.1 ||
                 abs(gamepad.left_stick_x) >= 0.1 ||abs(gamepad.left_stick_y) >= 0.1) {
             stopOverriding();
 
