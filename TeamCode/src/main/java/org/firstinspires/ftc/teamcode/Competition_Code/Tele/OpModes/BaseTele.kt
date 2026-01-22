@@ -21,6 +21,7 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Intake
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.LauncherPoint
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Servo
 import org.firstinspires.ftc.teamcode.Competition_Code.Tele.TeleGlobals
+import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.goalAngle
 
 /**
  * This class is **NOT** an OpMode, it is used to store common code that
@@ -43,7 +44,6 @@ class BaseTele(opmode: LinearOpMode, color: AllianceColor) {
     // Variables
     val packet: TelemetryPacket
     var runningActions: ArrayList<Action>
-    var balls: Int
     var buttonDebounce: Int
     var buttonTimer: ElapsedTime
     var robot: Comp2Actions
@@ -64,6 +64,8 @@ class BaseTele(opmode: LinearOpMode, color: AllianceColor) {
     var currentLaunchPoint: LauncherPoint = launcherPoints[currentLaunchPointIndex]
 
     val allianceColor: AllianceColor = color
+
+    var driveShouldRotate = false
 
     /**
      * Sets the default state and configures variables.
@@ -90,7 +92,6 @@ class BaseTele(opmode: LinearOpMode, color: AllianceColor) {
         packet = TelemetryPacket()
         runningActions = ArrayList<Action>()
 
-        balls = 0             // Tracks the next ball to intake
         // TODO: ensure that this is the correct value
         buttonDebounce = 100 // ms minimum between button presses
         buttonTimer = ElapsedTime()
@@ -150,22 +151,9 @@ class BaseTele(opmode: LinearOpMode, color: AllianceColor) {
         val intaking = robot.intake.state == Intake.State.INTAKING
         val reversing = robot.intake.state == Intake.State.REVERSE
 
-        // SHOOTING: A button triggers full Shoot3Balls sequence
         if (gamepad1.left_trigger >= 0.5 && buttonTimer.milliseconds() >= buttonDebounce && runningActions.isEmpty()) {
             // Add the shooting action to the list of running actions
             runningActions.add(robot.ShootThrough())
-
-            // After we shoot 3 calls, we will have none remaining
-            balls = 0  // Reset intake counter after shooting
-            buttonTimer.reset()
-        }
-        if (gamepad1.dpad_down && buttonTimer.milliseconds() >= buttonDebounce) {
-            if(!reversing){
-                runningActions.add(robot.ReverseIntake)
-            } else {
-                runningActions.add(robot.StopIntake)
-            }
-
             buttonTimer.reset()
         }
 
@@ -179,16 +167,6 @@ class BaseTele(opmode: LinearOpMode, color: AllianceColor) {
             buttonTimer.reset()
         }
 
-        if (gamepad2.right_bumper && buttonTimer.milliseconds() >= buttonDebounce){
-            robot.holder.launchpos +=0.01
-            buttonTimer.reset()
-        }
-
-        if (gamepad2.left_bumper && buttonTimer.milliseconds() >= buttonDebounce) {
-            robot.holder.launchpos -= 0.01
-            buttonTimer.reset()
-        }
-
         if (gamepad1.right_bumper && buttonTimer.milliseconds() >= buttonDebounce) {
             robot.launcher.change += 100
             buttonTimer.reset()
@@ -198,19 +176,72 @@ class BaseTele(opmode: LinearOpMode, color: AllianceColor) {
             buttonTimer.reset()
         }
 
-        if (intaking) {
-            when (balls) {
-                0 -> {
-                    if (robot.ball1.isGreen() || robot.ball1.isPurple()) {
-                        balls += 1
-                    }
-                }
-                1 -> {
-                    if (robot.ball2.isGreen() || robot.ball2.isPurple()) {
-                        balls += 1
-                    }
-                }
+        if (gamepad1.dpad_down && buttonTimer.milliseconds() >= buttonDebounce) {
+            if(!reversing){
+                runningActions.add(robot.ReverseIntake)
             }
+            else{
+                runningActions.add(robot.StopIntake)
+            }
+
+            buttonTimer.reset()
+        }
+
+        // BEGIN LAUNCHER DRIVETRAIN CODE
+        if (gamepad1.dpad_up && buttonTimer.milliseconds() >= buttonDebounce){
+            currentLaunchPointIndex = 0
+            currentLaunchPoint = launcherPoints[currentLaunchPointIndex]
+            robot.launcher.baseRPM = currentLaunchPoint.launcherRPM
+            buttonTimer.reset()
+        }
+
+        if (gamepad1.dpad_right && buttonTimer.milliseconds() >= buttonDebounce) {
+            cycleLauncherPoint(true)
+            buttonTimer.reset()
+        } else if (gamepad1.dpad_left && buttonTimer.milliseconds() >= buttonDebounce) {
+            cycleLauncherPoint(false)
+            buttonTimer.reset()
+        }
+
+        if (gamepad1.y && buttonTimer.milliseconds() >= buttonDebounce) {
+            driveOverride.beginOverriding(currentLaunchPoint.pose)
+            buttonTimer.reset()
+        }
+
+        if (gamepad1.a) {
+            localizer.resetOdo()
+        }
+
+        if (gamepad1.b) {
+            val target = when (allianceColor) {
+                AllianceColor.Blue -> AutoPoints.EndgameBlue.pose
+                AllianceColor.Red -> AutoPoints.EndgameRed.pose
+            }
+
+            driveOverride.beginOverriding(target)
+        }
+
+        if (gamepad1.right_stick_button && buttonTimer.milliseconds() >= buttonDebounce) {
+            // when changing modes in the drivetrain override,
+            // just stop overriding
+            driveOverride.stopOverriding()
+
+            driveShouldRotate = !driveShouldRotate
+            buttonTimer.reset()
+        }
+
+        // END LAUNCHER DRIVETRAIN CODE
+
+        //testing
+        if (gamepad2.right_bumper && buttonTimer.milliseconds() >= buttonDebounce){
+            robot.holder.launchpos +=0.01
+            buttonTimer.reset()
+
+        }
+        if (gamepad2.left_bumper && buttonTimer.milliseconds() >= buttonDebounce) {
+            robot.holder.launchpos -= 0.01
+            buttonTimer.reset()
+
         }
 
         // updatePID running actions
@@ -226,51 +257,22 @@ class BaseTele(opmode: LinearOpMode, color: AllianceColor) {
         TeleGlobals.currentPosition = Localizer.pose
 
         //updatePID subsystems
-        if(gamepad1.a ){
-            localizer.resetOdo()
-        }
 
         localizer.update()
         robot.update()
 
-        // BEGIN LAUNCHER DRIVETRAIN CODE
-
-        if (gamepad1.dpad_right && buttonTimer.milliseconds() >= buttonDebounce) {
-            cycleLauncherPoint(true)
-            buttonTimer.reset()
-        } else if (gamepad1.dpad_left && buttonTimer.milliseconds() >= buttonDebounce) {
-            cycleLauncherPoint(false)
-            buttonTimer.reset()
-        }
-
-        if (gamepad1.dpad_up && buttonTimer.milliseconds() >= buttonDebounce){
-            currentLaunchPointIndex = 0
-            currentLaunchPoint = launcherPoints[currentLaunchPointIndex]
-            robot.launcher.baseRPM = currentLaunchPoint.launcherRPM
-            buttonTimer.reset()
-        }
-
-        if(gamepad1.y){
-            driveOverride.beginOverriding(currentLaunchPoint.pose)
-        }
-
-        // END LAUNCHER DRIVETRAIN CODE
-
-        if (gamepad1.b) {
-            val target = when (allianceColor) {
-                AllianceColor.Blue -> AutoPoints.EndgameBlue.pose
-                AllianceColor.Red -> AutoPoints.EndgameRed.pose
-            }
-
-            driveOverride.beginOverriding(target)
-        }
-
+        // drivetrain overrides
         if (driveOverride.shouldOverrideInput()) {
             if (driveOverride.safetyMeasures(gamepad1)) {
                 driveOverrideSafetyTimer = System.currentTimeMillis()
             }
 
             driveOverride.update(drive)
+        } else if (driveShouldRotate) {
+            val launchAngle = goalAngle(Localizer.pose.x, Localizer.pose.y, allianceColor)
+            driveOverride.rotate(
+                drive, launchAngle, gamepad1
+            )
         } else {
             drive.update(
                 arrayListOf(
