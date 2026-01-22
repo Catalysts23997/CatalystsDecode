@@ -88,27 +88,19 @@ public class DrivetrainOverride {
     ///
     /// `softLock` allows this function to slightly move the robot into the
     /// `target` position
-    public void rotate(Drivetrain drive, Poses target, boolean softLock, float softLockResistance) {
+    public void rotate(Drivetrain drive, Double targetAngle, Gamepad gamepad) {
         // prevent this from running if we don't have a target!
-        if (null == target) return;
-
-        float resistance = 0.0f;
-
-        if (softLock) {
-            resistance = softLockResistance;
-        }
+        if (null == targetAngle) return;
 
         // Calculate some math
         Poses current = Localizer.pose;
 
-        double latError = target.getY() - current.getY();
-        double axialError = target.getX() - current.getX();
         double headingError = Angles.INSTANCE.wrap(
-                target.getHeading() - current.getHeading()
+                targetAngle- current.getHeading()
         );
 
-        double lateral = drive.getYpid().calculate(latError);
-        double axial = drive.getXpid().calculate(axialError);
+        double lateral = gamepad.left_stick_x;
+        double axial = gamepad.left_stick_y;
         double turn = drive.getRpid().calculate(headingError);
 
         double heading = -current.getHeading();
@@ -118,10 +110,10 @@ public class DrivetrainOverride {
         rotX = MathUtils.clamp(rotX, -1.0, 1.0);
         rotY = MathUtils.clamp(rotY, -1.0, 1.0);
 
-        double powerLF = k * (((rotY - rotX) * resistance) + turn);
-        double powerLB = k * (((rotY + rotX) * resistance) + turn);
-        double powerRF = k * (((rotY + rotX) * resistance) - turn);
-        double powerRB= k * (((rotY - rotX) * resistance) - turn);
+        double powerLF = k * ((rotY - rotX)+ 1.2*turn);
+        double powerLB = k * ((rotY + rotX)  + 1.2*turn);
+        double powerRF = k * ((rotY + rotX)  - 1.2*turn);
+        double powerRB= k * ((rotY - rotX) - 1.2*turn);
 
         double[] powers = {powerLF, powerLB, powerRF, powerRB};
 

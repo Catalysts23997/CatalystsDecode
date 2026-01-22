@@ -14,14 +14,14 @@ public enum AutoPoints {
     OutOfTheWayBlue(new Vector2d(-29,60.0), 0.0),
 
     PreIntakePPG(new Vector2d(-25,14), -Math.PI / 2, 1.5),
-    PPGIntake(new Vector2d(-57,14), -Math.PI / 2, .65, 1.5),
+    PPGIntake(new Vector2d(-57,14), -Math.PI / 2, .7, 1.5),
 
     PreIntakePGP(new Vector2d(-25,-9), -Math.PI / 2, 1.5),
-    PGPIntake(new Vector2d(-66,-9), -Math.PI / 2, 0.65 , 1.5),
+    PGPIntake(new Vector2d(-66,-9), -Math.PI / 2, 0.7 , 1.5),
     PGPMidPoint(new Vector2d(-25,-9), 9 * Math.PI / 8, 1.5),
 
     PreIntakeGPP(new Vector2d(-25,-33), -Math.PI / 2, 1.5),
-    GPPIntake(new Vector2d(-66,-33), -Math.PI / 2, 0.65, 1.5),
+    GPPIntake(new Vector2d(-66,-33), -Math.PI / 2, 0.7, 1.5),
     GPPMidPoint(new Vector2d(-25,-33), 9*Math.PI / 8, 1.5),
 
     StartRed(new Vector2d(39,63), 0.0),
@@ -32,15 +32,15 @@ public enum AutoPoints {
     OutOfTheWayRed(new Vector2d(29,60.0), 0.0),
 
     PreIntakePPGRed(new Vector2d(25,14), Math.PI / 2, 1.5),
-    PPGIntakeRed(new Vector2d(57,14), Math.PI / 2, 0.65, 1.5),
+    PPGIntakeRed(new Vector2d(57,14), Math.PI / 2, 0.7, 1.5),
 
     PreIntakePGPRed(new Vector2d(25,-9), Math.PI / 2,1.5),
-    PGPIntakeRed(new Vector2d(66,-9), Math.PI / 2, 0.65, 1.5),
+    PGPIntakeRed(new Vector2d(66,-9), Math.PI / 2, 0.7, 1.5),
     PGPMidPointRed(new Vector2d(25,-9), -9 * Math.PI / 8, 1.5),
 
 
     PreIntakeGPPRed(new Vector2d(25,-33), Math.PI / 2, 1.5),
-    GPPIntakeRed(new Vector2d(66,-33), Math.PI / 2, 0.65, 1.5),
+    GPPIntakeRed(new Vector2d(66,-33), Math.PI / 2, 0.7, 1.5),
     GPPMidPointRed(new Vector2d(25,-33), -9 * Math.PI / 8, 1.5),
 
     StartFarRed(new Vector2d(15,-63), 0.0),

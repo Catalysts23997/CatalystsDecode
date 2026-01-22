@@ -16,6 +16,7 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.DrivetrainOver
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Intake
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Servo
 import org.firstinspires.ftc.teamcode.Competition_Code.Tele.TeleGlobals
+import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.goalAngle
 
 @TeleOp(name = "BlueTele", group = "Linear OpMode")
 class BlueTele : LinearOpMode() {
@@ -26,12 +27,10 @@ class BlueTele : LinearOpMode() {
     lateinit var robot: Comp2Actions
 
     var driveShouldRotate = false
-    var driveRotateResistance = 0.6f;
-    var driveRotateSoftLock = false
 
     override fun runOpMode() {
         val dash: FtcDashboard = FtcDashboard.getInstance()
-        telemetry = dash.telemetry
+//        telemetry = dash.telemetry
 
         if(AutoGlobals.AutonomousRan) {
             TeleGlobals.currentPosition = AutoGlobals.locationOfRobot!!
@@ -45,7 +44,6 @@ class BlueTele : LinearOpMode() {
         val packet = TelemetryPacket()
         var runningActions = ArrayList<Action>()
 
-        var balls = 0             // Tracks the next ball to intake
         val buttonDebounce = 200 // ms minimum between button presses
         val buttonTimer = ElapsedTime()
 
@@ -80,22 +78,9 @@ class BlueTele : LinearOpMode() {
             val intaking = robot.intake.state == Intake.State.INTAKING
             val reversing = robot.intake.state == Intake.State.REVERSE
 
-            // SHOOTING: A button triggers full Shoot3Balls sequence
             if (gamepad1.right_trigger >= 0.5 && buttonTimer.milliseconds() >= buttonDebounce && runningActions.isEmpty()) {
 
                 runningActions.add(robot.ShootThrough())
-
-                balls = 0  // Reset intake counter after shooting
-                buttonTimer.reset()
-            }
-            if (gamepad1.dpad_down && buttonTimer.milliseconds() >= buttonDebounce) {
-                if(!reversing){
-                    runningActions.add(robot.ReverseIntake)
-                }
-                else{
-                    runningActions.add(robot.StopIntake)
-                }
-
                 buttonTimer.reset()
             }
 
@@ -110,17 +95,6 @@ class BlueTele : LinearOpMode() {
                 buttonTimer.reset()
             }
 
-            if (gamepad2.right_bumper && buttonTimer.milliseconds() >= buttonDebounce){
-                robot.holder.launchpos +=0.01
-                buttonTimer.reset()
-
-            }
-            if (gamepad2.left_bumper && buttonTimer.milliseconds() >= buttonDebounce) {
-                robot.holder.launchpos -= 0.01
-                buttonTimer.reset()
-
-            }
-
             if (gamepad1.right_bumper && buttonTimer.milliseconds() >= buttonDebounce){
                 robot.launcher.change +=100
                 buttonTimer.reset()
@@ -130,20 +104,61 @@ class BlueTele : LinearOpMode() {
                 buttonTimer.reset()
             }
 
-            if (intaking) {
-                when (balls){
-                    0 -> {
-                        if (robot.ball1.isGreen() || robot.ball1.isPurple()){
-                            balls += 1
-                        }
-                    }
-                    1 -> {
-                        if (robot.ball2.isGreen() || robot.ball2.isPurple()){
-
-                            balls += 1
-                        }
-                    }
+            if (gamepad1.dpad_down && buttonTimer.milliseconds() >= buttonDebounce) {
+                if(!reversing){
+                    runningActions.add(robot.ReverseIntake)
                 }
+                else{
+                    runningActions.add(robot.StopIntake)
+                }
+
+                buttonTimer.reset()
+            }
+
+            if (gamepad1.dpad_up && buttonTimer.milliseconds() >= buttonDebounce){
+                currentLaunchPointIndex = 0
+                currentLaunchPoint = LauncherPoint.blueLauncherPoints[currentLaunchPointIndex]
+                robot.launcher.baseRPM = currentLaunchPoint.launcherRPM
+                buttonTimer.reset()
+            }
+
+            if (gamepad1.dpad_right && buttonTimer.milliseconds() >= buttonDebounce) {
+                cycleLauncherPoint(true)
+                buttonTimer.reset()
+            } else if (gamepad1.dpad_left && buttonTimer.milliseconds() >= buttonDebounce) {
+                cycleLauncherPoint(false)
+                buttonTimer.reset()
+            }
+
+            if (gamepad1.y && buttonTimer.milliseconds() >= buttonDebounce) {
+                driveOverride.beginOverriding(currentLaunchPoint.pose)
+                buttonTimer.reset()
+            }
+
+            if(gamepad1.a ){
+                localizer.resetOdo()
+            }
+
+            if (gamepad1.right_stick_button && buttonTimer.milliseconds() >= buttonDebounce) {
+                // when changing modes in the drivetrain override,
+                // just stop overriding
+                driveOverride.stopOverriding()
+
+                driveShouldRotate = !driveShouldRotate
+                buttonTimer.reset()
+            }
+
+
+            //testing
+            if (gamepad2.right_bumper && buttonTimer.milliseconds() >= buttonDebounce){
+                robot.holder.launchpos +=0.01
+                buttonTimer.reset()
+
+            }
+            if (gamepad2.left_bumper && buttonTimer.milliseconds() >= buttonDebounce) {
+                robot.holder.launchpos -= 0.01
+                buttonTimer.reset()
+
             }
 
 
@@ -160,66 +175,12 @@ class BlueTele : LinearOpMode() {
             TeleGlobals.currentPosition = Localizer.pose
 
             //updatePID subsystems
-            if(gamepad1.a ){
-                localizer.resetOdo()
-            }
 
             localizer.update()
             robot.update()
 
-            // BEGIN LAUNCHER DRIVETRAIN CODE
 
-            if (gamepad1.dpad_right && buttonTimer.milliseconds() >= buttonDebounce) {
-                cycleLauncherPoint(true)
-                buttonTimer.reset()
-            } else if (gamepad1.dpad_left && buttonTimer.milliseconds() >= buttonDebounce) {
-                cycleLauncherPoint(false)
-                buttonTimer.reset()
-            }
-            if (gamepad1.dpad_up && buttonTimer.milliseconds() >= buttonDebounce){
-                currentLaunchPointIndex = 0
-                currentLaunchPoint = LauncherPoint.blueLauncherPoints[currentLaunchPointIndex]
-                robot.launcher.baseRPM = currentLaunchPoint.launcherRPM
-                buttonTimer.reset()
-            }
-
-            if (gamepad1.y && buttonTimer.milliseconds() >= buttonDebounce) {
-                driveOverride.beginOverriding(currentLaunchPoint.pose)
-                buttonTimer.reset()
-
-                // TODO:
-                // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-                // @              should this button have debounce?              @
-                // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-            }
-
-            if (/* the control to toggle the rotation*/ false && buttonTimer.milliseconds() >= buttonDebounce) {
-                // when changing modes in the drivetrain override,
-                // just stop overriding
-                driveOverride.stopOverriding()
-
-                driveShouldRotate = !driveShouldRotate
-                buttonTimer.reset()
-            }
-
-            if (/* the control to toggle soft lock */ false && buttonTimer.milliseconds() >= buttonDebounce) {
-                driveRotateSoftLock = !driveRotateSoftLock
-                buttonTimer.reset()
-            }
-
-            if (/* the control to increase the resistance */ false && buttonTimer.milliseconds() >= buttonDebounce) {
-                driveRotateResistance += 0.1f
-                buttonTimer.reset()
-            } else if (/* the control to decrease the resistance */ false && buttonTimer.milliseconds() >= buttonDebounce) {
-                driveRotateResistance -= 0.1f
-                buttonTimer.reset()
-            }
-
-            // END LAUNCHER DRIVETRAIN CODE
-
-            if(gamepad1.b){
-                driveOverride.beginOverriding(AutoPoints.EndgameBlue.pose)
-            }
+            //drivetrain overrides
 
             if (driveOverride.shouldOverrideInput()) {
                 if (driveOverride.safetyMeasures(gamepad1)) {
@@ -227,7 +188,13 @@ class BlueTele : LinearOpMode() {
                 }
 
                 driveOverride.update(drive)
-            } else {
+            } else if(driveShouldRotate){
+                val launchAngle = goalAngle(Localizer.pose.x, Localizer.pose.y, Drivetrain.Alliance.Blue)
+                driveOverride.rotate(
+                    drive, launchAngle, gamepad1
+                )
+            }
+            else {
                 drive.update(
                     arrayListOf(
                         gamepad1.left_stick_x,
@@ -235,14 +202,10 @@ class BlueTele : LinearOpMode() {
                         gamepad1.right_stick_x
                     )
                 )
-
-                if (driveShouldRotate) {
-                    driveOverride.rotate(
-                        drive, currentLaunchPoint.pose, driveRotateSoftLock, driveRotateResistance
-                    )
-                }
             }
 
+
+            //telemetry
             val overrideTimeLeft = System.currentTimeMillis() - driveOverrideSafetyTimer
             if (overrideTimeLeft < 5000) {
                 telemetry.addData("Drive train override safety was tripped!", overrideTimeLeft)

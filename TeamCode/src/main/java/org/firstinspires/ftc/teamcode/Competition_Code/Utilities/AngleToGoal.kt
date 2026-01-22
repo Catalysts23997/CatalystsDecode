@@ -15,7 +15,7 @@ fun goalAngle (currentx: Double, currenty: Double, alliance: Drivetrain.Alliance
         basketx = -72.0
     }
 
-    var angle = multiply * atan(abs(basketx - currentx) / abs(baskety - currenty))
+    var angle = multiply*Math.PI + multiply * atan(abs(basketx - currentx) / abs(baskety - currenty))
 
 
     return angle

@@ -249,7 +249,7 @@ class RedTele : LinearOpMode() {
 
                 if (driveShouldRotate) {
                     driveOverride.rotate(
-                        drive, currentLaunchPoint.pose, driveRotateSoftLock, driveRotateResistance
+                        drive, 0.0, gamepad1
                     )
                 }
             }
