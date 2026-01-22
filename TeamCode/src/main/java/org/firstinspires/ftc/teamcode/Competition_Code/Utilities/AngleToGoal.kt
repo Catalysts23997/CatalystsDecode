@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Competition_Code.Utilities
 
+import org.firstinspires.ftc.teamcode.Competition_Code.AllianceColor
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Drivetrain
 import kotlin.math.abs
 import kotlin.math.atan
@@ -9,8 +10,8 @@ val baskety: Double = 72.0
 
 var multiply = 1.0
 
-fun goalAngle (currentx: Double, currenty: Double, alliance: Drivetrain.Alliance): Double {
-    if(alliance == Drivetrain.Alliance.Blue){
+fun goalAngle (currentx: Double, currenty: Double, alliance: AllianceColor): Double {
+    if(alliance == AllianceColor.Blue){
         multiply = -1.0
         basketx = -72.0
     }
