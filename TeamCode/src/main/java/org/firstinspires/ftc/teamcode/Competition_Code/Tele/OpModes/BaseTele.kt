@@ -1,6 +1,3 @@
-// NOTE: This file was created from the old BlueTele.kt file.
-// TODO: We need to verify that this code is the same as the old RedTele.kt file.
-
 package org.firstinspires.ftc.teamcode.Competition_Code.Tele.OpModes
 
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket
@@ -132,6 +129,9 @@ class BaseTele(opmode: LinearOpMode, color: AllianceColor) {
 
         telemetry.clear()
         buttonTimer.reset()
+
+        // Set the start variable to true so we can... start!
+        hasStarted = true;
     }
 
     /**
