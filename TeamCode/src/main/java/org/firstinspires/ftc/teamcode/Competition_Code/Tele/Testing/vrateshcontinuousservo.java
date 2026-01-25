@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Config
+@Disabled
 @TeleOp(name = "vrateshcontinuousservo", group = "Linear OpMode")
 public class vrateshcontinuousservo extends LinearOpMode {
 

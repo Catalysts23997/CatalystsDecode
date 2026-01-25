@@ -33,6 +33,8 @@ class Drivetrain(hwMap: HardwareMap, alliance: AllianceColor) : SubSystems {
 
     var offset: Double = 0.0
 
+    var slowMode = false
+
     override fun update(gamepadInput: ArrayList<Float>) {
 
         driveManual(gamepadInput)
@@ -68,6 +70,10 @@ class Drivetrain(hwMap: HardwareMap, alliance: AllianceColor) : SubSystems {
         rightBack.power = 0.0
     }
 
+    fun slowToggle() {
+        slowMode = !slowMode
+    }
+
     private fun driveManual(gamepadInput: ArrayList<Float>) {
         val input = gamepadInput.map { smoothGamepadInput(it.toDouble()) }
         Log.d("f", input.toString())
@@ -78,9 +84,12 @@ class Drivetrain(hwMap: HardwareMap, alliance: AllianceColor) : SubSystems {
         val rotY = -axial * sin(h) + lateral * cos(h)
 
 
-        leftFront.power = (rotY - rotX + turn)
-        leftBack.power = (rotY + rotX + turn)
-        rightFront.power = (rotY + rotX - turn)
-        rightBack.power = (rotY - rotX - turn)
+        val k = if(slowMode) 0.5
+        else 1.0
+
+        leftFront.power = k*(rotY - rotX + turn)
+        leftBack.power = k*(rotY + rotX + turn)
+        rightFront.power = k*(rotY + rotX - turn)
+        rightBack.power = k*(rotY - rotX - turn)
     }
 }

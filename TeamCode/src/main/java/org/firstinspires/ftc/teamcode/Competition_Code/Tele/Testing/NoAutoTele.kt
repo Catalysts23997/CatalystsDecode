@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.util.ElapsedTime
 import org.firstinspires.ftc.teamcode.Competition_Code.Actions.Comp1Actions
+import org.firstinspires.ftc.teamcode.Competition_Code.AllianceColor
 import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localizer
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Drivetrain
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
@@ -29,7 +30,7 @@ class NoAutoTele : LinearOpMode() {
         val robot = Comp1Actions(hardwareMap, telemetry)
         val timer = ElapsedTime()
 
-        val drive = Drivetrain(hardwareMap, Drivetrain.Alliance.Blue)
+        val drive = Drivetrain(hardwareMap, AllianceColor.Red)
         val localizer = Localizer(hardwareMap, Poses(0.0, 0.0, 0.0))
 
 

@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+@Disabled
 @TeleOp(name = "SingleMotorTest")
 public class SingleMotorTest extends LinearOpMode {
     DcMotorEx motor;
@@ -13,7 +14,7 @@ public class SingleMotorTest extends LinearOpMode {
     public void runOpMode() {
         ElapsedTime timer = new ElapsedTime();
 
-        motor = hardwareMap.get(DcMotorEx.class, "motor");
+        motor = hardwareMap.get(DcMotorEx.class, "leftLauncher");
         waitForStart();
         while (opModeIsActive()) {
             if(gamepad1.dpad_up && timer.milliseconds() > 60){
@@ -31,6 +32,9 @@ public class SingleMotorTest extends LinearOpMode {
                 power = 1;
             }
             motor.setPower(power);
+            telemetry.addData("power", power);
+            telemetry.update();
+
         }
     }
 }

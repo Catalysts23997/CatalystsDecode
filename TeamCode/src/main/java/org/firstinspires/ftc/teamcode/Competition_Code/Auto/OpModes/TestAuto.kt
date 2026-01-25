@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.Disabled
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import org.firstinspires.ftc.teamcode.Competition_Code.Actions.Comp1Actions
+import org.firstinspires.ftc.teamcode.Competition_Code.AllianceColor
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoGlobals
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoPoints
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.RunToExactForever
@@ -26,7 +27,7 @@ class TestAuto : LinearOpMode() {
         AutoGlobals.targetRobotPositon = AutoPoints.StartRed.pose
 
         val localizer = Localizer(hardwareMap, AutoGlobals.targetRobotPositon)
-        val drive = Drivetrain(hardwareMap, Drivetrain.Alliance.Red)
+        val drive = Drivetrain(hardwareMap, AllianceColor.Red)
         val robot = Comp1Actions(hardwareMap, telemetry)
 
         sleep(100)

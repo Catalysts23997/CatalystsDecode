@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap
 import com.qualcomm.robotcore.util.ElapsedTime
 import org.firstinspires.ftc.robotcore.external.Telemetry
 import org.firstinspires.ftc.teamcode.Competition_Code.Actions.Comp2Actions
+import org.firstinspires.ftc.teamcode.Competition_Code.Actions.InterleagueActions
 import org.firstinspires.ftc.teamcode.Competition_Code.AllianceColor
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoGlobals
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoPoints
@@ -43,7 +44,7 @@ class BaseTele(opmode: LinearOpMode, color: AllianceColor) {
     var runningActions: ArrayList<Action>
     var buttonDebounce: Int
     var buttonTimer: ElapsedTime
-    var robot: Comp2Actions
+    var robot: InterleagueActions
     var drive: Drivetrain
     var localizer: Localizer
     var driveOverride: DrivetrainOverride
@@ -89,11 +90,10 @@ class BaseTele(opmode: LinearOpMode, color: AllianceColor) {
         packet = TelemetryPacket()
         runningActions = ArrayList<Action>()
 
-        // TODO: ensure that this is the correct value
-        buttonDebounce = 100 // ms minimum between button presses
+        buttonDebounce = 200 // ms minimum between button presses
         buttonTimer = ElapsedTime()
 
-        robot = Comp2Actions(hardwareMap, telemetry)
+        robot = InterleagueActions(hardwareMap, telemetry)
 
         drive = Drivetrain(hardwareMap, color)
         localizer = Localizer(hardwareMap, TeleGlobals.currentPosition)
@@ -129,6 +129,7 @@ class BaseTele(opmode: LinearOpMode, color: AllianceColor) {
 
         telemetry.clear()
         buttonTimer.reset()
+        robot.launcher.start()
 
         // Set the start variable to true so we can... start!
         hasStarted = true;
@@ -153,7 +154,7 @@ class BaseTele(opmode: LinearOpMode, color: AllianceColor) {
 
         if (gamepad1.left_trigger >= 0.5 && buttonTimer.milliseconds() >= buttonDebounce && runningActions.isEmpty()) {
             // Add the shooting action to the list of running actions
-            runningActions.add(robot.ShootThrough())
+            runningActions.add(robot.Shoot())
             buttonTimer.reset()
         }
 
@@ -167,15 +168,6 @@ class BaseTele(opmode: LinearOpMode, color: AllianceColor) {
             buttonTimer.reset()
         }
 
-        if (gamepad1.right_bumper && buttonTimer.milliseconds() >= buttonDebounce) {
-            robot.launcher.change += 100
-            buttonTimer.reset()
-        }
-        if (gamepad1.left_bumper && buttonTimer.milliseconds() >= buttonDebounce) {
-            robot.launcher.change -= 100
-            buttonTimer.reset()
-        }
-
         if (gamepad1.dpad_down && buttonTimer.milliseconds() >= buttonDebounce) {
             if(!reversing){
                 runningActions.add(robot.ReverseIntake)
@@ -184,6 +176,15 @@ class BaseTele(opmode: LinearOpMode, color: AllianceColor) {
                 runningActions.add(robot.StopIntake)
             }
 
+            buttonTimer.reset()
+        }
+
+        if (gamepad1.right_bumper && buttonTimer.milliseconds() >= buttonDebounce) {
+            robot.launcher.change += 100
+            buttonTimer.reset()
+        }
+        if (gamepad1.left_bumper && buttonTimer.milliseconds() >= buttonDebounce) {
+            robot.launcher.change -= 100
             buttonTimer.reset()
         }
 
@@ -208,17 +209,14 @@ class BaseTele(opmode: LinearOpMode, color: AllianceColor) {
             buttonTimer.reset()
         }
 
-        if (gamepad1.a) {
+        if (gamepad1.a && buttonTimer.milliseconds() >= buttonDebounce) {
             localizer.resetOdo()
+            buttonTimer.reset()
         }
 
-        if (gamepad1.b) {
-            val target = when (allianceColor) {
-                AllianceColor.Blue -> AutoPoints.EndgameBlue.pose
-                AllianceColor.Red -> AutoPoints.EndgameRed.pose
-            }
-
-            driveOverride.beginOverriding(target)
+        if (gamepad1.b && buttonTimer.milliseconds() >= buttonDebounce) {
+            drive.slowToggle()
+            buttonTimer.reset()
         }
 
         if (gamepad1.right_stick_button && buttonTimer.milliseconds() >= buttonDebounce) {
@@ -294,8 +292,6 @@ class BaseTele(opmode: LinearOpMode, color: AllianceColor) {
         telemetry.addData("servopos", robot.holder.launchpos)
 
         telemetry.addData("Current Pose", Localizer.pose.toString())
-        telemetry.addData("Motor Power", robot.launcher.rightLauncher.power)
-        telemetry.addData("Motor Velo", robot.launcher.rightLauncher.velocity)
 
 
         telemetry.update()

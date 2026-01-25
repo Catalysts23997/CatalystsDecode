@@ -9,6 +9,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import org.firstinspires.ftc.teamcode.Competition_Code.Actions.Comp1Actions
 import org.firstinspires.ftc.teamcode.Competition_Code.Actions.Comp2Actions
+import org.firstinspires.ftc.teamcode.Competition_Code.Actions.InterleagueActions
+import org.firstinspires.ftc.teamcode.Competition_Code.AllianceColor
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoGlobals
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoPoints
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.RunToExactForever
@@ -25,8 +27,8 @@ class RedMoveFar : LinearOpMode() {
         AutoGlobals.targetRobotPositon = AutoPoints.StartFarRed.pose
 
         val localizer = Localizer(hardwareMap, AutoGlobals.targetRobotPositon)
-        val drive = Drivetrain(hardwareMap, Drivetrain.Alliance.Red)
-        val robot = Comp2Actions(hardwareMap, telemetry)
+        val drive = Drivetrain(hardwareMap, AllianceColor.Red)
+        val robot = InterleagueActions(hardwareMap, telemetry)
 
         sleep(100)
         localizer.update()

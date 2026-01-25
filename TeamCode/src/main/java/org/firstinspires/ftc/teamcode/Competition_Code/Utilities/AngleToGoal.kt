@@ -5,18 +5,22 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Drivetrain
 import kotlin.math.abs
 import kotlin.math.atan
 
-var basketx: Double = 72.0
-val baskety: Double = 72.0
+var basketX: Double = 72.0
+const val basketY: Double = 72.0
 
 var multiply = 1.0
 
-fun goalAngle (currentx: Double, currenty: Double, alliance: AllianceColor): Double {
+fun goalAngle (currentX: Double, currentY: Double, alliance: AllianceColor): Double {
     if(alliance == AllianceColor.Blue){
         multiply = -1.0
-        basketx = -72.0
+        basketX = -72.0
+    }
+    else {
+        multiply = 1.0
+        basketX = 72.0
     }
 
-    var angle = multiply*Math.PI + multiply * atan(abs(basketx - currentx) / abs(baskety - currenty))
+    val angle = multiply*(Math.PI + atan(abs(basketX - currentX) / abs(basketY - currentY)))
 
 
     return angle

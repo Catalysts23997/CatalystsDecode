@@ -10,6 +10,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import org.firstinspires.ftc.teamcode.Competition_Code.Actions.Comp1Actions
 import org.firstinspires.ftc.teamcode.Competition_Code.Actions.Comp2Actions
+import org.firstinspires.ftc.teamcode.Competition_Code.Actions.InterleagueActions
+import org.firstinspires.ftc.teamcode.Competition_Code.AllianceColor
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoGlobals
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoPoints
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.RunToExactForever
@@ -26,8 +28,8 @@ class RedAuto6 : LinearOpMode() {
         AutoGlobals.targetRobotPositon = AutoPoints.StartRed.pose
 
         val localizer = Localizer(hardwareMap, AutoGlobals.targetRobotPositon)
-        val drive = Drivetrain(hardwareMap, Drivetrain.Alliance.Red)
-        val robot = Comp2Actions(hardwareMap, telemetry)
+        val drive = Drivetrain(hardwareMap, AllianceColor.Red)
+        val robot = InterleagueActions(hardwareMap, telemetry)
 
         sleep(100)
         localizer.update()
@@ -61,12 +63,12 @@ class RedAuto6 : LinearOpMode() {
                     }
                 },
                 SequentialAction(
+                    robot.StartShooter,
                     AutoPoints.AprilTagRed.runToExact(),
                     robot.CheckMotif(),
                     robot.OffCamera(),
-                    robot.StartShooter,
                     AutoPoints.LaunchRed.runToExact(),
-                    robot.AutoShoot(),
+                    robot.Shoot(),
                     object : Action {
                         var nextAction: Action? = null
 
@@ -105,9 +107,8 @@ class RedAuto6 : LinearOpMode() {
                             return nextAction!!.run(p)
                         }
                     },
-                    robot.StartShooter,
                     AutoPoints.LaunchRed.runToExact(),
-                    robot.AutoShoot(),
+                    robot.Shoot(),
                     AutoPoints.EndRed.runToExact()
                 )
             )

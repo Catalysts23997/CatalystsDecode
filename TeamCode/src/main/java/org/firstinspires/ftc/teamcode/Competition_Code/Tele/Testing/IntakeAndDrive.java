@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.Competition_Code.AllianceColor;
 import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localizer;
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Intake;
@@ -21,12 +22,11 @@ public class IntakeAndDrive extends LinearOpMode {
 
     public Drivetrain drive;
 
-    /// The main function of the opmode
     @Override
     public void runOpMode() throws InterruptedException {
         // Create a new instance of the Intake subsystem
         intake = new Intake(hardwareMap);
-        drive = new Drivetrain(hardwareMap, Drivetrain.Alliance.Blue);
+        drive = new Drivetrain(hardwareMap, AllianceColor.Blue);
 
         Localizer localizer = new Localizer(hardwareMap, new Poses(0.0, 0.0, 0.0));
 

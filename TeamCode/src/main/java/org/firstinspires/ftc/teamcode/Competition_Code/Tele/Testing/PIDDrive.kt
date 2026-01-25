@@ -8,6 +8,7 @@ import com.acmerobotics.roadrunner.ftc.runBlocking
 import com.qualcomm.robotcore.eventloop.opmode.Disabled
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
+import org.firstinspires.ftc.teamcode.Competition_Code.AllianceColor
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Drivetrain
 import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localizer
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
@@ -76,7 +77,7 @@ class PIDDrive : LinearOpMode() {
         val telemetry = FtcDashboard.getInstance().telemetry
 
         val localizer = Localizer(hardwareMap, Poses(0.0, 0.0, 0.0))
-        val drive = Drivetrain(hardwareMap, Drivetrain.Alliance.Blue)
+        val drive = Drivetrain(hardwareMap, AllianceColor.Red)
 
         waitForStart()
         runBlocking(

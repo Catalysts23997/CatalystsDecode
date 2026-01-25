@@ -10,6 +10,8 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Actions.Comp1Actions
 import com.acmerobotics.roadrunner.Action
 import com.qualcomm.robotcore.eventloop.opmode.Disabled
 import org.firstinspires.ftc.teamcode.Competition_Code.Actions.Comp2Actions
+import org.firstinspires.ftc.teamcode.Competition_Code.Actions.InterleagueActions
+import org.firstinspires.ftc.teamcode.Competition_Code.AllianceColor
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoGlobals
 
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoPoints
@@ -28,8 +30,8 @@ class BlueAuto6 : LinearOpMode() {
         AutoGlobals.targetRobotPositon = AutoPoints.StartBlue.pose
 
         val localizer = Localizer(hardwareMap, AutoGlobals.targetRobotPositon)
-        val drive = Drivetrain(hardwareMap, Drivetrain.Alliance.Blue)
-        val robot = Comp2Actions(hardwareMap, telemetry)
+        val drive = Drivetrain(hardwareMap, AllianceColor.Blue)
+        val robot = InterleagueActions(hardwareMap, telemetry)
 
         sleep(100)
         localizer.update()
@@ -64,12 +66,12 @@ class BlueAuto6 : LinearOpMode() {
                     }
                 },
                 SequentialAction(
+                    robot.StartShooter,
                     AutoPoints.AprilTagBlue.runToExact(),
                     robot.CheckMotif(),
                     robot.OffCamera(),
-                    robot.StartShooter,
                     AutoPoints.LaunchBlue.runToExact(),
-                    robot.AutoShoot(),
+                    robot.Shoot(),
                     object : Action {
                         var nextAction: Action? = null
 
@@ -108,9 +110,8 @@ class BlueAuto6 : LinearOpMode() {
                             return nextAction!!.run(p)
                         }
                     },
-                    robot.StartShooter,
                     AutoPoints.LaunchBlue.runToExact(),
-                    robot.AutoShoot(),
+                    robot.Shoot(),
                     AutoPoints.EndBlue.runToExact()
                 )
             )
