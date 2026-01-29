@@ -25,18 +25,18 @@ public class SingleLauncher {
 
     static final double ticksPerRev = 28.0;
 
-    public static double maxRPM;
+    public static double maxRPM = 5200;
 
     public static double maxTPS = maxRPM/60.0 * ticksPerRev;
 
 
     Mode mode = Mode.POWER;
 
-    public double baseRPM = 3600;
+    public double baseRPM = 2600;
 
     ElapsedTime timer = new ElapsedTime();
 
-    PIDParams pidParams = new PIDParams(0.00365,0,0.000105,1.0/maxRPM);
+    PIDParams pidParams = new PIDParams(0.005,0,0.0,1.0/maxRPM);
     PIDControllerVelocity controller = new PIDControllerVelocity(pidParams);
 
     VoltageSensor voltageSensor;

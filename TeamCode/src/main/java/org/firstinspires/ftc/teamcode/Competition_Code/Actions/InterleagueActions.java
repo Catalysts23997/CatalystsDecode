@@ -217,8 +217,8 @@ public class InterleagueActions {
 
     //shooting stuff
     double speedUpTime = 1300;      // time for flywheel to reach speed
-    double servoReleaseTime = 800;  // ms for servo release
-    double pulleyShootTime = 1600;  // ms for pulley to shoot 3 balls
+    double servoReleaseTime = 400;  // ms for servo release
+    double pulleyShootTime = 1700;  // ms for pulley to shoot 3 balls
 
     public Action StartShooter = new Action() {
 
@@ -272,6 +272,41 @@ public class InterleagueActions {
         };
     }
 
+    public Action CycleShootTele() {
+        return new Action() {
+            final ElapsedTime timer = new ElapsedTime();
+            boolean initialized = false;
+
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+
+                // Phase 1: Wait for ball2 (the start signal)
+                if (!initialized) {
+                    timer.reset();
+                    initialized = true;
+                }
+
+                if(launcher.atTargetRPM(launcher.getGoalRPM(), toleranceRPM)){
+                    pulley.state = Pulley.State.On;
+                    intake.state = State.INTAKING;
+                }
+                else {
+                    pulley.state = Pulley.State.Off;
+                    intake.state = State.STOPPED;
+                }
+
+                if(timer.milliseconds()>=pulleyShootTime+600){
+                    pulley.state = Pulley.State.Off;
+                    intake.state = State.STOPPED;
+                    holder.state = Servo.State.STOP1;
+
+                    return false;
+                }
+                return true;
+            }
+        };
+    }
+
     double toleranceRPM = 100;
 
     public Action WaitForLauncher() {
@@ -312,6 +347,16 @@ public class InterleagueActions {
                 WaitAction(servoReleaseTime),
                 WaitForLauncher(),
                 CycleShoot()
+        );
+    }
+    public SequentialAction ShootTele() {
+        return new SequentialAction(
+                StartShooter,
+                StopIntake,
+                ReleaseBall,
+                WaitAction(servoReleaseTime),
+                WaitForLauncher(),
+                CycleShootTele()
         );
     }
 

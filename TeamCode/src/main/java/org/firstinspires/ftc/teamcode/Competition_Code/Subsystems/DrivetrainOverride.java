@@ -7,6 +7,7 @@ import androidx.core.math.MathUtils;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
 
+import org.firstinspires.ftc.teamcode.Competition_Code.AllianceColor;
 import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localizer;
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Angles;
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses;
@@ -88,7 +89,7 @@ public class DrivetrainOverride {
     ///
     /// `softLock` allows this function to slightly move the robot into the
     /// `target` position
-    public void rotate(Drivetrain drive, Double targetAngle, Gamepad gamepad) {
+    public void rotate(Drivetrain drive, Double targetAngle, Gamepad gamepad, AllianceColor allianceColor) {
         // prevent this from running if we don't have a target!
         if (null == targetAngle) return;
 
@@ -98,9 +99,17 @@ public class DrivetrainOverride {
         double headingError = Angles.INSTANCE.wrap(
                 targetAngle- current.getHeading()
         );
+        double lateral;
+        double axial;
+        if(allianceColor == AllianceColor.Blue){
+            lateral = gamepad.left_stick_x;
+            axial = gamepad.left_stick_y;
+        }
+        else {
+            lateral = -gamepad.left_stick_x;
+            axial = -gamepad.left_stick_y;
+        }
 
-        double lateral = gamepad.left_stick_x;
-        double axial = gamepad.left_stick_y;
         double turn = drive.getRpid().calculate(headingError);
 
         double heading = -current.getHeading();
@@ -139,7 +148,7 @@ public class DrivetrainOverride {
             return true;
         }
 
-        if(gamepad.y || gamepad.b){
+        if(gamepad.y){
             k = 1.5;
         } else k = 1;
 

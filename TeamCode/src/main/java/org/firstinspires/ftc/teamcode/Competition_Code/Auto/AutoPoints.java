@@ -8,39 +8,46 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses;
 public enum AutoPoints {
     StartBlue(new Vector2d(-39,63), 0.0),
     AprilTagBlue(new Vector2d(-15,45), Math.PI/8),
-    LaunchBlue(new Vector2d(-18,17.5), 3*Math.PI/4),
+    LaunchBlue(new Vector2d(-18,17.5), 3.2*Math.PI/4),
     LaunchOffBlue(new Vector2d(-14,55), 9.5*Math.PI/16),
-    EndBlue(new Vector2d(-25,0.0), 0.0),
+    EndBlue(new Vector2d(-25,0.0), 0.0, 1.5),
     OutOfTheWayBlue(new Vector2d(-29,60.0), 0.0),
 
     PreIntakePPG(new Vector2d(-25,14), -Math.PI / 2, 1.5),
     PPGIntake(new Vector2d(-57,14), -Math.PI / 2, .7, 1.5),
 
+    PreGate(new Vector2d(-47,1), Math.PI),
+    Gate(new Vector2d(-57,1), Math.PI),
+
+
     PreIntakePGP(new Vector2d(-25,-9), -Math.PI / 2, 1.5),
-    PGPIntake(new Vector2d(-66,-9), -Math.PI / 2, 0.7 , 1.5),
+    PGPIntake(new Vector2d(-66,-9), -Math.PI / 2, 0.75 , 1.5),
     PGPMidPoint(new Vector2d(-25,-9), 9 * Math.PI / 8, 1.5),
 
     PreIntakeGPP(new Vector2d(-25,-33), -Math.PI / 2, 1.5),
-    GPPIntake(new Vector2d(-66,-33), -Math.PI / 2, 0.7, 1.5),
+    GPPIntake(new Vector2d(-66,-33), -Math.PI / 2, 0.75, 1.5),
     GPPMidPoint(new Vector2d(-25,-33), 9*Math.PI / 8, 1.5),
 
     StartRed(new Vector2d(39,63), 0.0),
     AprilTagRed(new Vector2d(15,45), -Math.PI / 8),
-    LaunchRed(new Vector2d(18.0,17.5), -3*Math.PI/4),
+    LaunchRed(new Vector2d(18.0,17.5), -3.2*Math.PI/4),
     LaunchOffRed(new Vector2d(14,55), -9.5*Math.PI/16),
     EndRed(new Vector2d(25,0.0), 0.0),
     OutOfTheWayRed(new Vector2d(29,60.0), 0.0),
 
     PreIntakePPGRed(new Vector2d(25,14), Math.PI / 2, 1.5),
-    PPGIntakeRed(new Vector2d(57,14), Math.PI / 2, 0.7, 1.5),
+    PPGIntakeRed(new Vector2d(57,14), Math.PI / 2, 0.75, 1.5),
+
+    PreGateRed(new Vector2d(47,1), Math.PI),
+    GateRed(new Vector2d(57,1), Math.PI),
 
     PreIntakePGPRed(new Vector2d(25,-9), Math.PI / 2,1.5),
-    PGPIntakeRed(new Vector2d(66,-9), Math.PI / 2, 0.7, 1.5),
+    PGPIntakeRed(new Vector2d(66,-9), Math.PI / 2, 0.75, 1.5),
     PGPMidPointRed(new Vector2d(25,-9), -9 * Math.PI / 8, 1.5),
 
 
     PreIntakeGPPRed(new Vector2d(25,-33), Math.PI / 2, 1.5),
-    GPPIntakeRed(new Vector2d(66,-33), Math.PI / 2, 0.7, 1.5),
+    GPPIntakeRed(new Vector2d(66,-33), Math.PI / 2, 0.75, 1.5),
     GPPMidPointRed(new Vector2d(25,-33), -9 * Math.PI / 8, 1.5),
 
     StartFarRed(new Vector2d(15,-63), 0.0),

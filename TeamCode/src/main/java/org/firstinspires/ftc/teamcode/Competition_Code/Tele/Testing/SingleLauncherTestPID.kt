@@ -11,9 +11,8 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Servo
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.SingleLauncher
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.PIDParams
 
-@Disabled
 @Config
-@TeleOp(group = "Linear OpMode", name = "LaunchersTestPID")
+@TeleOp(group = "Linear OpMode", name = "SingleLaunchersTestPID")
 class
 SingleLauncherTestPID: LinearOpMode() {
 
@@ -22,7 +21,7 @@ SingleLauncherTestPID: LinearOpMode() {
         @JvmField var p1 = 0.000
         @JvmField var i1 = 0.0
         @JvmField var d1 = 0.000
-        @JvmField var f1 = 1/ SingleLauncher.maxRPM
+        @JvmField var f1 = 1.0/5200
 
 
         @JvmField var targetRpm = 0.0

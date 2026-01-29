@@ -20,6 +20,7 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.LauncherPoint
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Servo
 import org.firstinspires.ftc.teamcode.Competition_Code.Tele.TeleGlobals
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.goalAngle
+import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.launcherSpeed
 
 /**
  * This class is **NOT** an OpMode, it is used to store common code that
@@ -55,6 +56,8 @@ class BaseTele(opmode: LinearOpMode, color: AllianceColor) {
     val shotTimer: ElapsedTime
     var lastTriggerPressed: Boolean
     var driveOffset: Double
+    var turnOffset: Double
+    var powerControl: Boolean
 
     // get the current launcher point
     var launcherPoints: Array<LauncherPoint> = LauncherPoint.getLauncherPoints(color)
@@ -86,6 +89,7 @@ class BaseTele(opmode: LinearOpMode, color: AllianceColor) {
             AllianceColor.Blue -> -Math.PI / 2
             AllianceColor.Red -> Math.PI / 2
         }
+        turnOffset = 0.0
 
         packet = TelemetryPacket()
         runningActions = ArrayList<Action>()
@@ -116,6 +120,7 @@ class BaseTele(opmode: LinearOpMode, color: AllianceColor) {
         shotTimer = ElapsedTime()
         lastTriggerPressed = false
         telemetry.update()
+        powerControl = true
 
     }
 
@@ -152,9 +157,9 @@ class BaseTele(opmode: LinearOpMode, color: AllianceColor) {
         val intaking = robot.intake.state == Intake.State.INTAKING
         val reversing = robot.intake.state == Intake.State.REVERSE
 
-        if (gamepad1.left_trigger >= 0.5 && buttonTimer.milliseconds() >= buttonDebounce && runningActions.isEmpty()) {
+        if (gamepad1.right_trigger >= 0.5 && buttonTimer.milliseconds() >= buttonDebounce && runningActions.isEmpty()) {
             // Add the shooting action to the list of running actions
-            runningActions.add(robot.Shoot())
+            runningActions.add(robot.ShootTele())
             buttonTimer.reset()
         }
 
@@ -196,11 +201,20 @@ class BaseTele(opmode: LinearOpMode, color: AllianceColor) {
             buttonTimer.reset()
         }
 
-        if (gamepad1.dpad_right && buttonTimer.milliseconds() >= buttonDebounce) {
-            cycleLauncherPoint(true)
+//        if (gamepad1.dpad_right && buttonTimer.milliseconds() >= buttonDebounce) {
+//            cycleLauncherPoint(true)
+//            buttonTimer.reset()
+//        } else if (gamepad1.dpad_left && buttonTimer.milliseconds() >= buttonDebounce) {
+//            cycleLauncherPoint(false)
+//            buttonTimer.reset()
+//        }
+
+        if(gamepad1.dpad_right && buttonTimer.milliseconds() >= buttonDebounce){
+            turnOffset += 0.05
             buttonTimer.reset()
-        } else if (gamepad1.dpad_left && buttonTimer.milliseconds() >= buttonDebounce) {
-            cycleLauncherPoint(false)
+        }
+        if(gamepad1.dpad_left && buttonTimer.milliseconds() >= buttonDebounce){
+            turnOffset -= 0.05
             buttonTimer.reset()
         }
 
@@ -255,6 +269,15 @@ class BaseTele(opmode: LinearOpMode, color: AllianceColor) {
         TeleGlobals.currentPosition = Localizer.pose
 
         //updatePID subsystems
+        if(gamepad1.x && buttonTimer.milliseconds() >= buttonDebounce){
+            powerControl = !powerControl
+        }
+        if(powerControl){
+            robot.launcher.baseRPM = launcherSpeed(Localizer.pose.x, Localizer.pose.y, allianceColor)
+
+        }
+        else robot.launcher.baseRPM = 2500.0
+
 
         localizer.update()
         robot.update()
@@ -267,9 +290,9 @@ class BaseTele(opmode: LinearOpMode, color: AllianceColor) {
 
             driveOverride.update(drive)
         } else if (driveShouldRotate) {
-            val launchAngle = goalAngle(Localizer.pose.x, Localizer.pose.y, allianceColor)
+            val launchAngle = turnOffset + goalAngle(Localizer.pose.x, Localizer.pose.y, allianceColor)
             driveOverride.rotate(
-                drive, launchAngle, gamepad1
+                drive, launchAngle, gamepad1, allianceColor
             )
         } else {
             drive.update(
@@ -313,7 +336,6 @@ class BaseTele(opmode: LinearOpMode, color: AllianceColor) {
         }
 
         currentLaunchPoint = launcherPoints[currentLaunchPointIndex]
-        robot.launcher.baseRPM = currentLaunchPoint.launcherRPM
     }
 
 }
