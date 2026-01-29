@@ -6,10 +6,13 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses;
 
 
 public enum AutoPoints {
+    StartFarBlue(new Vector2d(-14, -58.4), 0.0),
     StartBlue(new Vector2d(-39,63), 0.0),
     AprilTagBlue(new Vector2d(-15,45), Math.PI/8),
+    LaunchFarBlue(new Vector2d(-14, -58.4), 3.76), // fun magical constant!
     LaunchBlue(new Vector2d(-18,17.5), 3.2*Math.PI/4),
     LaunchOffBlue(new Vector2d(-14,55), 9.5*Math.PI/16),
+    EndFarBlue(new Vector2d(-31.8, -53), 0.0),
     EndBlue(new Vector2d(-25,0.0), 0.0, 1.5),
     OutOfTheWayBlue(new Vector2d(-29,60.0), 0.0),
 
@@ -50,8 +53,8 @@ public enum AutoPoints {
     GPPIntakeRed(new Vector2d(66,-33), Math.PI / 2, 0.75, 1.5),
     GPPMidPointRed(new Vector2d(25,-33), -9 * Math.PI / 8, 1.5),
 
-    StartFarRed(new Vector2d(15,-63), 0.0),
-    StartFarBlue(new Vector2d(-15,-63), 0.0),
+    /*StartFarRed(new Vector2d(15,-63), 0.0),
+    StartFarBlue(new Vector2d(-15,-63), 0.0),*/
     MoveFarRed(new Vector2d(35,-63), 0.0),
     MoveFarBlue(new Vector2d(-35,-63), 0.0),
 
