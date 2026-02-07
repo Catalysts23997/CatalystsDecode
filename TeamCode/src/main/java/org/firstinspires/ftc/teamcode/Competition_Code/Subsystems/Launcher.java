@@ -36,7 +36,7 @@ public class Launcher {
 
     Mode mode = Mode.POWER;
 
-    public double baseRPM = 2400;
+    public double baseRPM = 2000;
 
     ElapsedTime timer = new ElapsedTime();
 

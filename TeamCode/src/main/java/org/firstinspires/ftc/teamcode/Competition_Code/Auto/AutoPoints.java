@@ -6,55 +6,62 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses;
 
 
 public enum AutoPoints {
-    StartFarBlue(new Vector2d(-14, -58.4), 0.0),
     StartBlue(new Vector2d(-39,63), 0.0),
     AprilTagBlue(new Vector2d(-15,45), Math.PI/8),
-    LaunchFarBlue(new Vector2d(-14, -58.4), 3.76), // fun magical constant!
-    LaunchBlue(new Vector2d(-18,17.5), 3.2*Math.PI/4),
+    LaunchFarBlue(new Vector2d(-14, -59), -3.48),
+    LaunchBlue(new Vector2d(-18,17.5), 3.1*Math.PI/4),
     LaunchOffBlue(new Vector2d(-14,55), 9.5*Math.PI/16),
     EndFarBlue(new Vector2d(-31.8, -53), 0.0),
-    EndBlue(new Vector2d(-25,0.0), 0.0, 1.5),
+    EndBlue(new Vector2d(-35,0.0), 0.0, 1.5),
     OutOfTheWayBlue(new Vector2d(-29,60.0), 0.0),
 
-    PreIntakePPG(new Vector2d(-25,14), -Math.PI / 2, 1.5),
-    PPGIntake(new Vector2d(-57,14), -Math.PI / 2, .7, 1.5),
+    PreIntakePPG(new Vector2d(-25,13), -Math.PI / 2, 1.5),
+    PPGIntake(new Vector2d(-55,13), -Math.PI / 2, 0.9, 1.5),
 
-    PreGate(new Vector2d(-47,1), Math.PI),
-    Gate(new Vector2d(-57,1), Math.PI),
+    PreGate(new Vector2d(-47,5), 0.0),
+    Gate(new Vector2d(-56,5), 0.0),
 
 
-    PreIntakePGP(new Vector2d(-25,-9), -Math.PI / 2, 1.5),
-    PGPIntake(new Vector2d(-66,-9), -Math.PI / 2, 0.75 , 1.5),
-    PGPMidPoint(new Vector2d(-25,-9), 9 * Math.PI / 8, 1.5),
+    PreIntakePGP(new Vector2d(-25,-10), -Math.PI / 2, 1.5),
+    PGPIntake(new Vector2d(-64,-10), -Math.PI / 2, 0.9 , 1.5),
+    PGPMidPoint(new Vector2d(-45,-10), 9 * Math.PI / 8, 1.5),
 
     PreIntakeGPP(new Vector2d(-25,-33), -Math.PI / 2, 1.5),
-    GPPIntake(new Vector2d(-66,-33), -Math.PI / 2, 0.75, 1.5),
+    GPPIntake(new Vector2d(-64,-33), -Math.PI / 2, 0.9, 1.5),
     GPPMidPoint(new Vector2d(-25,-33), 9*Math.PI / 8, 1.5),
+
+    PreIntakeGPPFar(new Vector2d(-25,-36), -Math.PI / 2),
+    GPPIntakeFar(new Vector2d(-64,-36), -Math.PI / 2, 0.7, 1.5),
+
+    PreIntakeGPPFarRed(new Vector2d(25,-36), Math.PI / 2),
+    GPPIntakeFarRed(new Vector2d(64,-36), Math.PI / 2, 0.7, 1.5),
 
     StartRed(new Vector2d(39,63), 0.0),
     AprilTagRed(new Vector2d(15,45), -Math.PI / 8),
-    LaunchRed(new Vector2d(18.0,17.5), -3.2*Math.PI/4),
+    LaunchRed(new Vector2d(18.0,17.5), -3.0*Math.PI/4),
     LaunchOffRed(new Vector2d(14,55), -9.5*Math.PI/16),
-    EndRed(new Vector2d(25,0.0), 0.0),
+    LaunchFarRed(new Vector2d(14, -59), 3.536),
+
+    EndRed(new Vector2d(35,0.0), 0.0),
     OutOfTheWayRed(new Vector2d(29,60.0), 0.0),
 
-    PreIntakePPGRed(new Vector2d(25,14), Math.PI / 2, 1.5),
-    PPGIntakeRed(new Vector2d(57,14), Math.PI / 2, 0.75, 1.5),
+    PreIntakePPGRed(new Vector2d(25,13), Math.PI / 2, 1.5),
+    PPGIntakeRed(new Vector2d(55,13), Math.PI / 2, 0.9, 1.5),
 
-    PreGateRed(new Vector2d(47,1), Math.PI),
-    GateRed(new Vector2d(57,1), Math.PI),
+    PreGateRed(new Vector2d(47,5), 0.0),
+    GateRed(new Vector2d(56,5), 0.0),
 
-    PreIntakePGPRed(new Vector2d(25,-9), Math.PI / 2,1.5),
-    PGPIntakeRed(new Vector2d(66,-9), Math.PI / 2, 0.75, 1.5),
-    PGPMidPointRed(new Vector2d(25,-9), -9 * Math.PI / 8, 1.5),
+    PreIntakePGPRed(new Vector2d(25,-10), Math.PI / 2,1.5),
+    PGPIntakeRed(new Vector2d(64,-10), Math.PI / 2, 0.9, 1.5),
+    PGPMidPointRed(new Vector2d(45,-10), -9 * Math.PI / 8, 1.5),
 
 
     PreIntakeGPPRed(new Vector2d(25,-33), Math.PI / 2, 1.5),
-    GPPIntakeRed(new Vector2d(66,-33), Math.PI / 2, 0.75, 1.5),
+    GPPIntakeRed(new Vector2d(64,-33), Math.PI / 2, 0.9, 1.5),
     GPPMidPointRed(new Vector2d(25,-33), -9 * Math.PI / 8, 1.5),
 
-    /*StartFarRed(new Vector2d(15,-63), 0.0),
-    StartFarBlue(new Vector2d(-15,-63), 0.0),*/
+    StartFarRed(new Vector2d(15,-63), 0.0),
+    StartFarBlue(new Vector2d(-15,-63), 0.0),
     MoveFarRed(new Vector2d(35,-63), 0.0),
     MoveFarBlue(new Vector2d(-35,-63), 0.0),
 

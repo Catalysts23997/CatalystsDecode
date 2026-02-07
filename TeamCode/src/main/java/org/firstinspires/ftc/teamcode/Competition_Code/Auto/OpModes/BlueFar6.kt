@@ -6,10 +6,7 @@ import com.acmerobotics.roadrunner.SequentialAction
 import com.acmerobotics.roadrunner.ftc.runBlocking
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
-import org.firstinspires.ftc.teamcode.Competition_Code.Actions.Comp1Actions
 import com.acmerobotics.roadrunner.Action
-import com.qualcomm.robotcore.eventloop.opmode.Disabled
-import org.firstinspires.ftc.teamcode.Competition_Code.Actions.Comp2Actions
 import org.firstinspires.ftc.teamcode.Competition_Code.Actions.InterleagueActions
 import org.firstinspires.ftc.teamcode.Competition_Code.AllianceColor
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoGlobals
@@ -21,8 +18,8 @@ import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localiz
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Servo
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
 
-@Autonomous(name = "BlueAutoFar", group = "Auto")
-class BlueAutoFar : LinearOpMode() {
+@Autonomous(name = "BlueFar6", group = "Auto")
+class BlueFar6 : LinearOpMode() {
 
 
     override fun runOpMode() {
@@ -36,10 +33,11 @@ class BlueAutoFar : LinearOpMode() {
         localizer.update()
         robot.holder.state = Servo.State.STOP1
         robot.update()
-        robot.launcher.baseRPM = 3000.0 // TODO: Fix this!
+        robot.launcher.baseRPM = 3200.0
 
         waitForStart()
 
+        AutoGlobals.FarAuto = true
         AutoGlobals.AutonomousRan = true
 
         localizer.update()
@@ -67,19 +65,23 @@ class BlueAutoFar : LinearOpMode() {
                 },
                 SequentialAction(
                     robot.StartShooter,
-
-                    AutoPoints.LaunchFarBlue.runToExact(),
-                    robot.Shoot(),
-
-                    AutoPoints.PreIntakeGPP.runToFast(),
+                    robot.WaitAction(1000.0),
                     robot.StartIntake,
-                    AutoPoints.GPPIntake.runToExact(),
-                    robot.WaitAction(200.0),
-                    robot.StopIntake,
+
+
 
                     AutoPoints.LaunchFarBlue.runToExact(),
-                    robot.Shoot(),
-                    AutoPoints.EndFarBlue.runToExact()
+
+                    robot.ShootFar(),
+
+                    AutoPoints.PreIntakeGPPFar.runToExact(),
+                    robot.StartIntake,
+                    AutoPoints.GPPIntakeFar.runToExact(),
+                    robot.WaitAction(200.0),
+
+                    AutoPoints.LaunchFarBlue.runToExact(),
+                    robot.ShootFar(),
+                    AutoPoints.MoveFarBlue.runToExact()
                 )
             )
         )

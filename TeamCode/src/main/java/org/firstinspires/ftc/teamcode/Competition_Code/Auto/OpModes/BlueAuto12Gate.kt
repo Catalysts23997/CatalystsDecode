@@ -37,7 +37,6 @@ class BlueAuto12Gate : LinearOpMode() {
         robot.holder.state = Servo.State.STOP1
         robot.update()
 
-
         waitForStart()
 
         AutoGlobals.AutonomousRan = true
@@ -71,18 +70,18 @@ class BlueAuto12Gate : LinearOpMode() {
                 },
                 SequentialAction(
                     robot.StartShooter,
+                    robot.StartIntake,
                     AutoPoints.LaunchBlue.runToExact(),
                     robot.Shoot(),
 
                     AutoPoints.PreIntakePPG.runToFast(),
                     robot.StartIntake,
                     AutoPoints.PPGIntake.runToExact(),
-                    robot.WaitAction(200.0),
-                    robot.StopIntake,
+                    robot.WaitAction(125.0),
 
                     AutoPoints.PreGate.runToExact(),
                     AutoPoints.Gate.runToExact(),
-                    robot.WaitAction(400.0),
+                    robot.WaitAction(800.0),
 
                     AutoPoints.LaunchBlue.runToExact(),
                     robot.Shoot(),
@@ -90,8 +89,7 @@ class BlueAuto12Gate : LinearOpMode() {
                     AutoPoints.PreIntakePGP.runToFast(),
                     robot.StartIntake,
                     AutoPoints.PGPIntake.runToExact(),
-                    robot.WaitAction(200.0),
-                    robot.StopIntake,
+                    robot.WaitAction(125.0),
                     AutoPoints.PGPMidPoint.runToFast(),
 
                     AutoPoints.LaunchBlue.runToExact(),
@@ -100,9 +98,7 @@ class BlueAuto12Gate : LinearOpMode() {
                     AutoPoints.PreIntakeGPP.runToFast(),
                     robot.StartIntake,
                     AutoPoints.GPPIntake.runToExact(),
-                    robot.WaitAction(200.0),
-                    robot.StopIntake,
-                    AutoPoints.GPPMidPoint.runToFast(),
+                    robot.WaitAction(125.0),
 
                     AutoPoints.LaunchBlue.runToExact(),
                     robot.Shoot(),

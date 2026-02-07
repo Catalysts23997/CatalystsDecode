@@ -29,7 +29,7 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.launcherSpeed
  * This code is written like a subsystem.
  */
 // OpMode stores the current opmode that this code is attached to.
-class BaseTele(opmode: LinearOpMode, color: AllianceColor) {
+class ShowTele(opmode: LinearOpMode, color: AllianceColor) {
 
     var hasStarted: Boolean = false
 
@@ -45,7 +45,6 @@ class BaseTele(opmode: LinearOpMode, color: AllianceColor) {
     var buttonDebounce: Int
     var buttonTimer: ElapsedTime
     var robot: InterleagueActions
-    var drive: Drivetrain
     var localizer: Localizer
     var driveOverride: DrivetrainOverride
     var driveOverrideSafetyTimer: Long
@@ -109,7 +108,6 @@ class BaseTele(opmode: LinearOpMode, color: AllianceColor) {
 
         robot = InterleagueActions(hardwareMap, telemetry)
 
-        drive = Drivetrain(hardwareMap, color)
         localizer = Localizer(hardwareMap, TeleGlobals.currentPosition)
 
         telemetry.addData("Robot at zero:",  Localizer.pose)
@@ -151,7 +149,6 @@ class BaseTele(opmode: LinearOpMode, color: AllianceColor) {
 
         telemetry.clear()
         buttonTimer.reset()
-        robot.launcher.start()
 
         // Set the start variable to true so we can... start!
         hasStarted = true;
@@ -245,10 +242,6 @@ class BaseTele(opmode: LinearOpMode, color: AllianceColor) {
             buttonTimer.reset()
         }
 
-        if (gamepad1.b && buttonTimer.milliseconds() >= buttonDebounce) {
-            drive.slowToggle()
-            buttonTimer.reset()
-        }
 
         if (gamepad1.right_stick_button && buttonTimer.milliseconds() >= buttonDebounce) {
             // when changing modes in the drivetrain override,
@@ -299,27 +292,6 @@ class BaseTele(opmode: LinearOpMode, color: AllianceColor) {
         localizer.update()
         robot.update()
 
-        // drivetrain overrides
-        if (driveOverride.shouldOverrideInput()) {
-            if (driveOverride.safetyMeasures(gamepad1)) {
-                driveOverrideSafetyTimer = System.currentTimeMillis()
-            }
-
-            driveOverride.update(drive)
-        } else if (driveShouldRotate) {
-            val launchAngle = turnOffset + goalAngle(Localizer.pose.x, Localizer.pose.y, allianceColor)
-            driveOverride.rotate(
-                drive, launchAngle, gamepad1, allianceColor
-            )
-        } else {
-            drive.update(
-                arrayListOf(
-                    gamepad1.left_stick_x,
-                    -gamepad1.left_stick_y,
-                    gamepad1.right_stick_x
-                )
-            )
-        }
 
         val overrideTimeLeft = System.currentTimeMillis() - driveOverrideSafetyTimer
         if (overrideTimeLeft < 5000) {

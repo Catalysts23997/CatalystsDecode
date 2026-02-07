@@ -16,14 +16,14 @@ import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localiz
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Servo
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
 
-@Autonomous(name = "BlueFar3", group = "Auto")
-class BlueFar3 : LinearOpMode() {
+@Autonomous(name = "RedFar3", group = "Auto")
+class RedFar3 : LinearOpMode() {
 
     override fun runOpMode() {
-        AutoGlobals.targetRobotPositon = AutoPoints.StartFarBlue.pose
+        AutoGlobals.targetRobotPositon = AutoPoints.StartFarRed.pose
 
         val localizer = Localizer(hardwareMap, AutoGlobals.targetRobotPositon)
-        val drive = Drivetrain(hardwareMap, AllianceColor.Blue)
+        val drive = Drivetrain(hardwareMap, AllianceColor.Red)
         val robot = InterleagueActions(hardwareMap, telemetry)
 
         sleep(100)
@@ -48,7 +48,8 @@ class BlueFar3 : LinearOpMode() {
                     }
                     localizer.update()
                     RunToExactForever(AutoGlobals.targetRobotPositon)
-                    AutoGlobals.locationOfRobot = Poses(Localizer.pose.x, Localizer.pose.y, Localizer.pose.heading)
+                    AutoGlobals.locationOfRobot = Poses(Localizer.pose.x, Localizer.pose.y,
+                        Localizer.pose.heading)
                     telemetry.addData("hello", AutoGlobals.targetRobotPositon)
                     telemetry.addData("df", Localizer.pose.heading)
                     telemetry.addData("x", Localizer.pose.x)
@@ -62,10 +63,9 @@ class BlueFar3 : LinearOpMode() {
                     robot.WaitAction(1000.0),
                     robot.StartIntake,
 
-
-                    AutoPoints.LaunchFarBlue.runToExact(),
+                    AutoPoints.LaunchFarRed.runToExact(),
                     robot.ShootFar(),
-                    AutoPoints.MoveFarBlue.runToExact()
+                    AutoPoints.MoveFarRed.runToExact()
                 )
             )
         )

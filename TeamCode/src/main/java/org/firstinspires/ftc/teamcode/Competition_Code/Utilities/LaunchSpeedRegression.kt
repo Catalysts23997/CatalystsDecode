@@ -13,7 +13,7 @@ fun launcherSpeed(currentX: Double, currentY: Double, alliance: AllianceColor): 
 
     val distance = sqrt((basketX-currentX).pow(2)+(72.0-currentY).pow(2))
 
-    val rpm = 10*distance+1820
+    val rpm = 11*distance+1720
 
     return rpm
 }

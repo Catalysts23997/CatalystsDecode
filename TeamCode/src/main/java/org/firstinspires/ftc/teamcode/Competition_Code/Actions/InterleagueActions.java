@@ -14,7 +14,6 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoGlobals;
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.AprilTag;
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.ColorSensors;
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Intake;
-import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Launcher;
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Pulley;
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Servo;
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Intake.State;
@@ -295,7 +294,42 @@ public class InterleagueActions {
                     intake.state = State.STOPPED;
                 }
 
-                if(timer.milliseconds()>=pulleyShootTime+600){
+                if(timer.milliseconds()>=pulleyShootTime+400){
+                    pulley.state = Pulley.State.Off;
+                    intake.state = State.STOPPED;
+                    holder.state = Servo.State.STOP1;
+
+                    return false;
+                }
+                return true;
+            }
+        };
+    }
+
+    public Action CycleShootTeleFar() {
+        return new Action() {
+            final ElapsedTime timer = new ElapsedTime();
+            boolean initialized = false;
+
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+
+                // Phase 1: Wait for ball2 (the start signal)
+                if (!initialized) {
+                    timer.reset();
+                    initialized = true;
+                }
+
+                if(launcher.atTargetRPM(launcher.getGoalRPM(), toleranceRPM)){
+                    pulley.state = Pulley.State.On;
+                    intake.state = State.INTAKING;
+                }
+                else {
+                    pulley.state = Pulley.State.Off;
+                    intake.state = State.STOPPED;
+                }
+
+                if(timer.milliseconds()>=pulleyShootTime+1500){
                     pulley.state = Pulley.State.Off;
                     intake.state = State.STOPPED;
                     holder.state = Servo.State.STOP1;
@@ -339,6 +373,7 @@ public class InterleagueActions {
     }
 
 
+
     public SequentialAction Shoot() {
         return new SequentialAction(
                 StartShooter,
@@ -346,17 +381,18 @@ public class InterleagueActions {
                 ReleaseBall,
                 WaitAction(servoReleaseTime),
                 WaitForLauncher(),
-                CycleShoot()
+                CycleShootTele()
         );
     }
-    public SequentialAction ShootTele() {
+
+    public SequentialAction ShootFar() {
         return new SequentialAction(
                 StartShooter,
                 StopIntake,
                 ReleaseBall,
                 WaitAction(servoReleaseTime),
                 WaitForLauncher(),
-                CycleShootTele()
+                CycleShootTeleFar()
         );
     }
 
