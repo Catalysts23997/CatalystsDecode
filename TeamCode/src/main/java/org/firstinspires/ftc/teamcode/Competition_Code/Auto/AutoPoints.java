@@ -8,18 +8,18 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses;
 public enum AutoPoints {
     StartBlue(new Vector2d(-39,63), 0.0),
     AprilTagBlue(new Vector2d(-15,45), Math.PI/8),
-    LaunchFarBlue(new Vector2d(-14, -59), -3.48),
+    LaunchFarBlue(new Vector2d(-14, -59), -3.52),
     LaunchBlue(new Vector2d(-18,17.5), 3.1*Math.PI/4),
     LaunchOffBlue(new Vector2d(-14,55), 9.5*Math.PI/16),
-    EndFarBlue(new Vector2d(-31.8, -53), 0.0),
     EndBlue(new Vector2d(-35,0.0), 0.0, 1.5),
     OutOfTheWayBlue(new Vector2d(-29,60.0), 0.0),
 
     PreIntakePPG(new Vector2d(-25,13), -Math.PI / 2, 1.5),
     PPGIntake(new Vector2d(-55,13), -Math.PI / 2, 0.9, 1.5),
 
+    GateMid(new Vector2d(-47,-10), 0.0),
     PreGate(new Vector2d(-47,5), 0.0),
-    Gate(new Vector2d(-56,5), 0.0),
+    Gate(new Vector2d(-57,5), 0.0),
 
 
     PreIntakePGP(new Vector2d(-25,-10), -Math.PI / 2, 1.5),
@@ -31,10 +31,14 @@ public enum AutoPoints {
     GPPMidPoint(new Vector2d(-25,-33), 9*Math.PI / 8, 1.5),
 
     PreIntakeGPPFar(new Vector2d(-25,-36), -Math.PI / 2),
-    GPPIntakeFar(new Vector2d(-64,-36), -Math.PI / 2, 0.7, 1.5),
+    GPPIntakeFar(new Vector2d(-64,-36), -Math.PI / 2, 0.9, 1.5),
+
+    PGPIntakeFar(new Vector2d(-64,-62), -Math.PI / 2, 0.9, 4.0),
+    PGPIntakeFarRed(new Vector2d(64,-62), Math.PI / 2, 0.9, 4.0),
+
 
     PreIntakeGPPFarRed(new Vector2d(25,-36), Math.PI / 2),
-    GPPIntakeFarRed(new Vector2d(64,-36), Math.PI / 2, 0.7, 1.5),
+    GPPIntakeFarRed(new Vector2d(64,-36), Math.PI / 2, 0.9, 1.5),
 
     StartRed(new Vector2d(39,63), 0.0),
     AprilTagRed(new Vector2d(15,45), -Math.PI / 8),
@@ -48,8 +52,9 @@ public enum AutoPoints {
     PreIntakePPGRed(new Vector2d(25,13), Math.PI / 2, 1.5),
     PPGIntakeRed(new Vector2d(55,13), Math.PI / 2, 0.9, 1.5),
 
+    GateMidRed(new Vector2d(-47,-10), 0.0),
     PreGateRed(new Vector2d(47,5), 0.0),
-    GateRed(new Vector2d(56,5), 0.0),
+    GateRed(new Vector2d(57,5), 0.0),
 
     PreIntakePGPRed(new Vector2d(25,-10), Math.PI / 2,1.5),
     PGPIntakeRed(new Vector2d(64,-10), Math.PI / 2, 0.9, 1.5),

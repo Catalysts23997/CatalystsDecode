@@ -4,6 +4,7 @@ import com.acmerobotics.roadrunner.ParallelAction
 import com.acmerobotics.roadrunner.SequentialAction
 import com.acmerobotics.roadrunner.ftc.runBlocking
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
+import com.qualcomm.robotcore.eventloop.opmode.Disabled
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import org.firstinspires.ftc.teamcode.Competition_Code.Actions.InterleagueActions
 import org.firstinspires.ftc.teamcode.Competition_Code.AllianceColor
@@ -16,6 +17,7 @@ import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localiz
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Servo
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
 
+@Disabled
 @Autonomous(name = "BlueFar3", group = "Auto")
 class BlueFar3 : LinearOpMode() {
 

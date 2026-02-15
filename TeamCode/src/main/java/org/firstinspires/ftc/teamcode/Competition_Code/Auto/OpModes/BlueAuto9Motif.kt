@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import org.firstinspires.ftc.teamcode.Competition_Code.Actions.Comp1Actions
 import com.acmerobotics.roadrunner.Action
 import com.acmerobotics.roadrunner.RaceAction
+import com.qualcomm.robotcore.eventloop.opmode.Disabled
 import org.firstinspires.ftc.teamcode.Competition_Code.Actions.Comp2Actions
 import org.firstinspires.ftc.teamcode.Competition_Code.Actions.InterleagueActions
 import org.firstinspires.ftc.teamcode.Competition_Code.AllianceColor
@@ -21,6 +22,7 @@ import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localiz
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Servo
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
 
+@Disabled
 @Autonomous(name = "BlueAuto9Motif", group = "Auto")
 class BlueAuto9Motif : LinearOpMode() {
 

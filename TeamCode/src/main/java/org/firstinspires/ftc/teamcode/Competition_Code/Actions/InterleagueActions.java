@@ -50,19 +50,19 @@ public class InterleagueActions {
 
         launcher.update();
 
-        telemetry.addData("Ball1 Is Green?", ball1.isGreen());
-        telemetry.addData("Ball1 Is Purple?", ball1.isPurple());
-        telemetry.addData("Ball1 Hue?", ball1.getHue());
-        telemetry.addData("Ball2 Is Green?", ball2.isGreen());
-        telemetry.addData("Ball2 Is Purple?", ball2.isPurple());
-        telemetry.addData("Ball2 Hue?", ball2.getHue());
+//        telemetry.addData("Ball1 Is Green?", ball1.isGreen());
+//        telemetry.addData("Ball1 Is Purple?", ball1.isPurple());
+//        telemetry.addData("Ball1 Hue?", ball1.getHue());
+//        telemetry.addData("Ball2 Is Green?", ball2.isGreen());
+//        telemetry.addData("Ball2 Is Purple?", ball2.isPurple());
+//        telemetry.addData("Ball2 Hue?", ball2.getHue());
 
         telemetry.addData("Intake State", intake.state);
         telemetry.addData("Pulley State", pulley.state);
 
         telemetry.addData("Holder State", holder.state);
 
-        telemetry.addData("Left Launcher Speed", launcher.getRpm());
+        telemetry.addData("Launcher Speed", launcher.getRpm());
 
 
     }
@@ -127,8 +127,6 @@ public class InterleagueActions {
 
                 // Check the current motif
                 motif = aprilTag.getMotif();
-
-                telemetry.addData("AprilTag", "Waiting... " + timer.milliseconds() + "ms");
 
                 // If we don't see anything, stop searching
                 return motif == 0 && timer.milliseconds() <= cameraTimeout;
@@ -294,7 +292,7 @@ public class InterleagueActions {
                     intake.state = State.STOPPED;
                 }
 
-                if(timer.milliseconds()>=pulleyShootTime+400){
+                if(timer.milliseconds()>=pulleyShootTime+600){
                     pulley.state = Pulley.State.Off;
                     intake.state = State.STOPPED;
                     holder.state = Servo.State.STOP1;
@@ -341,7 +339,7 @@ public class InterleagueActions {
         };
     }
 
-    double toleranceRPM = 100;
+    double toleranceRPM = 300;
 
     public Action WaitForLauncher() {
         return new Action() {
@@ -359,10 +357,6 @@ public class InterleagueActions {
                 }
 
                 boolean atSpeed = launcher.atTargetRPM(launcher.getGoalRPM(), toleranceRPM);
-
-
-                telemetry.addData("Launcher At Speed", atSpeed);
-                telemetry.addData("Launcher Timer (ms)", timer.milliseconds());
 
                 // Keep running while:
                 //  - NOT at speed
@@ -393,6 +387,19 @@ public class InterleagueActions {
                 WaitAction(servoReleaseTime),
                 WaitForLauncher(),
                 CycleShootTeleFar()
+        );
+    }
+
+    public SequentialAction ShootTele() {
+        return new SequentialAction(
+                StartShooter,
+                StopIntake,
+                ReleaseBall,
+                WaitAction(servoReleaseTime),
+                WaitForLauncher(),
+                CycleShootTeleFar(),
+                WaitAction(servoReleaseTime),
+                StartIntake
         );
     }
 

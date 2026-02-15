@@ -37,26 +37,35 @@ class BaseTele(opmode: LinearOpMode, color: AllianceColor) {
     var telemetry: Telemetry = opmode.telemetry
     var hardwareMap: HardwareMap = opmode.hardwareMap
     var gamepad1: Gamepad = opmode.gamepad1
-    var gamepad2: Gamepad = opmode.gamepad2
 
     // Variables
     val packet: TelemetryPacket
     var runningActions: ArrayList<Action>
-    var buttonDebounce: Int
-    var buttonTimer: ElapsedTime
+    var shootingActions: ArrayList<Action>
+
     var robot: InterleagueActions
     var drive: Drivetrain
     var localizer: Localizer
     var driveOverride: DrivetrainOverride
     var driveOverrideSafetyTimer: Long
-    var shotsRequested: Int
-    var firstShot: Boolean
-    var shooting: Boolean
-    val shotTimer: ElapsedTime
-    var lastTriggerPressed: Boolean
     var driveOffset: Double
     var turnOffset: Double
-    var powerControl: Boolean
+    var rpmScaling: Boolean
+
+    val startIntake: Button
+    val reverseIntake: Button
+    val shoot: Button
+    val increaseRPM: Button
+    val decreaseRPM: Button
+    val increaseOffset: Button
+    val decreaseOffset: Button
+    val slowMode: Button
+    val resetOdo: Button
+    val resetRPM: Button
+    val driveTo: Button
+    val rotateTo: Button
+
+
 
     // get the current launcher point
     var launcherPoints: Array<LauncherPoint> = LauncherPoint.getLauncherPoints(color)
@@ -103,9 +112,20 @@ class BaseTele(opmode: LinearOpMode, color: AllianceColor) {
 
         packet = TelemetryPacket()
         runningActions = ArrayList<Action>()
+        shootingActions = ArrayList<Action>()
 
-        buttonDebounce = 200 // ms minimum between button presses
-        buttonTimer = ElapsedTime()
+        startIntake = Button()
+        reverseIntake = Button()
+        shoot = Button()
+        increaseRPM = Button()
+        decreaseRPM = Button()
+        increaseOffset = Button()
+        decreaseOffset = Button()
+        slowMode = Button()
+        resetOdo = Button()
+        resetRPM = Button()
+        driveTo = Button()
+        rotateTo = Button()
 
         robot = InterleagueActions(hardwareMap, telemetry)
 
@@ -118,186 +138,127 @@ class BaseTele(opmode: LinearOpMode, color: AllianceColor) {
 
         driveOverride = DrivetrainOverride()
 
-        /**
-         * This is only used for telemetry, nothing more
-         */
         driveOverrideSafetyTimer = 0L
 
         if(!AutoGlobals.FarAuto){
             robot.launcher.change = -50
         }
 
-
-
         robot.holder.state = Servo.State.STOP1
-        shotsRequested = 0
-        firstShot = false
-        shooting = false
-        shotTimer = ElapsedTime()
-        lastTriggerPressed = false
         telemetry.update()
-        powerControl = true
+        rpmScaling = true
 
     }
 
-    /**
-     * Setup teleop. Use after `waitForStart()`
-     */
     fun start() {
-        // Ensure that the localizer is ready for teleop
         localizer.update()
         localizer.transferToTele()
 
-
         telemetry.clear()
-        buttonTimer.reset()
         robot.launcher.start()
 
-        // Set the start variable to true so we can... start!
-        hasStarted = true;
+        hasStarted = true
     }
 
-    /**
-     * Tick
-     *
-     * ## Notes
-     * This function **will throw an exception** if `start` is not called.
-     */
     fun update() {
-        // !!! Safety check
-        if (!hasStarted) {
-            throw RuntimeException("BaseTele has not been started! Has `start` been called?")
-        }
+        require(hasStarted) { "BaseTele has not been started!" }
 
-        // Main code
+        handleInputs()
+        updateActions()
+        updateDrive()
+        updateRobot()
+        updateTelemetry()
+    }
 
+    fun handleInputs(){
         val intaking = robot.intake.state == Intake.State.INTAKING
         val reversing = robot.intake.state == Intake.State.REVERSE
 
-        if (gamepad1.right_trigger >= 0.5 && buttonTimer.milliseconds() >= buttonDebounce && runningActions.isEmpty()) {
+        //Shoot sequence
+        if (shoot.pressed(gamepad1.right_trigger >= 0.5) && shootingActions.isEmpty()) {
             // Add the shooting action to the list of running actions
-            runningActions.add(robot.ShootFar())
-            buttonTimer.reset()
+            shootingActions.add(robot.ShootTele())
         }
 
-        if (gamepad1.left_trigger >= 0.5 && buttonTimer.milliseconds() >= buttonDebounce) {
-            if (!intaking) {
-                runningActions.add(robot.StartIntake)
-            } else {
-                runningActions.add(robot.StopIntake)
-            }
-
-            buttonTimer.reset()
+        //intake toggle
+        if(startIntake.pressed(gamepad1.left_trigger >= 0.5)){
+            runningActions.add(
+                if (!intaking) robot.StartIntake else robot.StopIntake
+            )
         }
 
-        if (gamepad1.dpad_down && buttonTimer.milliseconds() >= buttonDebounce) {
-            if(!reversing){
-                runningActions.add(robot.ReverseIntake)
-            }
-            else{
-                runningActions.add(robot.StopIntake)
-            }
-
-            buttonTimer.reset()
+        //reverse intake toggle
+        if (reverseIntake.pressed(gamepad1.dpad_down)) {
+            runningActions.add(
+                if (!reversing) robot.ReverseIntake else robot.StopIntake
+            )
         }
 
-        if (gamepad1.right_bumper && buttonTimer.milliseconds() >= buttonDebounce) {
-            robot.launcher.change += 100
-            buttonTimer.reset()
+        //shot power adjustments
+        if (increaseRPM.pressed(gamepad1.right_bumper)) {
+            robot.launcher.change += 50
         }
-        if (gamepad1.left_bumper && buttonTimer.milliseconds() >= buttonDebounce) {
-            robot.launcher.change -= 100
-            buttonTimer.reset()
-        }
-
-        // BEGIN LAUNCHER DRIVETRAIN CODE
-        if (gamepad1.dpad_up && buttonTimer.milliseconds() >= buttonDebounce){
-            currentLaunchPointIndex = 0
-            currentLaunchPoint = launcherPoints[currentLaunchPointIndex]
-            robot.launcher.baseRPM = currentLaunchPoint.launcherRPM
-            buttonTimer.reset()
+        if (decreaseRPM.pressed(gamepad1.left_bumper)) {
+            robot.launcher.change -= 50
         }
 
-//        if (gamepad1.dpad_right && buttonTimer.milliseconds() >= buttonDebounce) {
-//            cycleLauncherPoint(true)
-//            buttonTimer.reset()
-//        } else if (gamepad1.dpad_left && buttonTimer.milliseconds() >= buttonDebounce) {
-//            cycleLauncherPoint(false)
-//            buttonTimer.reset()
-//        }
-
-        if(gamepad1.dpad_right && buttonTimer.milliseconds() >= buttonDebounce){
+        //adjust launch angle
+        if(increaseOffset.pressed(gamepad1.dpad_right)){
             turnOffset += 0.05
-            buttonTimer.reset()
         }
-        if(gamepad1.dpad_left && buttonTimer.milliseconds() >= buttonDebounce){
+        if(decreaseOffset.pressed(gamepad1.dpad_left)){
             turnOffset -= 0.05
-            buttonTimer.reset()
         }
 
-        if (gamepad1.y && buttonTimer.milliseconds() >= buttonDebounce) {
+        //drivetrain override
+        if (driveTo.pressed(gamepad1.y)) {
             driveOverride.beginOverriding(currentLaunchPoint.pose)
-            buttonTimer.reset()
         }
 
-        if (gamepad1.a && buttonTimer.milliseconds() >= buttonDebounce) {
-            localizer.resetOdo()
-            buttonTimer.reset()
-        }
-
-        if (gamepad1.b && buttonTimer.milliseconds() >= buttonDebounce) {
-            drive.slowToggle()
-            buttonTimer.reset()
-        }
-
-        if (gamepad1.right_stick_button && buttonTimer.milliseconds() >= buttonDebounce) {
-            // when changing modes in the drivetrain override,
-            // just stop overriding
+        //rotational overide
+        if (rotateTo.pressed(gamepad1.right_stick_button)) {
             driveOverride.stopOverriding()
 
             driveShouldRotate = !driveShouldRotate
-            buttonTimer.reset()
         }
 
-        // END LAUNCHER DRIVETRAIN CODE
-
-        //testing
-        if (gamepad2.right_bumper && buttonTimer.milliseconds() >= buttonDebounce){
-            robot.holder.launchpos +=0.01
-            buttonTimer.reset()
-
-        }
-        if (gamepad2.left_bumper && buttonTimer.milliseconds() >= buttonDebounce) {
-            robot.holder.launchpos -= 0.01
-            buttonTimer.reset()
-
+        //reset odometry
+        if (resetOdo.pressed(gamepad1.a)) {
+            localizer.resetOdo()
         }
 
-        // updatePID running actions
-        val newActions = ArrayList<Action>()
-        runningActions.forEach {
+        //slow mode
+        if (slowMode.pressed(gamepad1.b)) {
+            drive.slowToggle()
+        }
+
+        //reset rpm for launcher
+        if(resetRPM.pressed(gamepad1.x)){
+            rpmScaling = !rpmScaling
+        }
+    }
+    fun updateActions(){
+        runningActions.removeIf {
             it.preview(packet.fieldOverlay())
-            if (it.run(packet)) {
-                newActions.add(it)
-            }
+            !it.run(packet)
         }
-        runningActions = newActions
 
-        TeleGlobals.currentPosition = Localizer.pose
+        val wasShooting = shootingActions.isNotEmpty()
 
-        //updatePID subsystems
-        if(gamepad1.x && buttonTimer.milliseconds() >= buttonDebounce){
-            powerControl = !powerControl
+        shootingActions.removeIf {
+            it.preview(packet.fieldOverlay())
+            !it.run(packet)
         }
-        if(powerControl){
-            robot.launcher.baseRPM = launcherSpeed(Localizer.pose.x, Localizer.pose.y, allianceColor)
 
+        val doneShooting = wasShooting && shootingActions.isEmpty()
+
+        if (doneShooting){
+            driveShouldRotate = false
         }
-        else robot.launcher.baseRPM = 2500.0
-
-
+    }
+    fun updateDrive(){
         localizer.update()
-        robot.update()
+        TeleGlobals.currentPosition = Localizer.pose
 
         // drivetrain overrides
         if (driveOverride.shouldOverrideInput()) {
@@ -320,39 +281,47 @@ class BaseTele(opmode: LinearOpMode, color: AllianceColor) {
                 )
             )
         }
-
+    }
+    fun updateRobot(){
+        robot.launcher.baseRPM =
+            if (rpmScaling)
+                launcherSpeed(Localizer.pose.x, Localizer.pose.y, allianceColor)
+            else
+                2500.0
+        robot.update()
+    }
+    fun updateTelemetry(){
         val overrideTimeLeft = System.currentTimeMillis() - driveOverrideSafetyTimer
         if (overrideTimeLeft < 5000) {
             telemetry.addData("Drive train override safety was tripped!", overrideTimeLeft)
         }
 
-        telemetry.addData("Current Launcher Point", currentLaunchPoint.displayName)
         telemetry.addData("Launcher rpm goal", robot.launcher.goalRPM)
         telemetry.addData("Launcher at RPM?", robot.launcher.atTargetRPM(robot.launcher.goalRPM, 100.0))
-        telemetry.addData("servopos", robot.holder.launchpos)
 
         telemetry.addData("Current Pose", Localizer.pose.toString())
-
-
         telemetry.update()
     }
 
-    fun cycleLauncherPoint(forwards: Boolean) {
-        if (forwards) {
-            currentLaunchPointIndex += 1
+    class Button(){
+        private var pressedLast = false
 
-            if (currentLaunchPointIndex >= launcherPoints.size) {
-                currentLaunchPointIndex = 0
-            }
-        } else {
-            currentLaunchPointIndex -= 1
-
-            if (currentLaunchPointIndex < 0) {
-                currentLaunchPointIndex = launcherPoints.size - 1
-            }
+        fun pressed(condition: Boolean): Boolean {
+            val result = condition && !pressedLast
+            pressedLast = condition
+            return result
         }
 
-        currentLaunchPoint = launcherPoints[currentLaunchPointIndex]
+        fun released(condition: Boolean): Boolean {
+            val result = !condition && pressedLast
+            pressedLast = condition
+            return result
+        }
+
+        fun held(condition: Boolean): Boolean {
+            pressedLast = condition
+            return condition
+        }
     }
 
 }

@@ -1,6 +1,5 @@
-package org.firstinspires.ftc.teamcode.Competition_Code.Auto.OpModes;
+package org.firstinspires.ftc.teamcode.Competition_Code.Auto.Competition;
 
-import com.acmerobotics.dashboard.FtcDashboard
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket
 import com.acmerobotics.roadrunner.ParallelAction
 import com.acmerobotics.roadrunner.SequentialAction
@@ -19,14 +18,10 @@ import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localiz
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Servo
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
 
-@Autonomous(name = "RedAuto12Gate", group = "Auto")
-class RedAuto12Gate : LinearOpMode() {
+@Autonomous(name = "Red9Gate", group = "Auto")
+class Red9Gate : LinearOpMode() {
 
     override fun runOpMode() {
-
-        val dash: FtcDashboard = FtcDashboard.getInstance()
-        telemetry = dash.telemetry
-
         AutoGlobals.targetRobotPositon = AutoPoints.StartRed.pose
 
         val localizer = Localizer(hardwareMap, AutoGlobals.targetRobotPositon)
@@ -37,6 +32,8 @@ class RedAuto12Gate : LinearOpMode() {
         localizer.update()
         robot.holder.state = Servo.State.STOP1
         robot.update()
+
+
 
         waitForStart()
 
@@ -60,8 +57,6 @@ class RedAuto12Gate : LinearOpMode() {
                         telemetry.addData("Target Position", AutoGlobals.targetRobotPositon.toString())
                         telemetry.addData("Current Pose", Localizer.pose.toString())
                         telemetry.addData("Location of robot being transferred", AutoGlobals.locationOfRobot.toString())
-
-                        telemetry.addData("Launcher rpm goal", robot.launcher.goalRPM)
                         telemetry.addData("Drive speed", AutoGlobals.driveSpeed)
                         telemetry.update()
                         robot.update()
@@ -82,7 +77,7 @@ class RedAuto12Gate : LinearOpMode() {
 
                     AutoPoints.PreGateRed.runToExact(),
                     AutoPoints.GateRed.runToExact(),
-                    robot.WaitAction(800.0),
+                    robot.WaitAction(600.0),
 
                     AutoPoints.LaunchRed.runToExact(),
                     robot.Shoot(),
@@ -91,15 +86,11 @@ class RedAuto12Gate : LinearOpMode() {
                     robot.StartIntake,
                     AutoPoints.PGPIntakeRed.runToExact(),
                     robot.WaitAction(125.0),
-                    AutoPoints.PGPMidPointRed.runToFast(),
 
-                    AutoPoints.LaunchRed.runToExact(),
-                    robot.Shoot(),
-
-                    AutoPoints.PreIntakeGPPRed.runToFast(),
-                    robot.StartIntake,
-                    AutoPoints.GPPIntakeRed.runToExact(),
-                    robot.WaitAction(125.0),
+                    AutoPoints.GateMidRed.runToFast(),
+                    AutoPoints.PreGateRed.runToExact(),
+                    AutoPoints.GateRed.runToExact(),
+                    robot.WaitAction(600.0),
 
                     AutoPoints.LaunchRed.runToExact(),
                     robot.Shoot(),
