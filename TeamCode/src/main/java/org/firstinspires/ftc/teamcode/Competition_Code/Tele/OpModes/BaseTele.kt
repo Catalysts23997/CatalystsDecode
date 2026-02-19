@@ -19,7 +19,9 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.LauncherPoint
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Servo
 import org.firstinspires.ftc.teamcode.Competition_Code.Tele.TeleGlobals
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.goalAngle
+import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.goalAngleAdjusted
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.launcherSpeed
+import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.launcherSpeedAdjusted
 
 /**
  * This class is **NOT** an OpMode, it is used to store common code that
@@ -268,7 +270,8 @@ class BaseTele(opmode: LinearOpMode, color: AllianceColor) {
 
             driveOverride.update(drive)
         } else if (driveShouldRotate) {
-            val launchAngle = turnOffset + goalAngle(Localizer.pose.x, Localizer.pose.y, allianceColor)
+            val launchAngle = turnOffset + goalAngleAdjusted(Localizer.velocity.x, Localizer.velocity.y,
+                Localizer.pose.x, Localizer.pose.y, allianceColor)
             driveOverride.rotate(
                 drive, launchAngle, gamepad1, allianceColor
             )
@@ -282,10 +285,12 @@ class BaseTele(opmode: LinearOpMode, color: AllianceColor) {
             )
         }
     }
+
     fun updateRobot(){
         robot.launcher.baseRPM =
             if (rpmScaling)
-                launcherSpeed(Localizer.pose.x, Localizer.pose.y, allianceColor)
+                launcherSpeedAdjusted(Localizer.velocity.x, Localizer.velocity.y, Localizer.pose.x,
+                    Localizer.pose.y, allianceColor)
             else
                 2500.0
         robot.update()

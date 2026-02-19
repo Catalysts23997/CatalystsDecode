@@ -7,7 +7,7 @@ import kotlin.math.sqrt
 
 
 fun launcherSpeed(currentX: Double, currentY: Double, alliance: AllianceColor): Double {
-    basketX = if(alliance == AllianceColor.Blue) -72.0
+    val basketX = if(alliance == AllianceColor.Blue) -72.0
     else 72.0
 
 

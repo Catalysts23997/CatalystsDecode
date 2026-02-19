@@ -74,6 +74,9 @@ class Localizer(hwmap: HardwareMap, private var offset: Poses) {
 
     fun update(){
         odo.update()
+
+        velocity = Poses(-odo.velocity.getY(DistanceUnit.INCH),odo.velocity.getX(DistanceUnit.INCH),-odo.velocity.getHeading(
+            AngleUnit.RADIANS),)
         pose = Poses(- odo.position.getY(DistanceUnit.INCH),odo.position.getX(DistanceUnit.INCH),
             Angles.wrap(-odo.position.getHeading(AngleUnit.RADIANS)))
 
@@ -89,5 +92,6 @@ class Localizer(hwmap: HardwareMap, private var offset: Poses) {
     companion object{
         @JvmField
         var pose: Poses = Poses(40.00,40.0,.05)
+        var velocity: Poses = Poses(0.0,0.0,0.0)
     }
 }
