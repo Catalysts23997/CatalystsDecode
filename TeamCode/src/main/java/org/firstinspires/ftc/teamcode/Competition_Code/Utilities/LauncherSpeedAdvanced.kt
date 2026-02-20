@@ -6,8 +6,8 @@ import kotlin.math.pow
 import kotlin.math.sin
 import kotlin.math.sqrt
 
-val inpersec = 133
-val rpm = 2500
+val inpersec = 133.0
+val rpm = 2500.0
 val rpmToips = inpersec/rpm
 
 

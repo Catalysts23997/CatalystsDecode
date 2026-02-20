@@ -8,6 +8,8 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses;
 public enum AutoPoints {
     StartBlue(new Vector2d(-39,63), 0.0),
     AprilTagBlue(new Vector2d(-15,45), Math.PI/8),
+
+    PreLaunchBlue(new Vector2d(-40, 40), 3.1*Math.PI/4),
     LaunchFarBlue(new Vector2d(-14, -59), -3.52),
     LaunchBlue(new Vector2d(-18,17.5), 3.1*Math.PI/4),
     LaunchOffBlue(new Vector2d(-14,55), 9.5*Math.PI/16),

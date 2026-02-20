@@ -18,10 +18,12 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Intake
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.LauncherPoint
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Servo
 import org.firstinspires.ftc.teamcode.Competition_Code.Tele.TeleGlobals
+import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Angles
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.goalAngle
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.goalAngleAdjusted
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.launcherSpeed
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.launcherSpeedAdjusted
+import kotlin.math.PI
 
 /**
  * This class is **NOT** an OpMode, it is used to store common code that
@@ -303,8 +305,14 @@ class BaseTele(opmode: LinearOpMode, color: AllianceColor) {
 
         telemetry.addData("Launcher rpm goal", robot.launcher.goalRPM)
         telemetry.addData("Launcher at RPM?", robot.launcher.atTargetRPM(robot.launcher.goalRPM, 100.0))
+        telemetry.addData("goal angle",  turnOffset + goalAngleAdjusted(Localizer.velocity.x, Localizer.velocity.y,
+            Localizer.pose.x, Localizer.pose.y, allianceColor))
+        telemetry.addData("original angle",  turnOffset + PI + goalAngle(Localizer.pose.x, Localizer.pose.y, allianceColor))
+
 
         telemetry.addData("Current Pose", Localizer.pose.toString())
+        telemetry.addData("Current Velo", Localizer.velocity.toString())
+
         telemetry.update()
     }
 

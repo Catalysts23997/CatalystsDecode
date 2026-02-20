@@ -167,7 +167,6 @@ public class InterleagueActions {
             // reverse intake system
             intake.state = State.REVERSE;
             pulley.state = Pulley.State.Reverse;
-            launcher.reverse();
 
             // We return false because this only has to run once
             return false;

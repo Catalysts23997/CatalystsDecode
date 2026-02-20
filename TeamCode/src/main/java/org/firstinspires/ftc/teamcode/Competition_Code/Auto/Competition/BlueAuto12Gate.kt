@@ -5,6 +5,7 @@ import com.acmerobotics.dashboard.telemetry.TelemetryPacket
 import com.acmerobotics.roadrunner.Action
 import com.acmerobotics.roadrunner.ParallelAction
 import com.acmerobotics.roadrunner.SequentialAction
+import com.acmerobotics.roadrunner.ftc.OTOS_ERROR_MSG
 import com.acmerobotics.roadrunner.ftc.runBlocking
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
@@ -17,6 +18,7 @@ import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localiz
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Drivetrain
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Servo
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
+import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.launcherSpeedAdjusted
 
 @Autonomous(name = "Blue12Gate", group = "Auto")
 class BlueAuto12Gate : LinearOpMode() {
@@ -51,6 +53,8 @@ class BlueAuto12Gate : LinearOpMode() {
                             stop()
                         }
 
+
+
                         localizer.update()
                         RunToExactForever(AutoGlobals.targetRobotPositon)
                         AutoGlobals.locationOfRobot = Poses(
@@ -58,6 +62,9 @@ class BlueAuto12Gate : LinearOpMode() {
                             Localizer.Companion.pose.y,
                             Localizer.Companion.pose.heading
                         )
+
+                        robot.launcher.baseRPM = launcherSpeedAdjusted(Localizer.velocity.x, Localizer.velocity.y, Localizer.pose.x,
+                            Localizer.pose.y, AllianceColor.Blue)
 
                         telemetry.addData(
                             "Target Position",
@@ -80,8 +87,11 @@ class BlueAuto12Gate : LinearOpMode() {
                 SequentialAction(
                     robot.StartShooter,
                     robot.StartIntake,
-                    AutoPoints.LaunchBlue.runToExact(),
-                    robot.Shoot(),
+                    AutoPoints.PreLaunchBlue.runToExact(),
+                    ParallelAction(
+                        AutoPoints.LaunchBlue.runToExact(),
+                        robot.Shoot()
+                    ),
 
                     AutoPoints.PreIntakePPG.runToFast(),
                     robot.StartIntake,

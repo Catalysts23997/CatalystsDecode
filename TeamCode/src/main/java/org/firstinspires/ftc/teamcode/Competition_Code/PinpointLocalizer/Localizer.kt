@@ -76,7 +76,7 @@ class Localizer(hwmap: HardwareMap, private var offset: Poses) {
         odo.update()
 
         velocity = Poses(-odo.velocity.getY(DistanceUnit.INCH),odo.velocity.getX(DistanceUnit.INCH),-odo.velocity.getHeading(
-            AngleUnit.RADIANS),)
+            AngleUnit.RADIANS))
         pose = Poses(- odo.position.getY(DistanceUnit.INCH),odo.position.getX(DistanceUnit.INCH),
             Angles.wrap(-odo.position.getHeading(AngleUnit.RADIANS)))
 
