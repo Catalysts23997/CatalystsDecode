@@ -4,22 +4,36 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class Lights {
     Servo blinkin;
     public Color color = Color.off;
+    double count;
+    double change = 0.01;
 
     public Lights(HardwareMap hardwareMap) {
         blinkin = hardwareMap.get(Servo.class, "blinkin");
     }
 
     public void update() {
-        blinkin.setPosition(color.value);
+        if(color != Color.rainbow){
+            count = 0.28;
+            change = 0.01;
+            blinkin.setPosition(color.value);
+        }
+        else{
+            blinkin.setPosition(count);
+            count += change;
+            if(count > 0.72 || count < 0.28){
+                change *= -1;
+            }
+        }
+
     }
     public enum Color {
-        red(0.61),
-        blue(0.77),
-        green(0.77),
-        white(0.11),
-        rainbow(0.99),
-        purple(0.45),
-        off(1);
+        red(0.28),
+        blue(0.62),
+        green(0.5),
+        white(1.0),
+        purple(0.72),
+        off(0.0),
+        rainbow(10000);
         public final double value;
         Color(double value) {this.value = value;}
     }

@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Competition_Code.Actions;
 
+
 import androidx.annotation.NonNull;
 
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
@@ -14,6 +15,7 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoGlobals;
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.AprilTag;
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.ColorSensors;
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Intake;
+import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Lights;
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Pulley;
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Servo;
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Intake.State;
@@ -35,6 +37,8 @@ public class InterleagueActions {
 
     public SingleLauncher launcher;
 
+    public Lights blinkin;
+
     Telemetry telemetry;
 
     public void update() {
@@ -47,6 +51,19 @@ public class InterleagueActions {
         pulley.update();
 
         holder.update();
+
+
+        if (ball1.isGreen()){
+            blinkin.color = Lights.Color.green;
+        }
+        else if (ball1.isPurple()){
+            blinkin.color = Lights.Color.red;
+        }
+        else{
+            blinkin.color = Lights.Color.rainbow;
+        }
+        blinkin.update();
+
 
         launcher.update();
 
