@@ -8,9 +8,9 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Angles
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
 
 
-class Localizer(hwmap: HardwareMap, private var offset: Poses) {
+class Localizer(hwmap: HardwareMap, var offset: Poses) {
 
-    private val odo: GoBildaPinpointDriver = hwmap.get(
+     val odo: GoBildaPinpointDriver = hwmap.get(
         GoBildaPinpointDriver::class.java, "odo")
     init {
         /*
@@ -66,10 +66,22 @@ class Localizer(hwmap: HardwareMap, private var offset: Poses) {
 
 
         //odo.setEncoderResolution(13.26291192);
+
+
+
+
+
+        //todo COMMENTED THIS stuff OUTTTTTTTTTT
+    /*
         odo.resetPosAndIMU()
 
         transferToTele()
-//        update()
+
+     */
+
+
+
+
     }
 
     fun update(){
