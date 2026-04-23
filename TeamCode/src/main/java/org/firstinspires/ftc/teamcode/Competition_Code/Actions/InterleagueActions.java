@@ -382,7 +382,21 @@ public class InterleagueActions {
         };
     }
 
+    public SequentialAction ExpelOne() {
+        return new SequentialAction(
+            ReverseIntake,
+            WaitAction(100),
+            StopIntake
+        );
+    }
 
+    public SequentialAction ExpelTwo() {
+        return new SequentialAction(
+                ReverseIntake,
+                WaitAction(200),
+                StopIntake
+        );
+    }
 
     public SequentialAction Shoot() {
         return new SequentialAction(
