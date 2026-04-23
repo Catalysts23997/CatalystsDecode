@@ -36,8 +36,6 @@ class RedFar6 : LinearOpMode() {
         val drive = Drivetrain(hardwareMap, AllianceColor.Red)
         val robot = InterleagueActions(hardwareMap, telemetry)
 
-        sleep(100)
-        localizer.update()
         robot.holder.state = Servo.State.STOP1
         robot.update()
         robot.launcher.baseRPM = 3200.0
@@ -47,8 +45,7 @@ class RedFar6 : LinearOpMode() {
         AutoGlobals.FarAuto = true
         AutoGlobals.AutonomousRan = true
 
-        localizer.update()
-        localizer.transferToTele()
+
 
         runBlocking(
             ParallelAction(

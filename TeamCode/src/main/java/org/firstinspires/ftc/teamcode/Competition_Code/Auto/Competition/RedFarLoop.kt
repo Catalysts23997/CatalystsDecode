@@ -34,19 +34,16 @@ class RedFarLoop : LinearOpMode() {
         val drive = Drivetrain(hardwareMap, AllianceColor.Red)
         val robot = InterleagueActions(hardwareMap, telemetry)
 
-        sleep(100)
-        localizer.update()
+
         robot.holder.state = Servo.State.STOP1
         robot.update()
-        robot.launcher.baseRPM = 3200.0
+        robot.launcher.baseRPM = 3300.0
 
         waitForStart()
 
         AutoGlobals.FarAuto = true
         AutoGlobals.AutonomousRan = true
 
-        localizer.update()
-        localizer.transferToTele()
 
         runBlocking(
             ParallelAction(
@@ -76,35 +73,40 @@ class RedFarLoop : LinearOpMode() {
                     robot.ShootFar(),
 
                     robot.StartIntake,
-                    AutoPoints.PGPIntakeFarRed.runToExact(),
+                    AutoPoints.PGPPreFarRed.runToExact(),
+                    AutoPoints.PGPFarRed.runToExact(),
                     robot.WaitAction(125.0),
 
                     AutoPoints.LaunchFarRed.runToExact(),
                     robot.ShootFar(),
 
                     robot.StartIntake,
-                    AutoPoints.PGPIntakeFarRed.runToExact(),
+                    AutoPoints.PGPPreFarRed.runToExact(),
+                    AutoPoints.PGPFarRed.runToExact(),
                     robot.WaitAction(125.0),
 
                     AutoPoints.LaunchFarRed.runToExact(),
                     robot.ShootFar(),
 
                     robot.StartIntake,
-                    AutoPoints.PGPIntakeFarRed.runToExact(),
+                    AutoPoints.PGPPreFarRed.runToExact(),
+                    AutoPoints.PGPFarRed.runToExact(),
                     robot.WaitAction(125.0),
 
                     AutoPoints.LaunchFarRed.runToExact(),
                     robot.ShootFar(),
 
                     robot.StartIntake,
-                    AutoPoints.PGPIntakeFarRed.runToExact(),
+                    AutoPoints.PGPPreFarRed.runToExact(),
+                    AutoPoints.PGPFarRed.runToExact(),
                     robot.WaitAction(125.0),
 
                     AutoPoints.LaunchFarRed.runToExact(),
                     robot.ShootFar(),
 
                     robot.StartIntake,
-                    AutoPoints.PGPIntakeFarRed.runToExact(),
+                    AutoPoints.PGPPreFarRed.runToExact(),
+                    AutoPoints.PGPFarRed.runToExact()
                 )
             )
         )

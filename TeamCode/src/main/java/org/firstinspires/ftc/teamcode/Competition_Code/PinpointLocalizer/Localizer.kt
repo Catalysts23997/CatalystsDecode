@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer
 
 import com.qualcomm.robotcore.hardware.HardwareMap
+import com.qualcomm.robotcore.util.ElapsedTime
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit
 import org.firstinspires.ftc.robotcore.external.navigation.Pose2D
@@ -9,6 +10,8 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
 
 
 class Localizer(hwmap: HardwareMap, var offset: Poses) {
+
+    val timer = ElapsedTime()
 
      val odo: GoBildaPinpointDriver = hwmap.get(
         GoBildaPinpointDriver::class.java, "odo")
@@ -71,16 +74,13 @@ class Localizer(hwmap: HardwareMap, var offset: Poses) {
 
 
 
-        //todo COMMENTED THIS stuff OUTTTTTTTTTT
-    /*
+
         odo.resetPosAndIMU()
+        timer.reset()
+        while(timer.milliseconds()<=600){
+        }
 
-        transferToTele()
-
-     */
-
-
-
+        odo.setPosition(Pose2D(DistanceUnit.INCH,offset.y, -offset.x, AngleUnit.RADIANS,-offset.heading))
 
     }
 
@@ -94,9 +94,6 @@ class Localizer(hwmap: HardwareMap, var offset: Poses) {
 
     } // 0,0,0
 
-    fun transferToTele(){
-        odo.setPosition(Pose2D(DistanceUnit.INCH,offset.y, -offset.x, AngleUnit.RADIANS,offset.heading))
-    }
 
     fun resetOdo(){
         odo.setPosition(Pose2D(DistanceUnit.INCH,offset.y, -offset.x, AngleUnit.RADIANS,0.0))

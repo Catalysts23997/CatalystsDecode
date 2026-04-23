@@ -89,8 +89,8 @@ class BaseTele(opmode: LinearOpMode, color: AllianceColor) {
             TeleGlobals.currentPosition = AutoGlobals.locationOfRobot!!
         } else {
             TeleGlobals.currentPosition = when (color) {
-                AllianceColor.Blue -> AutoPoints.StartBlue.pose
-                AllianceColor.Red -> AutoPoints.StartRed.pose
+                AllianceColor.Blue -> AutoPoints.FastStartBlue.pose
+                AllianceColor.Red -> AutoPoints.FastStartRed.pose
             }
         }
 
@@ -136,9 +136,7 @@ class BaseTele(opmode: LinearOpMode, color: AllianceColor) {
         drive = Drivetrain(hardwareMap, color)
         localizer = Localizer(hardwareMap, TeleGlobals.currentPosition)
 
-        telemetry.addData("Robot at zero:",  Localizer.pose)
-        localizer.update()
-        telemetry.addData("Robot at original position:",  Localizer.pose)
+
 
         driveOverride = DrivetrainOverride()
 
@@ -155,9 +153,6 @@ class BaseTele(opmode: LinearOpMode, color: AllianceColor) {
     }
 
     fun start() {
-        localizer.update()
-        localizer.transferToTele()
-
         telemetry.clear()
         robot.launcher.start()
 
@@ -200,18 +195,18 @@ class BaseTele(opmode: LinearOpMode, color: AllianceColor) {
 
         //shot power adjustments
         if (increaseRPM.pressed(gamepad1.right_bumper)) {
-            robot.launcher.change += 50
+            robot.launcher.change += 30
         }
         if (decreaseRPM.pressed(gamepad1.left_bumper)) {
-            robot.launcher.change -= 50
+            robot.launcher.change -= 30
         }
 
         //adjust launch angle
         if(increaseOffset.pressed(gamepad1.dpad_right)){
-            turnOffset += 0.05
+            turnOffset += 0.02
         }
         if(decreaseOffset.pressed(gamepad1.dpad_left)){
-            turnOffset -= 0.05
+            turnOffset -= 0.02
         }
 
         //drivetrain override

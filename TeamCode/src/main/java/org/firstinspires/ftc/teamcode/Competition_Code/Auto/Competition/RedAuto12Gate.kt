@@ -22,26 +22,25 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
 class RedAuto12Gate : LinearOpMode() {
 
     override fun runOpMode() {
+        AutoGlobals.targetRobotPositon = AutoPoints.FastStartRed.pose
+
 
         val dash: FtcDashboard = FtcDashboard.getInstance()
         telemetry = dash.telemetry
 
-        AutoGlobals.targetRobotPositon = AutoPoints.StartRed.pose
 
         val localizer = Localizer(hardwareMap, AutoGlobals.targetRobotPositon)
         val drive = Drivetrain(hardwareMap, AllianceColor.Red)
         val robot = InterleagueActions(hardwareMap, telemetry)
 
-        sleep(100)
-        localizer.update()
+
         robot.holder.state = Servo.State.STOP1
         robot.update()
 
         waitForStart()
 
         AutoGlobals.AutonomousRan = true
-        localizer.update()
-        localizer.transferToTele()
+
 
 
         runBlocking(
@@ -84,14 +83,15 @@ class RedAuto12Gate : LinearOpMode() {
                     AutoPoints.LaunchRed.runToExact(),
                     robot.Shoot(),
 
+
                     AutoPoints.PreIntakePPGRed.runToFast(),
                     robot.StartIntake,
                     AutoPoints.PPGIntakeRed.runToExact(),
-                    robot.WaitAction(125.0),
 
                     AutoPoints.PreGateRed.runToExact(),
                     AutoPoints.GateRed.runToExact(),
-                    robot.WaitAction(600.0),
+                    robot.WaitAction(800.0),
+                    AutoPoints.PreGateRed.runToExact(),
 
                     AutoPoints.LaunchRed.runToExact(),
                     robot.Shoot(),
@@ -99,7 +99,6 @@ class RedAuto12Gate : LinearOpMode() {
                     AutoPoints.PreIntakePGPRed.runToFast(),
                     robot.StartIntake,
                     AutoPoints.PGPIntakeRed.runToExact(),
-                    robot.WaitAction(125.0),
                     AutoPoints.PGPMidPointRed.runToFast(),
 
                     AutoPoints.LaunchRed.runToExact(),
@@ -108,7 +107,6 @@ class RedAuto12Gate : LinearOpMode() {
                     AutoPoints.PreIntakeGPPRed.runToFast(),
                     robot.StartIntake,
                     AutoPoints.GPPIntakeRed.runToExact(),
-                    robot.WaitAction(125.0),
 
                     AutoPoints.LaunchRed.runToExact(),
                     robot.Shoot(),

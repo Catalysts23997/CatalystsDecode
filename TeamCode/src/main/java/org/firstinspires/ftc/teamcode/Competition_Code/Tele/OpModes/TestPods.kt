@@ -15,7 +15,6 @@ class TestPods : LinearOpMode() {
     override fun runOpMode() {
         // Create the instance of our BaseTele
         val localizer = Localizer(hardwareMap, Poses(10.0,20.0,Math.PI/2))
-        sleep(500)
 
 
         telemetry.addLine("localizer initialized")
@@ -33,7 +32,6 @@ class TestPods : LinearOpMode() {
 
         //todo try negating the heading value if the opposite of what it should be
         localizer.odo.setPosition(Pose2D(DistanceUnit.INCH,localizer.offset.y, -localizer.offset.x, AngleUnit.RADIANS,-localizer.offset.heading))
-        sleep(500)
 
 
         telemetry.addLine("Pod position set")

@@ -32,7 +32,7 @@ public class SingleLauncher {
 
     Mode mode = Mode.POWER;
 
-    public double baseRPM = 2500;
+    public double baseRPM = 2600;
 
     ElapsedTime timer = new ElapsedTime();
 

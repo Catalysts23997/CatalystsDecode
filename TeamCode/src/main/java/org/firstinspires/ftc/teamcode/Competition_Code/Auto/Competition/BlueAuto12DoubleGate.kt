@@ -22,7 +22,7 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
 class BlueAuto12DoubleGate : LinearOpMode() {
 
     override fun runOpMode() {
-        AutoGlobals.targetRobotPositon = AutoPoints.StartBlue.pose
+        AutoGlobals.targetRobotPositon = AutoPoints.FastStartBlue.pose
 
         val dash: FtcDashboard = FtcDashboard.getInstance()
         telemetry = dash.telemetry
@@ -31,16 +31,13 @@ class BlueAuto12DoubleGate : LinearOpMode() {
         val drive = Drivetrain(hardwareMap, AllianceColor.Blue)
         val robot = InterleagueActions(hardwareMap, telemetry)
 
-        sleep(100)
-        localizer.update()
+
         robot.holder.state = Servo.State.STOP1
         robot.update()
 
         waitForStart()
 
         AutoGlobals.AutonomousRan = true
-        localizer.update()
-        localizer.transferToTele()
 
 
         runBlocking(
@@ -86,11 +83,10 @@ class BlueAuto12DoubleGate : LinearOpMode() {
                     AutoPoints.PreIntakePPG.runToFast(),
                     robot.StartIntake,
                     AutoPoints.PPGIntake.runToExact(),
-                    robot.WaitAction(125.0),
 
                     AutoPoints.PreGate.runToExact(),
                     AutoPoints.Gate.runToExact(),
-                    robot.WaitAction(600.0),
+                    robot.WaitAction(800.0),
 
                     AutoPoints.LaunchBlue.runToExact(),
                     robot.Shoot(),
@@ -98,12 +94,11 @@ class BlueAuto12DoubleGate : LinearOpMode() {
                     AutoPoints.PreIntakePGP.runToFast(),
                     robot.StartIntake,
                     AutoPoints.PGPIntake.runToExact(),
-                    robot.WaitAction(125.0),
 
                     AutoPoints.GateMid.runToFast(),
                     AutoPoints.PreGate.runToExact(),
                     AutoPoints.Gate.runToExact(),
-                    robot.WaitAction(600.0),
+                    robot.WaitAction(800.0),
 
                     AutoPoints.LaunchBlue.runToExact(),
                     robot.Shoot(),
@@ -111,7 +106,6 @@ class BlueAuto12DoubleGate : LinearOpMode() {
                     AutoPoints.PreIntakeGPP.runToFast(),
                     robot.StartIntake,
                     AutoPoints.GPPIntake.runToExact(),
-                    robot.WaitAction(125.0),
 
                     AutoPoints.LaunchBlue.runToExact(),
                     robot.Shoot(),

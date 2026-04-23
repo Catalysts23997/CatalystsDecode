@@ -18,19 +18,16 @@ import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localiz
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Servo
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
 
-@Disabled
 @Autonomous(name = "Blue9GPP", group = "Auto")
 class Blue9GPP : LinearOpMode() {
 
     override fun runOpMode() {
-        AutoGlobals.targetRobotPositon = AutoPoints.StartBlue.pose
+        AutoGlobals.targetRobotPositon = AutoPoints.FastStartBlue.pose
 
         val localizer = Localizer(hardwareMap, AutoGlobals.targetRobotPositon)
         val drive = Drivetrain(hardwareMap, AllianceColor.Blue)
         val robot = InterleagueActions(hardwareMap, telemetry)
 
-        sleep(100)
-        localizer.update()
         robot.holder.state = Servo.State.STOP1
         robot.update()
 
@@ -39,8 +36,6 @@ class Blue9GPP : LinearOpMode() {
         waitForStart()
 
         AutoGlobals.AutonomousRan = true
-        localizer.update()
-        localizer.transferToTele()
 
 
         runBlocking(
@@ -75,6 +70,7 @@ class Blue9GPP : LinearOpMode() {
                     robot.StartIntake,
                     AutoPoints.GPPIntake.runToExact(),
                     robot.WaitAction(125.0),
+                    AutoPoints.GPPMidPoint.runToFast(),
 
                     AutoPoints.LaunchBlue.runToExact(),
                     robot.ExpelOne(),
@@ -84,6 +80,7 @@ class Blue9GPP : LinearOpMode() {
                     robot.StartIntake,
                     AutoPoints.PGPIntake.runToExact(),
                     robot.WaitAction(125.0),
+                    AutoPoints.PGPFarMidPoint.runToFast(),
 
                     AutoPoints.LaunchBlue.runToExact(),
                     robot.Shoot(),

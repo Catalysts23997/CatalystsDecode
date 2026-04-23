@@ -30,8 +30,7 @@ class TestRedAuto : LinearOpMode() {
         val drive = Drivetrain(hardwareMap, AllianceColor.Red)
         val robot = Comp1Actions(hardwareMap, telemetry)
 
-        sleep(100)
-        localizer.update()
+
         robot.holder.state = Servo.State.STOP1
         robot.update()
 
@@ -40,8 +39,7 @@ class TestRedAuto : LinearOpMode() {
         waitForStart()
 
         AutoGlobals.AutonomousRan = true
-        localizer.update()
-        localizer.transferToTele()
+
 
         runBlocking(
             ParallelAction(

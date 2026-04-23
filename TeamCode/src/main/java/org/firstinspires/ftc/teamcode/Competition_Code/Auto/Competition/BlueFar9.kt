@@ -18,9 +18,7 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Drivetrain
 import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localizer
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Servo
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
-
-@Disabled
-@Autonomous(name = "BlueFar9", group = "Auto")
+@Autonomous(name = "BlueFarPython", group = "Auto")
 class BlueFar9 : LinearOpMode() {
 
 
@@ -31,8 +29,7 @@ class BlueFar9 : LinearOpMode() {
         val drive = Drivetrain(hardwareMap, AllianceColor.Blue)
         val robot = InterleagueActions(hardwareMap, telemetry)
 
-        sleep(100)
-        localizer.update()
+
         robot.holder.state = Servo.State.STOP1
         robot.update()
         robot.launcher.baseRPM = 3200.0
@@ -42,8 +39,7 @@ class BlueFar9 : LinearOpMode() {
         AutoGlobals.FarAuto = true
         AutoGlobals.AutonomousRan = true
 
-        localizer.update()
-        localizer.transferToTele()
+
 
         runBlocking(
             ParallelAction(
@@ -67,6 +63,7 @@ class BlueFar9 : LinearOpMode() {
                 },
                 SequentialAction(
                     robot.StartShooter,
+                    robot.WaitAction(12000.0),
                     robot.StartIntake,
 
                     AutoPoints.LaunchFarBlue.runToExact(),
@@ -76,14 +73,6 @@ class BlueFar9 : LinearOpMode() {
                     AutoPoints.PreIntakeGPPFar.runToExact(),
                     robot.StartIntake,
                     AutoPoints.GPPIntakeFar.runToExact(),
-                    robot.WaitAction(125.0),
-
-                    AutoPoints.LaunchFarBlue.runToExact(),
-                    robot.ShootFar(),
-
-                    robot.StartIntake,
-                    AutoPoints.PGPIntakeFar.runToExact(),
-                    robot.WaitAction(125.0),
 
                     AutoPoints.LaunchFarBlue.runToExact(),
                     robot.ShootFar(),

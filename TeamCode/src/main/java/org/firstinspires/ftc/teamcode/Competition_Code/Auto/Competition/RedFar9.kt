@@ -8,6 +8,7 @@ import com.acmerobotics.roadrunner.ftc.runBlocking
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.acmerobotics.roadrunner.Action
+import com.qualcomm.robotcore.eventloop.opmode.Disabled
 import org.firstinspires.ftc.teamcode.Competition_Code.Actions.InterleagueActions
 import org.firstinspires.ftc.teamcode.Competition_Code.AllianceColor
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoGlobals
@@ -19,7 +20,7 @@ import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localiz
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Servo
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
 
-@Autonomous(name = "RedFar9", group = "Auto")
+@Autonomous(name = "RedFarPython", group = "Auto")
 class RedFar9 : LinearOpMode() {
 
 
@@ -34,8 +35,8 @@ class RedFar9 : LinearOpMode() {
         val drive = Drivetrain(hardwareMap, AllianceColor.Red)
         val robot = InterleagueActions(hardwareMap, telemetry)
 
-        sleep(100)
-        localizer.update()
+
+
         robot.holder.state = Servo.State.STOP1
         robot.update()
         robot.launcher.baseRPM = 3200.0
@@ -45,8 +46,6 @@ class RedFar9 : LinearOpMode() {
         AutoGlobals.FarAuto = true
         AutoGlobals.AutonomousRan = true
 
-        localizer.update()
-        localizer.transferToTele()
 
         runBlocking(
             ParallelAction(
@@ -70,6 +69,8 @@ class RedFar9 : LinearOpMode() {
                 },
                 SequentialAction(
                     robot.StartShooter,
+                    robot.WaitAction(12000.0),
+
                     robot.StartIntake,
 
                     AutoPoints.LaunchFarRed.runToExact(),
@@ -78,14 +79,6 @@ class RedFar9 : LinearOpMode() {
                     AutoPoints.PreIntakeGPPFarRed.runToFast(),
                     robot.StartIntake,
                     AutoPoints.GPPIntakeFarRed.runToExact(),
-                    robot.WaitAction(125.0),
-
-                    AutoPoints.LaunchFarRed.runToExact(),
-                    robot.ShootFar(),
-
-                    robot.StartIntake,
-                    AutoPoints.PGPIntakeFarRed.runToExact(),
-                    robot.WaitAction(125.0),
 
                     AutoPoints.LaunchFarRed.runToExact(),
                     robot.ShootFar(),

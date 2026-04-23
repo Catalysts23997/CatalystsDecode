@@ -12,6 +12,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoGlobals;
+import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localizer;
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.AprilTag;
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.ColorSensors;
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Intake;
@@ -39,7 +40,11 @@ public class InterleagueActions {
 
     public Lights blinkin;
 
+    Boolean green = false;
+    Boolean red = false;
+
     Telemetry telemetry;
+    ElapsedTime timer;
 
     public void update() {
         if (!AutoGlobals.INSTANCE.getAutonomousRan()){
@@ -51,28 +56,36 @@ public class InterleagueActions {
         pulley.update();
 
         holder.update();
-
-
-        if (ball1.isGreen()){
+        if(green){
             blinkin.color = Lights.Color.green;
-        }
-        else if (ball1.isPurple()){
+        } else if (red) {
             blinkin.color = Lights.Color.red;
+        } else if(timer.milliseconds() >=500) {
+            blinkin.color = Lights.Color.yellow;
         }
-        else{
-            blinkin.color = Lights.Color.rainbow;
+        else {
+            blinkin.color = Lights.Color.blue;
         }
+
+        if(timer.milliseconds() >=1000) {
+            timer.reset();
+        }
+
+
         blinkin.update();
 
 
         launcher.update();
+        telemetry.addData("Light", blinkin.color.toString());
+        telemetry.addData("Light", blinkin.color.value);
 
-//        telemetry.addData("Ball1 Is Green?", ball1.isGreen());
-//        telemetry.addData("Ball1 Is Purple?", ball1.isPurple());
-//        telemetry.addData("Ball1 Hue?", ball1.getHue());
-//        telemetry.addData("Ball2 Is Green?", ball2.isGreen());
-//        telemetry.addData("Ball2 Is Purple?", ball2.isPurple());
-//        telemetry.addData("Ball2 Hue?", ball2.getHue());
+
+        telemetry.addData("Ball1 Is Green?", ball1.isGreen());
+        telemetry.addData("Ball1 Is Purple?", ball1.isPurple());
+        telemetry.addData("Ball1 Hue?", ball1.getHue());
+        telemetry.addData("Ball2 Is Green?", ball2.isGreen());
+        telemetry.addData("Ball2 Is Purple?", ball2.isPurple());
+        telemetry.addData("Ball2 Hue?", ball2.getHue());
 
         telemetry.addData("Intake State", intake.state);
         telemetry.addData("Pulley State", pulley.state);
@@ -98,6 +111,10 @@ public class InterleagueActions {
         holder = new Servo(hardwareMap,"holder");
 
         launcher = new SingleLauncher(hardwareMap);
+
+        blinkin = new Lights(hardwareMap);
+
+        timer = new ElapsedTime();
 
         this.telemetry = telemetry;
     }
@@ -231,7 +248,7 @@ public class InterleagueActions {
     //shooting stuff
     double speedUpTime = 1300;      // time for flywheel to reach speed
     double servoReleaseTime = 400;  // ms for servo release
-    double pulleyShootTime = 1700;  // ms for pulley to shoot 3 balls
+    double pulleyShootTime = 1400;  // ms for pulley to shoot 3 balls
 
     public Action StartShooter = new Action() {
 
@@ -285,7 +302,7 @@ public class InterleagueActions {
         };
     }
 
-    public Action CycleShootTele() {
+    public Action CycleShootShort() {
         return new Action() {
             final ElapsedTime timer = new ElapsedTime();
             boolean initialized = false;
@@ -302,16 +319,23 @@ public class InterleagueActions {
                 if(launcher.atTargetRPM(launcher.getGoalRPM(), toleranceRPM)){
                     pulley.state = Pulley.State.On;
                     intake.state = State.INTAKING;
+                    green = true;
+                    red = false;
+
                 }
                 else {
                     pulley.state = Pulley.State.Off;
                     intake.state = State.STOPPED;
+                    red = true;
+                    green = false;
                 }
 
-                if(timer.milliseconds()>=pulleyShootTime+600){
+                if(timer.milliseconds()>=pulleyShootTime+200){
                     pulley.state = Pulley.State.Off;
                     intake.state = State.STOPPED;
                     holder.state = Servo.State.STOP1;
+                    red = false;
+                    green = false;
 
                     return false;
                 }
@@ -320,7 +344,7 @@ public class InterleagueActions {
         };
     }
 
-    public Action CycleShootTeleFar() {
+    public Action CycleShootFar() {
         return new Action() {
             final ElapsedTime timer = new ElapsedTime();
             boolean initialized = false;
@@ -337,17 +361,23 @@ public class InterleagueActions {
                 if(launcher.atTargetRPM(launcher.getGoalRPM(), toleranceRPM)){
                     pulley.state = Pulley.State.On;
                     intake.state = State.INTAKING;
+                    green = true;
+                    red = false;
                 }
                 else {
                     pulley.state = Pulley.State.Off;
                     intake.state = State.STOPPED;
+                    red = true;
+                    green = false;
+
                 }
 
-                if(timer.milliseconds()>=pulleyShootTime+1500){
+                if(timer.milliseconds()>=pulleyShootTime+1000){
                     pulley.state = Pulley.State.Off;
                     intake.state = State.STOPPED;
                     holder.state = Servo.State.STOP1;
-
+                    red = false;
+                    green = false;
                     return false;
                 }
                 return true;
@@ -355,7 +385,7 @@ public class InterleagueActions {
         };
     }
 
-    double toleranceRPM = 300;
+    double toleranceRPM = 150;
 
     public Action WaitForLauncher() {
         return new Action() {
@@ -405,7 +435,7 @@ public class InterleagueActions {
                 ReleaseBall,
                 WaitAction(servoReleaseTime),
                 WaitForLauncher(),
-                CycleShootTele()
+                CycleShootShort()
         );
     }
 
@@ -416,7 +446,7 @@ public class InterleagueActions {
                 ReleaseBall,
                 WaitAction(servoReleaseTime),
                 WaitForLauncher(),
-                CycleShootTeleFar()
+                CycleShootFar()
         );
     }
 
@@ -427,7 +457,7 @@ public class InterleagueActions {
                 ReleaseBall,
                 WaitAction(servoReleaseTime),
                 WaitForLauncher(),
-                CycleShootTeleFar(),
+                CycleShootFar(),
                 WaitAction(servoReleaseTime),
                 StartIntake
         );

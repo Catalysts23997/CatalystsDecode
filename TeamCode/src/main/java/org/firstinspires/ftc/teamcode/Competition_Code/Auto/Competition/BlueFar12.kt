@@ -19,7 +19,6 @@ import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localiz
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Servo
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
 
-@Disabled
 @Autonomous(name = "BlueFar12", group = "Auto")
 class BlueFar12 : LinearOpMode() {
 
@@ -31,19 +30,17 @@ class BlueFar12 : LinearOpMode() {
         val drive = Drivetrain(hardwareMap, AllianceColor.Blue)
         val robot = InterleagueActions(hardwareMap, telemetry)
 
-        sleep(100)
-        localizer.update()
+
         robot.holder.state = Servo.State.STOP1
         robot.update()
-        robot.launcher.baseRPM = 3200.0
+        robot.launcher.baseRPM = 3300.0
 
         waitForStart()
 
         AutoGlobals.FarAuto = true
         AutoGlobals.AutonomousRan = true
 
-        localizer.update()
-        localizer.transferToTele()
+
 
         runBlocking(
             ParallelAction(
@@ -76,20 +73,21 @@ class BlueFar12 : LinearOpMode() {
                     AutoPoints.PreIntakeGPPFar.runToExact(),
                     robot.StartIntake,
                     AutoPoints.GPPIntakeFar.runToExact(),
+
+                    AutoPoints.LaunchFarBlue.runToExact(),
+                    robot.ShootFar(),
+
+                    robot.StartIntake,
+                    AutoPoints.PGPPreFar.runToExact(),
+                    AutoPoints.PGPFar.runToExact(),
                     robot.WaitAction(125.0),
 
                     AutoPoints.LaunchFarBlue.runToExact(),
                     robot.ShootFar(),
 
                     robot.StartIntake,
-                    AutoPoints.PGPIntakeFar.runToExact(),
-                    robot.WaitAction(125.0),
-
-                    AutoPoints.LaunchFarBlue.runToExact(),
-                    robot.ShootFar(),
-
-                    robot.StartIntake,
-                    AutoPoints.PGPIntakeFar.runToExact(),
+                    AutoPoints.PGPPreFar.runToExact(),
+                    AutoPoints.PGPFar.runToExact(),
                     robot.WaitAction(125.0),
 
                     AutoPoints.LaunchFarBlue.runToExact(),

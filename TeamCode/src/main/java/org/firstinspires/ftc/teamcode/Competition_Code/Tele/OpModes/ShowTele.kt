@@ -110,9 +110,6 @@ class ShowTele(opmode: LinearOpMode, color: AllianceColor) {
 
         localizer = Localizer(hardwareMap, TeleGlobals.currentPosition)
 
-        telemetry.addData("Robot at zero:",  Localizer.pose)
-        localizer.update()
-        telemetry.addData("Robot at original position:",  Localizer.pose)
 
         driveOverride = DrivetrainOverride()
 
@@ -143,8 +140,6 @@ class ShowTele(opmode: LinearOpMode, color: AllianceColor) {
      */
     fun start() {
         // Ensure that the localizer is ready for teleop
-        localizer.update()
-        localizer.transferToTele()
 
 
         telemetry.clear()
