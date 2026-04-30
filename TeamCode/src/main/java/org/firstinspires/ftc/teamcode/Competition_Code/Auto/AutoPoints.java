@@ -107,7 +107,13 @@ public enum AutoPoints {
     Test1(new Vector2d(-34,63), 0.0),
     Test2(new Vector2d(-39,68), Math.PI / 2),
     Test3(new Vector2d(-44,63), 0.0),
-    Test4(new Vector2d(-39,58), 0.0);
+    Test4(new Vector2d(-39,58), 0.0),
+
+
+
+    BluePGPSingle(new Vector2d(42.5, -12.5), -Math.PI / 2, 0.5);
+
+
 
     public final double x,y, heading;
     public double driveSpeed = 1.0, maxTime = 11.0;

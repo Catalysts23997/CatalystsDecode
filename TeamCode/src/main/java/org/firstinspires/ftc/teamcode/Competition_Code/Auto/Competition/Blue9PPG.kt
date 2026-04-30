@@ -18,8 +18,8 @@ import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localiz
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Servo
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
 
-@Autonomous(name = "Blue9PGP", group = "Auto")
-class Blue9PGP : LinearOpMode() {
+@Autonomous(name = "Blue9PPG", group = "Auto")
+class Blue9PPG : LinearOpMode() {
 
     override fun runOpMode() {
         AutoGlobals.targetRobotPositon = AutoPoints.FastStartBlue.pose
@@ -66,34 +66,28 @@ class Blue9PGP : LinearOpMode() {
                     AutoPoints.LaunchBlue.runToExact(),
                     robot.Shoot(),
 
-                    AutoPoints.PreIntakePGP.runToFast(),
-                    robot.StartIntake,
-                    AutoPoints.PGPIntake.runToExact(),
-                    robot.WaitAction(125.0),
-                    AutoPoints.PGPFarMidPoint.runToFast(),
-
-                    AutoPoints.LaunchBlue.runToExact(),
-                    robot.Shoot(),
-
                     AutoPoints.PreIntakePPG.runToFast(),
                     robot.StartIntake,
                     AutoPoints.PPGIntake.runToExact(),
                     robot.WaitAction(125.0),
 
+                    AutoPoints.LaunchBlue.runToExact(),
+                    robot.ExpelOne(),
+                    robot.Shoot(),
+
+                    AutoPoints.PreIntakeGPP.runToFast(),
+                    robot.StartIntake,
+                    AutoPoints.GPPIntake.runToExact(),
+                    robot.WaitAction(125.0),
+                    AutoPoints.GPPMidPoint.runToFast(),
 
                     AutoPoints.LaunchBlue.runToExact(),
-                    robot.ExpelTwo(),
                     robot.Shoot(),
 
                     AutoPoints.PreIntakePGP.runToFast(),
                     robot.StartIntake,
-                    AutoPoints.BluePGPSingle.runToExact(),
-                    robot.WaitAction(125.0),
-                    AutoPoints.LaunchBlue.runToExact(),
-                    robot.ExpelOne(),
-                    AutoPoints.PreIntakePGP.runToFast(),
-                    robot.StartIntake,
                     AutoPoints.PGPIntake.runToExact(),
+                    robot.ExpelOne(),
                     robot.WaitAction(125.0),
 
                     AutoPoints.LaunchBlue.runToExact(),
