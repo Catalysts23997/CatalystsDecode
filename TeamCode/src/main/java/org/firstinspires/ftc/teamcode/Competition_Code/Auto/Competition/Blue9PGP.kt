@@ -80,25 +80,17 @@ class Blue9PGP : LinearOpMode() {
                     AutoPoints.PPGIntake.runToExact(),
                     robot.WaitAction(125.0),
 
-
                     AutoPoints.LaunchBlue.runToExact(),
                     robot.ExpelTwo(),
                     robot.Shoot(),
 
-                    AutoPoints.PreIntakePGP.runToFast(),
+                    AutoPoints.PreIntakeGPP.runToFast(),
                     robot.StartIntake,
-                    AutoPoints.BluePGPSingle.runToExact(),
-                    robot.WaitAction(125.0),
-                    AutoPoints.LaunchBlue.runToExact(),
-                    robot.ExpelOne(),
-                    AutoPoints.PreIntakePGP.runToFast(),
-                    robot.StartIntake,
-                    AutoPoints.PGPIntake.runToExact(),
+                    AutoPoints.GPPIntake.runToExact(),
                     robot.WaitAction(125.0),
 
                     AutoPoints.LaunchBlue.runToExact(),
-                    robot.Shoot(),
-                    AutoPoints.EndBlue.runToExact()
+                    robot.Shoot()
                 )
             )
         )
