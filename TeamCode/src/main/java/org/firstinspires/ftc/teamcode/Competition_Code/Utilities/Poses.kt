@@ -4,9 +4,16 @@ import com.acmerobotics.roadrunner.Rotation2d
 import com.acmerobotics.roadrunner.Vector2d
 import kotlin.math.abs
 
-data class Poses(val x: Double, val y: Double, val heading: Double){
+data class Poses(var x: Double, var y: Double, var heading: Double){
     constructor(vector2d: Vector2d, rotation: Double) : this(vector2d.x,vector2d.y, rotation)
     constructor(vector2d: Vector2d, rotation: Rotation2d) : this(vector2d.x,vector2d.y, rotation.toDouble())
+
+    fun add(pose: Poses) {
+        this.x += pose.x
+        this.y += pose.y
+        this.heading += pose.heading
+        this.heading = abs(Angles.wrap(this.heading)) // wrap heading
+    }
 
     override fun equals(other: Any?): Boolean {
         if(other !is Poses) return false // throw exception

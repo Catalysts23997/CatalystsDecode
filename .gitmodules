@@ -1,0 +1,3 @@
+[submodule "FTVision"]
+	path = FTVision
+	url = https://github.com/mccoderdev/FTVision.git
