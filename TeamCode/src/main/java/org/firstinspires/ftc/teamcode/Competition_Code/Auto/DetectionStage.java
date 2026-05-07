@@ -14,6 +14,7 @@ public enum DetectionStage {
             // both lead to Done
             case DrivingSecond:
             case Done:
+            default:
                 return Done;
         }
     }

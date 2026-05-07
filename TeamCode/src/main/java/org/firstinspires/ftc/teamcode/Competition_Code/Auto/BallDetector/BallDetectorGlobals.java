@@ -14,11 +14,11 @@ public class BallDetectorGlobals {
     private static final BallDetectorLocation CONST_LOCATION_PICKUP_FIRST = new BallDetectorLocation(
         new Poses(-65.0, -43.0, -0.95),
         1.0,
-        700
+        800
     );
     private static final BallDetectorLocation CONST_LOCATION_PICKUP_SECOND = new BallDetectorLocation(
-        new Poses(-65.0, -17.5, -0.83),
-        0.9,
+        new Poses(-63.0, -15.5, -0.469999999999986),
+        0.4,
         1500
     );
 

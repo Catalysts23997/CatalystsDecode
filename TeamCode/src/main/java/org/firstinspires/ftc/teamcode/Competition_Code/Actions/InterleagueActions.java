@@ -611,7 +611,7 @@ public class InterleagueActions {
     public Action BallDetectorTesting(ColorScannerFast scanner) {
         return new Action() {
 
-            private DetectionStage stage;
+            private DetectionStage stage = DetectionStage.Waiting;
             private Action driveTarget;
 
             @Override
@@ -641,7 +641,7 @@ public class InterleagueActions {
                             Vec2 point = scanner.detection.point;
 
                             telemetryPacket.addLine("Detection!" + point.x);
-                            if (point.x <= 122.0) {
+                            if (point.x <= 122.0 && point.y >= 180) {
                                 // start the intake
                                 StartIntake.run(telemetryPacket);
 

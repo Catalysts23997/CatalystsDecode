@@ -9,7 +9,6 @@ import com.acmerobotics.roadrunner.ftc.runBlocking
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import net.mccoder.ftvision.processors.ColorScannerFast
-import net.mccoder.ftvision.transform.Rect
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName
 import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.ExposureControl
 import org.firstinspires.ftc.teamcode.Competition_Code.Actions.InterleagueActions
@@ -52,7 +51,7 @@ class BlueFar12 : LinearOpMode() {
             )
 
 
-        val detector = ColorScannerFast(Rect(0.0, 120.0, 320.0, 240.0))
+        val detector = ColorScannerFast()
         camera.setPipeline(detector)
 
         camera.openCameraDeviceAsync(object : AsyncCameraOpenListener {
@@ -127,7 +126,7 @@ class BlueFar12 : LinearOpMode() {
                     AutoPoints.MoveFarBlue.runToExact(),
 
                     // ball detector
-                    robot.BallDetector(detector)
+                    robot.BallDetectorTesting(detector)
 
                     /*robot.ActivateBallDetection(detector),
                     robot.WaitForBallDetection(detector),

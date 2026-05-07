@@ -41,7 +41,7 @@ public class BallDetectorController extends LinearOpMode {
             telemetry.addLine(); // blank line
 
             // position
-            if (buttonTimer.milliseconds() > 75 && gamepad1.dpad_up) {
+            if (buttonTimer.milliseconds() > 150 && gamepad1.dpad_up) {
                 buttonTimer.reset();
                 switch (currentLocation) {
                     case 0: BallDetectorGlobals.LOCATION_WAIT.pose.add(new Poses(0, -5, 0.0)); break;
@@ -52,29 +52,29 @@ public class BallDetectorController extends LinearOpMode {
                 }
             }
 
-            if (buttonTimer.milliseconds() > 75 && gamepad1.dpad_down) {
+            if (buttonTimer.milliseconds() > 150 && gamepad1.dpad_down) {
                 buttonTimer.reset();
                 switch (currentLocation) {
-                    case 0: BallDetectorGlobals.LOCATION_WAIT.pose.add(new Poses(0, 5, 0.0)); break;
-                    case 1: BallDetectorGlobals.LOCATION_PICKUP_FIRST.pose.add(new Poses(0, 5, 0.0)); break;
-                    case 2: BallDetectorGlobals.LOCATION_PICKUP_SECOND.pose.add(new Poses(0, 5, 0.0)); break;
+                    case 0: BallDetectorGlobals.LOCATION_WAIT.pose.add(new Poses(0, 2, 0.0)); break;
+                    case 1: BallDetectorGlobals.LOCATION_PICKUP_FIRST.pose.add(new Poses(0, 2, 0.0)); break;
+                    case 2: BallDetectorGlobals.LOCATION_PICKUP_SECOND.pose.add(new Poses(0, 2, 0.0)); break;
                     default:
                         break;
                 }
             }
 
-            if (buttonTimer.milliseconds() > 75 && gamepad1.dpad_left) {
+            if (buttonTimer.milliseconds() > 150 && gamepad1.dpad_left) {
                 buttonTimer.reset();
                 switch (currentLocation) {
-                    case 0: BallDetectorGlobals.LOCATION_WAIT.pose.add(new Poses(-5, 0, 0.0)); break;
-                    case 1: BallDetectorGlobals.LOCATION_PICKUP_FIRST.pose.add(new Poses(-5, 0, 0.0)); break;
-                    case 2: BallDetectorGlobals.LOCATION_PICKUP_SECOND.pose.add(new Poses(-5, 0, 0.0)); break;
+                    case 0: BallDetectorGlobals.LOCATION_WAIT.pose.add(new Poses(-2, 0, 0.0)); break;
+                    case 1: BallDetectorGlobals.LOCATION_PICKUP_FIRST.pose.add(new Poses(-2, 0, 0.0)); break;
+                    case 2: BallDetectorGlobals.LOCATION_PICKUP_SECOND.pose.add(new Poses(-2, 0, 0.0)); break;
                     default:
                         break;
                 }
             }
 
-            if (buttonTimer.milliseconds() > 75 && gamepad1.dpad_right) {
+            if (buttonTimer.milliseconds() > 150 && gamepad1.dpad_right) {
                 buttonTimer.reset();
                 switch (currentLocation) {
                     case 0: BallDetectorGlobals.LOCATION_WAIT.pose.add(new Poses(5, 0, 0.0)); break;
@@ -86,30 +86,30 @@ public class BallDetectorController extends LinearOpMode {
             }
 
             // rotation
-            if (buttonTimer.milliseconds() > 75 && gamepad1.left_trigger_pressed) {
+            if (buttonTimer.milliseconds() > 150 && gamepad1.left_trigger_pressed) {
                 buttonTimer.reset();
                 switch (currentLocation) {
-                    case 0: BallDetectorGlobals.LOCATION_WAIT.pose.add(new Poses(0, 0, -0.34)); break;
-                    case 1: BallDetectorGlobals.LOCATION_PICKUP_FIRST.pose.add(new Poses(0, 0, -0.34)); break;
-                    case 2: BallDetectorGlobals.LOCATION_PICKUP_SECOND.pose.add(new Poses(0, 0, -0.34)); break;
+                    case 0: BallDetectorGlobals.LOCATION_WAIT.pose.add(new Poses(0, 0, -0.12)); break;
+                    case 1: BallDetectorGlobals.LOCATION_PICKUP_FIRST.pose.add(new Poses(0, 0, -0.12)); break;
+                    case 2: BallDetectorGlobals.LOCATION_PICKUP_SECOND.pose.add(new Poses(0, 0, -0.12)); break;
                     default:
                         break;
                 }
             }
 
-            if (buttonTimer.milliseconds() > 75 && gamepad1.right_trigger_pressed) {
+            if (buttonTimer.milliseconds() > 150 && gamepad1.right_trigger_pressed) {
                 buttonTimer.reset();
                 switch (currentLocation) {
-                    case 0: BallDetectorGlobals.LOCATION_WAIT.pose.add(new Poses(0, 0, 0.34)); break;
-                    case 1: BallDetectorGlobals.LOCATION_PICKUP_FIRST.pose.add(new Poses(0, 0, 0.34)); break;
-                    case 2: BallDetectorGlobals.LOCATION_PICKUP_SECOND.pose.add(new Poses(0, 0, 0.34)); break;
+                    case 0: BallDetectorGlobals.LOCATION_WAIT.pose.add(new Poses(0, 0, 0.12)); break;
+                    case 1: BallDetectorGlobals.LOCATION_PICKUP_FIRST.pose.add(new Poses(0, 0, 0.12)); break;
+                    case 2: BallDetectorGlobals.LOCATION_PICKUP_SECOND.pose.add(new Poses(0, 0, 0.12)); break;
                     default:
                         break;
                 }
             }
 
             // max time
-            if (buttonTimer.milliseconds() > 75 && gamepad1.left_stick_y > 0.5f) {
+            if (buttonTimer.milliseconds() > 150 && gamepad1.left_stick_y > 0.5f) {
                 buttonTimer.reset();
                 switch (currentLocation) {
                     case 0: BallDetectorGlobals.LOCATION_WAIT.maxTime -= 15; break;
@@ -120,7 +120,7 @@ public class BallDetectorController extends LinearOpMode {
                 }
             }
 
-            if (buttonTimer.milliseconds() > 75 && gamepad1.right_stick_y > 0.5f) {
+            if (buttonTimer.milliseconds() > 150 && gamepad1.right_stick_y > 0.5f) {
                 buttonTimer.reset();
                 switch (currentLocation) {
                     case 0: BallDetectorGlobals.LOCATION_WAIT.maxTime += 15; break;
@@ -140,7 +140,13 @@ public class BallDetectorController extends LinearOpMode {
                 currentLocation += 1;
             }
 
+            if (gamepad1.a && gamepad1.y) {
+                BallDetectorGlobals.resetGlobalsForComp(telemetry);
+            }
+
             currentLocation = currentLocation % 3;
+
+            telemetry.update();
         }
     }
 }

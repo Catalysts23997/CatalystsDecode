@@ -12,7 +12,7 @@ data class Poses(var x: Double, var y: Double, var heading: Double){
         this.x += pose.x
         this.y += pose.y
         this.heading += pose.heading
-        this.heading = abs(Angles.wrap(this.heading)) // wrap heading
+        this.heading = Angles.wrap(this.heading) // wrap heading
     }
 
     override fun equals(other: Any?): Boolean {
