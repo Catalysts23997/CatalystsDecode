@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.BallDetector.BallDetectorGlobals;
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses;
 
-@TeleOp(name = "BallDetectorTesting", group = "Linear OpMode")
+@TeleOp(name = "BallDetectorController", group = "Linear OpMode")
 public class BallDetectorController extends LinearOpMode {
     private final ElapsedTime buttonTimer = new ElapsedTime();
     private int currentLocation = 0;
@@ -29,6 +29,16 @@ public class BallDetectorController extends LinearOpMode {
                 default:
                     break;
             }
+
+            switch (currentLocation) {
+                case 0: telemetry.addLine(BallDetectorGlobals.LOCATION_WAIT.toString()); break;
+                case 1: telemetry.addLine(BallDetectorGlobals.LOCATION_PICKUP_FIRST.toString()); break;
+                case 2: telemetry.addLine(BallDetectorGlobals.LOCATION_PICKUP_SECOND.toString()); break;
+                default:
+                    break;
+            }
+
+            telemetry.addLine(); // blank line
 
             // position
             if (buttonTimer.milliseconds() > 75 && gamepad1.dpad_up) {
