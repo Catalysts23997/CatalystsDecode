@@ -5,7 +5,6 @@ import com.acmerobotics.dashboard.telemetry.TelemetryPacket
 import com.acmerobotics.roadrunner.Action
 import com.acmerobotics.roadrunner.ParallelAction
 import com.acmerobotics.roadrunner.SequentialAction
-import com.acmerobotics.roadrunner.ftc.OTOS_ERROR_MSG
 import com.acmerobotics.roadrunner.ftc.runBlocking
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
@@ -18,7 +17,6 @@ import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localiz
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Drivetrain
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Servo
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
-import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.launcherSpeedAdjusted
 
 @Autonomous(name = "Blue15", group = "Auto")
 class BlueAuto15 : LinearOpMode() {
@@ -86,39 +84,39 @@ class BlueAuto15 : LinearOpMode() {
                     AutoPoints.LaunchBlue.runToExact(),
                     robot.Shoot(),
 
-                    AutoPoints.PreIntakePGP.runToFast(),
+                    AutoPoints.PrePGPBlue.runToFast(),
                     robot.StartIntake,
-                    AutoPoints.PGPIntake.runToExact(),
-                    AutoPoints.PGPFarMidPoint.runToFast(),
+                    AutoPoints.PGPBlue.runToExact(),
+                    AutoPoints.PGPBackBlue.runToFast(),
 
                     AutoPoints.LaunchBlue.runToExact(),
                     robot.Shoot(),
 
-                    AutoPoints.PreIntakePGP.runToFast(),
+                    AutoPoints.PrePGPBlue.runToFast(),
                     robot.StartIntake,
-                    AutoPoints.GatePrep.runToFast(),
+                    AutoPoints.PreGateIntakeBlue.runToFast(),
                     robot.WaitAction(250.0),
-                    AutoPoints.GateIntake.runToFast(),
+                    AutoPoints.GateIntakeBlue1.runToFast(),
                     robot.WaitAction(600.0),
-                    AutoPoints.GateIntake2.runToFast(),
+                    AutoPoints.GateIntakeBlue2.runToFast(),
                     robot.WaitAction(600.0),
-                    AutoPoints.PGPFarMidPoint.runToFast(),
+                    AutoPoints.PGPBackBlue.runToFast(),
 
 
                     AutoPoints.LaunchBlue.runToExact(),
                     robot.Shoot(),
 
-                    AutoPoints.PreIntakePPG.runToFast(),
+                    AutoPoints.PrePPGBlue.runToFast(),
                     robot.StartIntake,
-                    AutoPoints.PPGIntake.runToExact(),
+                    AutoPoints.PPGBlue.runToExact(),
 
                     AutoPoints.LaunchBlue.runToExact(),
                     robot.Shoot(),
 
 
-                    AutoPoints.PreIntakeGPP.runToFast(),
+                    AutoPoints.PreGPPBlue.runToFast(),
                     robot.StartIntake,
-                    AutoPoints.GPPIntake.runToExact(),
+                    AutoPoints.GPPBlue.runToExact(),
 
                     AutoPoints.LaunchBlue.runToExact(),
                     robot.Shoot(),

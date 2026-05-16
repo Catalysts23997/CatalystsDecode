@@ -65,7 +65,7 @@ class BlueFar3 : LinearOpMode() {
 
                     AutoPoints.LaunchFarBlue.runToExact(),
                     robot.ShootFar(),
-                    AutoPoints.MoveFarBlue.runToExact()
+                    AutoPoints.EndFarBlue.runToExact()
                 )
             )
         )

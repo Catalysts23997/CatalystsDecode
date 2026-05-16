@@ -7,7 +7,6 @@ import com.acmerobotics.roadrunner.ftc.runBlocking
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.acmerobotics.roadrunner.Action
-import com.qualcomm.robotcore.eventloop.opmode.Disabled
 import org.firstinspires.ftc.teamcode.Competition_Code.Actions.InterleagueActions
 import org.firstinspires.ftc.teamcode.Competition_Code.AllianceColor
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoGlobals
@@ -70,40 +69,40 @@ class BlueFarLoop : LinearOpMode() {
                     robot.ShootFar(),
 
                     robot.StartIntake,
-                    AutoPoints.PGPPreFar.runToExact(),
-                    AutoPoints.PGPFar.runToExact(),
+                    AutoPoints.PreCornerBlue.runToExact(),
+                    AutoPoints.CornerBlue.runToExact(),
                     robot.WaitAction(125.0),
 
                     AutoPoints.LaunchFarBlue.runToExact(),
                     robot.ShootFar(),
 
                     robot.StartIntake,
-                    AutoPoints.PGPPreFar.runToExact(),
-                    AutoPoints.PGPFar.runToExact(),
+                    AutoPoints.PreCornerBlue.runToExact(),
+                    AutoPoints.CornerBlue.runToExact(),
                     robot.WaitAction(125.0),
 
                     AutoPoints.LaunchFarBlue.runToExact(),
                     robot.ShootFar(),
 
                     robot.StartIntake,
-                    AutoPoints.PGPPreFar.runToExact(),
-                    AutoPoints.PGPFar.runToExact(),
+                    AutoPoints.PreCornerBlue.runToExact(),
+                    AutoPoints.CornerBlue.runToExact(),
                     robot.WaitAction(125.0),
 
                     AutoPoints.LaunchFarBlue.runToExact(),
                     robot.ShootFar(),
 
                     robot.StartIntake,
-                    AutoPoints.PGPPreFar.runToExact(),
-                    AutoPoints.PGPFar.runToExact(),
+                    AutoPoints.PreCornerBlue.runToExact(),
+                    AutoPoints.CornerBlue.runToExact(),
                     robot.WaitAction(125.0),
 
                     AutoPoints.LaunchFarBlue.runToExact(),
                     robot.ShootFar(),
 
                     robot.StartIntake,
-                    AutoPoints.PGPPreFar.runToExact(),
-                    AutoPoints.PGPFar.runToExact(),
+                    AutoPoints.PreCornerBlue.runToExact(),
+                    AutoPoints.CornerBlue.runToExact(),
                     robot.WaitAction(125.0),                )
             )
         )

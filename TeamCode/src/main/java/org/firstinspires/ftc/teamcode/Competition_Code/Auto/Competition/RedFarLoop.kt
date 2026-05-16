@@ -73,40 +73,40 @@ class RedFarLoop : LinearOpMode() {
                     robot.ShootFar(),
 
                     robot.StartIntake,
-                    AutoPoints.PGPPreFarRed.runToExact(),
-                    AutoPoints.PGPFarRed.runToExact(),
+                    AutoPoints.PreCornerRed.runToExact(),
+                    AutoPoints.CornerRed.runToExact(),
                     robot.WaitAction(125.0),
 
                     AutoPoints.LaunchFarRed.runToExact(),
                     robot.ShootFar(),
 
                     robot.StartIntake,
-                    AutoPoints.PGPPreFarRed.runToExact(),
-                    AutoPoints.PGPFarRed.runToExact(),
+                    AutoPoints.PreCornerRed.runToExact(),
+                    AutoPoints.CornerRed.runToExact(),
                     robot.WaitAction(125.0),
 
                     AutoPoints.LaunchFarRed.runToExact(),
                     robot.ShootFar(),
 
                     robot.StartIntake,
-                    AutoPoints.PGPPreFarRed.runToExact(),
-                    AutoPoints.PGPFarRed.runToExact(),
+                    AutoPoints.PreCornerRed.runToExact(),
+                    AutoPoints.CornerRed.runToExact(),
                     robot.WaitAction(125.0),
 
                     AutoPoints.LaunchFarRed.runToExact(),
                     robot.ShootFar(),
 
                     robot.StartIntake,
-                    AutoPoints.PGPPreFarRed.runToExact(),
-                    AutoPoints.PGPFarRed.runToExact(),
+                    AutoPoints.PreCornerRed.runToExact(),
+                    AutoPoints.CornerRed.runToExact(),
                     robot.WaitAction(125.0),
 
                     AutoPoints.LaunchFarRed.runToExact(),
                     robot.ShootFar(),
 
                     robot.StartIntake,
-                    AutoPoints.PGPPreFarRed.runToExact(),
-                    AutoPoints.PGPFarRed.runToExact()
+                    AutoPoints.PreCornerRed.runToExact(),
+                    AutoPoints.CornerRed.runToExact()
                 )
             )
         )

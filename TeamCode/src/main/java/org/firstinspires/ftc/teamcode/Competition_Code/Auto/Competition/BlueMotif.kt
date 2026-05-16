@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Competition_Code.Auto.OpModes;
+package org.firstinspires.ftc.teamcode.Competition_Code.Auto.Competition;
 
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket
 import com.acmerobotics.roadrunner.ParallelAction
@@ -7,28 +7,28 @@ import com.acmerobotics.roadrunner.ftc.runBlocking
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.acmerobotics.roadrunner.Action
-import com.qualcomm.robotcore.eventloop.opmode.Disabled
 import org.firstinspires.ftc.teamcode.Competition_Code.Actions.InterleagueActions
 import org.firstinspires.ftc.teamcode.Competition_Code.AllianceColor
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoGlobals
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoPoints
+import org.firstinspires.ftc.teamcode.Competition_Code.Auto.MotifSequences
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.RunToExactForever
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Drivetrain
 import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localizer
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Servo
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
 
-@Disabled
-@Autonomous(name = "BlueAuto9Fast", group = "Auto")
-class BlueAuto9Fast : LinearOpMode() {
+@Autonomous(name = "BlueMotif", group = "Auto")
+class BlueMotif : LinearOpMode() {
 
     override fun runOpMode() {
-        AutoGlobals.targetRobotPositon = AutoPoints.OldStartBlue.pose
+        AutoGlobals.targetRobotPositon = AutoPoints.FastStartBlue.pose
 
         val localizer = Localizer(hardwareMap, AutoGlobals.targetRobotPositon)
         val drive = Drivetrain(hardwareMap, AllianceColor.Blue)
         val robot = InterleagueActions(hardwareMap, telemetry)
 
+        val sequences = MotifSequences(robot)
 
         robot.holder.state = Servo.State.STOP1
         robot.update()
@@ -38,7 +38,6 @@ class BlueAuto9Fast : LinearOpMode() {
         waitForStart()
 
         AutoGlobals.AutonomousRan = true
-
 
 
         runBlocking(
@@ -65,28 +64,29 @@ class BlueAuto9Fast : LinearOpMode() {
                 },
                 SequentialAction(
                     robot.StartShooter,
-                    AutoPoints.LaunchBlue.runToExact(),
-                    robot.Shoot(),
-
-                    AutoPoints.PrePPGBlue.runToFast(),
                     robot.StartIntake,
-                    AutoPoints.PPGBlue.runToExact(),
-                    robot.WaitAction(200.0),
-                    robot.StopIntake,
+                    AutoPoints.AprilTagBlue.runToExact(),
+                    robot.CheckMotif(),
+                    robot.OffCamera(),
 
-                    AutoPoints.LaunchBlue.runToExact(),
-                    robot.Shoot(),
+                    object : Action {
+                        var nextAction: Action? = null
 
-                    AutoPoints.PrePGPBlue.runToFast(),
-                    robot.StartIntake,
-                    AutoPoints.PGPBlue.runToExact(),
-                    robot.WaitAction(200.0),
-                    robot.StopIntake,
-                    AutoPoints.PGPMidBlue.runToFast(),
+                        override fun run(p: TelemetryPacket): Boolean {
+                            if (nextAction == null) {
+                                nextAction = when (robot.motif) {
+                                    1 -> sequences.GPP()
 
-                    AutoPoints.LaunchBlue.runToExact(),
-                    robot.Shoot(),
-                    AutoPoints.EndBlue.runToExact()
+                                    2 -> sequences.PGP()
+
+                                    else -> sequences.PPG()
+                                }
+                            }
+
+                            // run the generated action normally
+                            return nextAction!!.run(p)
+                        }
+                    },
 
                 )
             )

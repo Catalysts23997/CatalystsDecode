@@ -9,7 +9,6 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.acmerobotics.roadrunner.Action
 import com.qualcomm.robotcore.eventloop.opmode.Disabled
-import org.firstinspires.ftc.teamcode.Competition_Code.Actions.Comp2Actions
 import org.firstinspires.ftc.teamcode.Competition_Code.Actions.InterleagueActions
 import org.firstinspires.ftc.teamcode.Competition_Code.AllianceColor
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoGlobals
@@ -29,7 +28,7 @@ class RedAuto12 : LinearOpMode() {
         val dash: FtcDashboard = FtcDashboard.getInstance()
         telemetry = dash.telemetry
 
-        AutoGlobals.targetRobotPositon = AutoPoints.StartRed.pose
+        AutoGlobals.targetRobotPositon = AutoPoints.OldStartRed.pose
 
         val localizer = Localizer(hardwareMap, AutoGlobals.targetRobotPositon)
         val drive = Drivetrain(hardwareMap, AllianceColor.Red)
@@ -74,31 +73,31 @@ class RedAuto12 : LinearOpMode() {
                     AutoPoints.LaunchRed.runToExact(),
                     robot.Shoot(),
 
-                    AutoPoints.PreIntakePPGRed.runToFast(),
+                    AutoPoints.PrePPGRed.runToFast(),
                     robot.StartIntake,
-                    AutoPoints.PPGIntakeRed.runToExact(),
+                    AutoPoints.PPGRed.runToExact(),
                     robot.WaitAction(200.0),
                     robot.StopIntake,
 
                     AutoPoints.LaunchRed.runToExact(),
                     robot.Shoot(),
 
-                    AutoPoints.PreIntakePGPRed.runToFast(),
+                    AutoPoints.PrePGPRed.runToFast(),
                     robot.StartIntake,
-                    AutoPoints.PGPIntakeRed.runToExact(),
+                    AutoPoints.PGPRed.runToExact(),
                     robot.WaitAction(200.0),
                     robot.StopIntake,
-                    AutoPoints.PGPMidPointRed.runToFast(),
+                    AutoPoints.PGPMidRed.runToFast(),
 
                     AutoPoints.LaunchRed.runToExact(),
                     robot.Shoot(),
 
-                    AutoPoints.PreIntakeGPPRed.runToFast(),
+                    AutoPoints.PreGPPRed.runToFast(),
                     robot.StartIntake,
-                    AutoPoints.GPPIntakeRed.runToExact(),
+                    AutoPoints.GPPRed.runToExact(),
                     robot.WaitAction(200.0),
                     robot.StopIntake,
-                    AutoPoints.GPPMidPointRed.runToFast(),
+                    AutoPoints.GPPBackRed.runToFast(),
 
                     AutoPoints.LaunchRed.runToExact(),
                     robot.Shoot(),

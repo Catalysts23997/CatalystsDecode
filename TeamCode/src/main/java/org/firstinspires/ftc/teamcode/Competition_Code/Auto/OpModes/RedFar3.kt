@@ -64,7 +64,7 @@ class RedFar3 : LinearOpMode() {
 
                     AutoPoints.LaunchFarRed.runToExact(),
                     robot.ShootFar(),
-                    AutoPoints.MoveFarRed.runToExact()
+                    AutoPoints.EndFarRed.runToExact()
                 )
             )
         )

@@ -25,7 +25,7 @@ class TestBlueAuto : LinearOpMode() {
 
 
     override fun runOpMode() {
-        AutoGlobals.targetRobotPositon = AutoPoints.StartBlue.pose
+        AutoGlobals.targetRobotPositon = AutoPoints.OldStartBlue.pose
 
         val localizer = Localizer(hardwareMap, AutoGlobals.targetRobotPositon)
         val drive = Drivetrain(hardwareMap, AllianceColor.Blue)
@@ -71,27 +71,27 @@ class TestBlueAuto : LinearOpMode() {
                     when (motif) {
                         1 -> {
                             SequentialAction(
-                                AutoPoints.PreIntakeGPP.runToExact(),
+                                AutoPoints.PreGPPBlue.runToExact(),
 
-                                AutoPoints.GPPIntake.runToExact(),
-                                AutoPoints.GPPMidPointRed.runToExact()
+                                AutoPoints.GPPBlue.runToExact(),
+                                AutoPoints.GPPBackRed.runToExact()
                             )
                         }
 
                         2 -> {
                             SequentialAction(
-                                AutoPoints.PreIntakePGP.runToExact(),
+                                AutoPoints.PrePGPBlue.runToExact(),
 
-                                AutoPoints.PGPIntake.runToExact(),
-                                AutoPoints.PGPMidPoint.runToExact()
+                                AutoPoints.PGPBlue.runToExact(),
+                                AutoPoints.PGPMidBlue.runToExact()
                             )
                         }
 
                         else -> {
                             SequentialAction(
-                                AutoPoints.PreIntakePPG.runToExact(),
+                                AutoPoints.PrePPGBlue.runToExact(),
 
-                                AutoPoints.PPGIntake.runToExact(),
+                                AutoPoints.PPGBlue.runToExact(),
                             )
                         }
                     },

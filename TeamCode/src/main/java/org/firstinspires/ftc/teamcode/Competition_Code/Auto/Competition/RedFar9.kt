@@ -8,7 +8,6 @@ import com.acmerobotics.roadrunner.ftc.runBlocking
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.acmerobotics.roadrunner.Action
-import com.qualcomm.robotcore.eventloop.opmode.Disabled
 import org.firstinspires.ftc.teamcode.Competition_Code.Actions.InterleagueActions
 import org.firstinspires.ftc.teamcode.Competition_Code.AllianceColor
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoGlobals
@@ -76,14 +75,14 @@ class RedFar9 : LinearOpMode() {
                     AutoPoints.LaunchFarRed.runToExact(),
                     robot.ShootFar(),
 
-                    AutoPoints.PreIntakeGPPFarRed.runToFast(),
+                    AutoPoints.PreGPPFarRed.runToFast(),
                     robot.StartIntake,
-                    AutoPoints.GPPIntakeFarRed.runToExact(),
+                    AutoPoints.GPPFarRed.runToExact(),
 
                     AutoPoints.LaunchFarRed.runToExact(),
                     robot.ShootFar(),
 
-                    AutoPoints.MoveFarRed.runToExact()
+                    AutoPoints.EndFarRed.runToExact()
                 )
             )
         )

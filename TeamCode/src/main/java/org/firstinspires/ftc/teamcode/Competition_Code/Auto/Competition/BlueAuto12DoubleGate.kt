@@ -80,32 +80,32 @@ class BlueAuto12DoubleGate : LinearOpMode() {
                     AutoPoints.LaunchBlue.runToExact(),
                     robot.Shoot(),
 
-                    AutoPoints.PreIntakePPG.runToFast(),
+                    AutoPoints.PrePPGBlue.runToFast(),
                     robot.StartIntake,
-                    AutoPoints.PPGIntake.runToExact(),
+                    AutoPoints.PPGBlue.runToExact(),
 
-                    AutoPoints.PreGate.runToExact(),
-                    AutoPoints.Gate.runToExact(),
+                    AutoPoints.PreGateBlue.runToExact(),
+                    AutoPoints.GateBlue.runToExact(),
                     robot.WaitAction(800.0),
 
                     AutoPoints.LaunchBlue.runToExact(),
                     robot.Shoot(),
 
-                    AutoPoints.PreIntakePGP.runToFast(),
+                    AutoPoints.PrePGPBlue.runToFast(),
                     robot.StartIntake,
-                    AutoPoints.PGPIntake.runToExact(),
+                    AutoPoints.PGPBlue.runToExact(),
 
-                    AutoPoints.GateMid.runToFast(),
-                    AutoPoints.PreGate.runToExact(),
-                    AutoPoints.Gate.runToExact(),
+                    AutoPoints.GateMidBlue.runToFast(),
+                    AutoPoints.PreGateBlue.runToExact(),
+                    AutoPoints.GateBlue.runToExact(),
                     robot.WaitAction(800.0),
 
                     AutoPoints.LaunchBlue.runToExact(),
                     robot.Shoot(),
 
-                    AutoPoints.PreIntakeGPP.runToFast(),
+                    AutoPoints.PreGPPBlue.runToFast(),
                     robot.StartIntake,
-                    AutoPoints.GPPIntake.runToExact(),
+                    AutoPoints.GPPBlue.runToExact(),
 
                     AutoPoints.LaunchBlue.runToExact(),
                     robot.Shoot(),

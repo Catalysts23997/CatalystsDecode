@@ -72,30 +72,30 @@ class RedFar12 : LinearOpMode() {
                     AutoPoints.LaunchFarRed.runToExact(),
                     robot.ShootFar(),
 
-                    AutoPoints.PreIntakeGPPFarRed.runToFast(),
+                    AutoPoints.PreGPPFarRed.runToFast(),
                     robot.StartIntake,
-                    AutoPoints.GPPIntakeFarRed.runToExact(),
+                    AutoPoints.GPPFarRed.runToExact(),
 
                     AutoPoints.LaunchFarRed.runToExact(),
                     robot.ShootFar(),
 
                     robot.StartIntake,
-                    AutoPoints.PGPPreFarRed.runToExact(),
-                    AutoPoints.PGPFarRed.runToExact(),
+                    AutoPoints.PreCornerRed.runToExact(),
+                    AutoPoints.CornerRed.runToExact(),
                     robot.WaitAction(125.0),
 
                     AutoPoints.LaunchFarRed.runToExact(),
                     robot.ShootFar(),
 
                     robot.StartIntake,
-                    AutoPoints.PGPPreFarRed.runToExact(),
-                    AutoPoints.PGPFarRed.runToExact(),
+                    AutoPoints.PreCornerRed.runToExact(),
+                    AutoPoints.CornerRed.runToExact(),
                     robot.WaitAction(125.0),
 
                     AutoPoints.LaunchFarRed.runToExact(),
                     robot.ShootFar(),
 
-                    AutoPoints.MoveFarRed.runToExact()
+                    AutoPoints.EndFarRed.runToExact()
                 )
             )
         )

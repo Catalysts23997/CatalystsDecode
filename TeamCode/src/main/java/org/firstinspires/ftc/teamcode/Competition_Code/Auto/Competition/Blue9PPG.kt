@@ -7,7 +7,6 @@ import com.acmerobotics.roadrunner.ftc.runBlocking
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.acmerobotics.roadrunner.Action
-import com.qualcomm.robotcore.eventloop.opmode.Disabled
 import org.firstinspires.ftc.teamcode.Competition_Code.Actions.InterleagueActions
 import org.firstinspires.ftc.teamcode.Competition_Code.AllianceColor
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoGlobals
@@ -66,32 +65,31 @@ class Blue9PPG : LinearOpMode() {
                     AutoPoints.LaunchBlue.runToExact(),
                     robot.Shoot(),
 
-                    AutoPoints.PreIntakePPG.runToFast(),
+                    AutoPoints.PrePPGBlue.runToFast(),
                     robot.StartIntake,
-                    AutoPoints.PPGIntake.runToExact(),
-                    robot.WaitAction(125.0),
+                    AutoPoints.PPGBlue.runToExact(),
 
-                    AutoPoints.LaunchBlue.runToExact(),
-                    robot.ExpelOne(),
-                    robot.Shoot(),
-
-                    AutoPoints.PreIntakeGPP.runToFast(),
-                    robot.StartIntake,
-                    AutoPoints.GPPIntake.runToExact(),
-                    robot.WaitAction(125.0),
-                    AutoPoints.GPPMidPoint.runToFast(),
-
+                    AutoPoints.EjectBlue.runToExact(),
+                    robot.EjectOne(),
                     AutoPoints.LaunchBlue.runToExact(),
                     robot.Shoot(),
 
-                    AutoPoints.PreIntakePGP.runToFast(),
+                    AutoPoints.PreGPPBlue.runToFast(),
                     robot.StartIntake,
-                    AutoPoints.PGPIntake.runToExact(),
-                    robot.ExpelOne(),
-                    robot.WaitAction(125.0),
+                    AutoPoints.GPPBlue.runToExact(),
+                    AutoPoints.GPPBackBlue.runToFast(),
+
+                    AutoPoints.EjectBlue.runToExact(),
+                    robot.EjectOne(),
+                    AutoPoints.LaunchBlue.runToExact(),
+                    robot.ShootSlow(),
+
+                    AutoPoints.PrePGPBlue.runToFast(),
+                    robot.StartIntake,
+                    AutoPoints.PGPBlue.runToExact(),
 
                     AutoPoints.LaunchBlue.runToExact(),
-                    robot.Shoot(),
+                    robot.ShootSlow(),
                     AutoPoints.EndBlue.runToExact()
                 )
             )
