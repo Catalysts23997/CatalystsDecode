@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Competition_Code.Actions;
 
 import androidx.annotation.NonNull;
 
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.SequentialAction;
@@ -10,16 +11,16 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
-import net.mccoder.ftvision.processors.ColorScanner;
-import net.mccoder.ftvision.processors.ColorScannerFast;
-import net.mccoder.ftvision.processors.LocationWithVelocity;
+import net.mccoder.ftvision.FTVision;
+import net.mccoder.ftvision.processors.ScanDirection;
 import net.mccoder.ftvision.transform.Vec2;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.ExposureControl;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.GainControl;
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoGlobals;
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.BallDetector.BallDetectorGlobals;
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.DetectionStage;
-import org.firstinspires.ftc.teamcode.Competition_Code.Auto.SetDriveTarget;
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.AprilTag;
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.ColorSensors;
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Intake;
@@ -28,9 +29,9 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Pulley;
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Servo;
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Intake.State;
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.SingleLauncher;
-import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses;
+import org.openftc.easyopencv.OpenCvCameraRotation;
 
-import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 public class InterleagueActions {
     AprilTag aprilTag;
@@ -56,11 +57,36 @@ public class InterleagueActions {
     Telemetry telemetry;
     ElapsedTime timer;
 
+    HardwareMap hardwareMap;
+    public FTVision ftvision = null;
+
+    public void initFTVision(ScanDirection direction) throws IllegalStateException {
+        if (ftvision != null) {
+            throw new IllegalStateException("Can only start one instance of FTVision!");
+        }
+
+        ftvision = new FTVision(
+            hardwareMap,
+            "Arducam",
+            camera -> {
+                ExposureControl exposureControl = camera.getExposureControl();
+                exposureControl.setMode(ExposureControl.Mode.Manual);
+                exposureControl.setExposure(30000, TimeUnit.MICROSECONDS);
+
+                GainControl gainControl = camera.getGainControl();
+                gainControl.setGain(30);
+
+                camera.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
+                FtcDashboard.getInstance().startCameraStream(camera, 0.0);
+            },
+            direction
+        );
+    }
+
     public void update() {
         if (!AutoGlobals.INSTANCE.getAutonomousRan()){
             aprilTag.update();
         }
-        ;
 
         intake.update();
         pulley.update();
@@ -127,6 +153,7 @@ public class InterleagueActions {
         timer = new ElapsedTime();
 
         this.telemetry = telemetry;
+        this.hardwareMap = hardwareMap;
     }
 
     public Action WaitAction(double waitMs) {
@@ -473,142 +500,7 @@ public class InterleagueActions {
         );
     }
 
-    public Action ActivateBallDetection(ColorScanner detector) {
-        return telemetryPacket -> {
-            detector.canDetect = true;
-            return false;
-        };
-    }
-
-    public Action WaitForBallDetection(ColorScanner detector) {
-        return telemetryPacket -> detector.canPredictVelocity();
-    }
-
-    public Action PredictBallLocationFromVelocity(ColorScanner detector) {
-        return telemetryPacket -> {
-            if (detector.canPredictVelocity()) {
-                LocationWithVelocity output = detector.predictVelocityAndLocation(40);
-
-                telemetryPacket.addLine("Velocity: " + output.velX + ", " + output.velY);
-
-                // predict location
-                AutoGlobals.INSTANCE.setDetectedBall(output);
-
-                // hardcoded values
-                int targetX = -61;
-                float targetRotation = -0.3f;
-
-                // dynamic
-                float targetY = ((float) output.velX / 14.0f) * 48.0f;
-                if (targetY < -55.0f) {
-                    targetY = -48.0f;
-                }
-
-                telemetryPacket.addLine("Predicted Y " + targetY);
-
-                /*AutoGlobals.INSTANCE.setDetectedBallPose(new Poses(
-                    targetX, targetY, targetRotation
-                ));*/
-
-                SetDriveTarget drive = new SetDriveTarget(
-                    new Poses(
-                        targetX, targetY, targetRotation
-                    ),
-                    5.0,
-                    5.0
-                );
-
-                return drive.run(telemetryPacket);
-            }
-
-            return true;
-        };
-    }
-
-    public Action DriveToDetection(ColorScanner detector) {
-        return telemetryPacket -> {
-            if (detector.canPredictVelocity()) {
-                SetDriveTarget drive = new SetDriveTarget(
-                        Objects.requireNonNull(AutoGlobals.INSTANCE.getDetectedBallPose()),
-                        5.0,
-                        3.0
-                );
-
-                return drive.run(telemetryPacket);
-            }
-
-            return true;
-        };
-
-        /*return new SetDriveTarget(
-            Objects.requireNonNull(AutoGlobals.INSTANCE.getDetectedBallPose()),
-            1.0,
-            5.0
-        );*/
-    }
-
-    public Action BallDetector(ColorScannerFast scanner) {
-        return new Action() {
-            DetectionStage stage = DetectionStage.Waiting;
-            ElapsedTime timer;
-            ElapsedTime secondTimer;
-
-            @Override
-            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-                telemetryPacket.addLine("Stage: " + stage.toString());
-                if (timer != null) telemetryPacket.addLine("Timer: " + timer.milliseconds());
-                if (secondTimer != null) telemetryPacket.addLine("Timer2: " + secondTimer.milliseconds());
-
-                if (stage == DetectionStage.DrivingSecond && timer != null && timer.milliseconds() > 200) {
-                    SetDriveTarget drive = new SetDriveTarget(
-                            new Poses(-65.0, -17.5, -0.83),
-                            0.9,
-                            0.3
-                    );
-
-                    if (!drive.run(telemetryPacket) || secondTimer.milliseconds() > 1500) {
-                        StopIntake.run(telemetryPacket);
-                        return false;
-                    }
-                }
-
-                if (stage == DetectionStage.DrivingFirst && timer != null && timer.milliseconds() > 700) {
-                    stage = DetectionStage.DrivingSecond;
-                    timer.reset();
-                    secondTimer = new ElapsedTime();
-                }
-
-                if (scanner.detection != null && scanner.detection.point != null && stage != DetectionStage.DrivingSecond) {
-                    Vec2 point = scanner.detection.point;
-
-                    telemetryPacket.addLine("Detection!" + point.x);
-                    if (point.x <= 122.0) {
-                        if (stage == DetectionStage.Waiting) {
-                            stage = DetectionStage.DrivingFirst;
-                            timer = new ElapsedTime();
-                        }
-
-                        // start the intake
-                        StartIntake.run(telemetryPacket);
-
-                        SetDriveTarget drive = new SetDriveTarget(
-                                new Poses(-65.0, -43.0, -0.95),
-                                1.0,
-                                5.0 // ignored
-                        );
-
-                        drive.run(telemetryPacket);
-                    }
-                } else {
-                    telemetryPacket.addLine("No detection...");
-                }
-
-                return true; // always loop
-            }
-        };
-    }
-
-    public Action BallDetectorTesting(ColorScannerFast scanner) {
+    public Action BallDetector() {
         return new Action() {
 
             private DetectionStage stage = DetectionStage.Waiting;
@@ -637,8 +529,8 @@ public class InterleagueActions {
                 switch (stage) {
                     case Waiting:
                     {
-                        if (scanner.detection != null && scanner.detection.point != null) {
-                            Vec2 point = scanner.detection.point;
+                        if (ftvision.scanner.detection != null && ftvision.scanner.detection.point != null) {
+                            Vec2 point = ftvision.scanner.detection.point;
 
                             telemetryPacket.addLine("Detection!" + point.x);
                             if (point.x <= 122.0 && point.y >= 180) {
