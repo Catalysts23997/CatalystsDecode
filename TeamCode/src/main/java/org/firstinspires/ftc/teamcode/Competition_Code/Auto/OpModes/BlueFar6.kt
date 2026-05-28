@@ -73,14 +73,14 @@ class BlueFar6 : LinearOpMode() {
 
                     robot.ShootFar(),
 
-                    AutoPoints.PreIntakeGPPFar.runToExact(),
+                    AutoPoints.PreGPPFarBlue.runToExact(),
                     robot.StartIntake,
-                    AutoPoints.GPPIntakeFar.runToExact(),
+                    AutoPoints.GPPFarBlue.runToExact(),
                     robot.WaitAction(200.0),
 
                     AutoPoints.LaunchFarBlue.runToExact(),
                     robot.ShootFar(),
-                    AutoPoints.MoveFarBlue.runToExact()
+                    AutoPoints.EndFarBlue.runToExact()
                 )
             )
         )

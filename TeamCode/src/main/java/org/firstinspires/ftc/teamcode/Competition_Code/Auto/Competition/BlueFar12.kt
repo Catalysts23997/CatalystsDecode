@@ -8,6 +8,7 @@ import com.acmerobotics.roadrunner.ftc.runBlocking
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import net.mccoder.ftvision.processors.ScanDirection
+import com.acmerobotics.roadrunner.Action
 import org.firstinspires.ftc.teamcode.Competition_Code.Actions.InterleagueActions
 import org.firstinspires.ftc.teamcode.Competition_Code.AllianceColor
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoGlobals
@@ -69,9 +70,9 @@ class BlueFar12 : LinearOpMode() {
 
                     robot.ShootFar(),
 
-                    AutoPoints.PreIntakeGPPFar.runToExact(),
+                    AutoPoints.PreGPPFarBlue.runToExact(),
                     robot.StartIntake,
-                    AutoPoints.GPPIntakeFar.runToExact(),
+                    AutoPoints.GPPFarBlue.runToExact(),
 
                     AutoPoints.LaunchFarBlue.runToExact(),
                     robot.ShootFar(),
@@ -86,7 +87,7 @@ class BlueFar12 : LinearOpMode() {
                     AutoPoints.LaunchFarBlue.runToExact(),
                     robot.ShootFar(),
 
-                    AutoPoints.MoveFarBlue.runToExact()
+                    AutoPoints.EndFarBlue.runToExact()
                 )
             )
         )

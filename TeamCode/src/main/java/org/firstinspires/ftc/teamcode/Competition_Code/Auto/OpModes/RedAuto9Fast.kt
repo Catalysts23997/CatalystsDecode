@@ -8,7 +8,6 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.acmerobotics.roadrunner.Action
 import com.qualcomm.robotcore.eventloop.opmode.Disabled
-import org.firstinspires.ftc.teamcode.Competition_Code.Actions.Comp2Actions
 import org.firstinspires.ftc.teamcode.Competition_Code.Actions.InterleagueActions
 import org.firstinspires.ftc.teamcode.Competition_Code.AllianceColor
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoGlobals
@@ -24,7 +23,7 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
 class RedAuto9Fast : LinearOpMode() {
 
     override fun runOpMode() {
-        AutoGlobals.targetRobotPositon = AutoPoints.StartRed.pose
+        AutoGlobals.targetRobotPositon = AutoPoints.OldStartRed.pose
 
         val localizer = Localizer(hardwareMap, AutoGlobals.targetRobotPositon)
         val drive = Drivetrain(hardwareMap, AllianceColor.Red)
@@ -69,21 +68,21 @@ class RedAuto9Fast : LinearOpMode() {
                     AutoPoints.LaunchRed.runToExact(),
                     robot.Shoot(),
 
-                    AutoPoints.PreIntakePPGRed.runToFast(),
+                    AutoPoints.PrePPGRed.runToFast(),
                     robot.StartIntake,
-                    AutoPoints.PPGIntakeRed.runToExact(),
+                    AutoPoints.PPGRed.runToExact(),
                     robot.WaitAction(200.0),
                     robot.StopIntake,
 
                     AutoPoints.LaunchRed.runToExact(),
                     robot.Shoot(),
 
-                    AutoPoints.PreIntakePGPRed.runToFast(),
+                    AutoPoints.PrePGPRed.runToFast(),
                     robot.StartIntake,
-                    AutoPoints.PGPIntakeRed.runToExact(),
+                    AutoPoints.PGPRed.runToExact(),
                     robot.WaitAction(200.0),
                     robot.StopIntake,
-                    AutoPoints.PGPMidPointRed.runToFast(),
+                    AutoPoints.PGPMidRed.runToFast(),
 
                     AutoPoints.LaunchRed.runToExact(),
                     robot.Shoot(),

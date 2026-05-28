@@ -1,39 +1,36 @@
-package org.firstinspires.ftc.teamcode.Competition_Code.Auto.Competition
+package org.firstinspires.ftc.teamcode.Competition_Code.Auto.Competition;
 
-import com.acmerobotics.dashboard.FtcDashboard
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket
-import com.acmerobotics.roadrunner.Action
 import com.acmerobotics.roadrunner.ParallelAction
 import com.acmerobotics.roadrunner.SequentialAction
 import com.acmerobotics.roadrunner.ftc.runBlocking
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
+import com.acmerobotics.roadrunner.Action
 import org.firstinspires.ftc.teamcode.Competition_Code.Actions.InterleagueActions
 import org.firstinspires.ftc.teamcode.Competition_Code.AllianceColor
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoGlobals
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoPoints
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.RunToExactForever
-import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localizer
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Drivetrain
+import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localizer
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Servo
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
 
-@Autonomous(name = "Blue12GateTest", group = "Auto")
-class BlueAuto12Test : LinearOpMode() {
+@Autonomous(name = "Blue9PPG", group = "Auto")
+class Blue9PPG : LinearOpMode() {
 
     override fun runOpMode() {
         AutoGlobals.targetRobotPositon = AutoPoints.FastStartBlue.pose
-
-        val dash: FtcDashboard = FtcDashboard.getInstance()
-        telemetry = dash.telemetry
 
         val localizer = Localizer(hardwareMap, AutoGlobals.targetRobotPositon)
         val drive = Drivetrain(hardwareMap, AllianceColor.Blue)
         val robot = InterleagueActions(hardwareMap, telemetry)
 
-
         robot.holder.state = Servo.State.STOP1
         robot.update()
+
+
 
         waitForStart()
 
@@ -48,29 +45,14 @@ class BlueAuto12Test : LinearOpMode() {
                             stop()
                         }
 
-
-
                         localizer.update()
                         RunToExactForever(AutoGlobals.targetRobotPositon)
-                        AutoGlobals.locationOfRobot = Poses(
-                            Localizer.Companion.pose.x,
-                            Localizer.Companion.pose.y,
-                            Localizer.Companion.pose.heading
-                        )
+                        AutoGlobals.locationOfRobot = Poses(Localizer.pose.x, Localizer.pose.y, Localizer.pose.heading)
 
-
-                        telemetry.addData(
-                            "Target Position",
-                            AutoGlobals.targetRobotPositon.toString()
-                        )
-                        telemetry.addData("Current Pose", Localizer.Companion.pose.toString())
-                        telemetry.addData(
-                            "Location of robot being transferred",
-                            AutoGlobals.locationOfRobot.toString()
-                        )
+                        telemetry.addData("Target Position", AutoGlobals.targetRobotPositon.toString())
+                        telemetry.addData("Current Pose", Localizer.pose.toString())
+                        telemetry.addData("Location of robot being transferred", AutoGlobals.locationOfRobot.toString())
                         telemetry.addData("Drive speed", AutoGlobals.driveSpeed)
-                        telemetry.addData("Launcher rpm goal", robot.launcher.goalRPM)
-
                         telemetry.update()
                         robot.update()
 
@@ -83,40 +65,32 @@ class BlueAuto12Test : LinearOpMode() {
                     AutoPoints.LaunchBlue.runToExact(),
                     robot.Shoot(),
 
-
-                    AutoPoints.PreIntakePPG.runToFast(),
+                    AutoPoints.PrePPGBlue.runToFast(),
                     robot.StartIntake,
-                    AutoPoints.PPGIntake.runToExact(),
+                    AutoPoints.PPGBlue.runToExact(),
 
-                    AutoPoints.PreGate.runToExact(),
-                    AutoPoints.Gate.runToExact(),
-                    robot.WaitAction(800.0),
-
+                    AutoPoints.EjectBlue.runToExact(),
+                    robot.EjectOne(),
                     AutoPoints.LaunchBlue.runToExact(),
                     robot.Shoot(),
 
-                    AutoPoints.PreIntakePGP.runToFast(),
+                    AutoPoints.PreGPPBlue.runToFast(),
                     robot.StartIntake,
-                    AutoPoints.PGPIntake.runToExact(),
-                    AutoPoints.PGPMidPoint.runToFast(),
+                    AutoPoints.GPPBlue.runToExact(),
+                    AutoPoints.GPPBackBlue.runToFast(),
+
+                    AutoPoints.EjectBlue.runToExact(),
+                    robot.EjectOne(),
+                    AutoPoints.LaunchBlue.runToExact(),
+                    robot.ShootSlow(),
+
+                    AutoPoints.PrePGPBlue.runToFast(),
+                    robot.StartIntake,
+                    AutoPoints.PGPBlue.runToExact(),
 
                     AutoPoints.LaunchBlue.runToExact(),
-                    robot.Shoot(),
-
-                    AutoPoints.PreIntakeGPP.runToFast(),
-                    robot.StartIntake,
-                    AutoPoints.GPPIntake.runToExact(),
-
-                    AutoPoints.BlueLaunchF.runToExact(),
-                    object : Action {
-                        override fun run(p: TelemetryPacket): Boolean {
-                            robot.launcher.baseRPM = 3300.0
-                            return false
-                        }
-                    },
-                    robot.ShootFar(),
+                    robot.ShootSlow(),
                     AutoPoints.EndBlue.runToExact()
-
                 )
             )
         )

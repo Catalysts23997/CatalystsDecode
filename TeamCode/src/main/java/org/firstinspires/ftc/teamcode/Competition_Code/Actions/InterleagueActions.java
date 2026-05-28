@@ -84,14 +84,16 @@ public class InterleagueActions {
     }
 
     public void update() {
-        if (!AutoGlobals.INSTANCE.getAutonomousRan()){
-            aprilTag.update();
-        }
+        aprilTag.update();
+
+        ;
 
         intake.update();
         pulley.update();
 
         holder.update();
+
+        //color control
         if(green){
             blinkin.color = Lights.Color.green;
         } else if (red) {
@@ -102,15 +104,13 @@ public class InterleagueActions {
         else {
             blinkin.color = Lights.Color.blue;
         }
-
         if(timer.milliseconds() >=1000) {
             timer.reset();
         }
-
-
         blinkin.update();
 
 
+        //telemetry
         launcher.update();
         telemetry.addData("Light", blinkin.color.toString());
         telemetry.addData("Light", blinkin.color.value);
@@ -204,6 +204,7 @@ public class InterleagueActions {
             }
         };
     }
+
     public Action OffCamera() {
         return new Action() {
 
@@ -215,7 +216,6 @@ public class InterleagueActions {
             }
         };
     }
-
 
     //intake
     public Action StartIntake = new Action() {
@@ -310,7 +310,7 @@ public class InterleagueActions {
         }
     };
 
-    public Action CycleShoot() {
+    public Action ShootContinous() {
         return new Action() {
             final ElapsedTime timer = new ElapsedTime();
             boolean initialized = false;
@@ -339,7 +339,7 @@ public class InterleagueActions {
         };
     }
 
-    public Action CycleShootShort() {
+    public Action CycleShootClose() {
         return new Action() {
             final ElapsedTime timer = new ElapsedTime();
             boolean initialized = false;
@@ -358,7 +358,6 @@ public class InterleagueActions {
                     intake.state = State.INTAKING;
                     green = true;
                     red = false;
-
                 }
                 else {
                     pulley.state = Pulley.State.Off;
@@ -373,7 +372,6 @@ public class InterleagueActions {
                     holder.state = Servo.State.STOP1;
                     red = false;
                     green = false;
-
                     return false;
                 }
                 return true;
@@ -422,6 +420,93 @@ public class InterleagueActions {
         };
     }
 
+    public Action ControlledShot() {
+        return new Action() {
+            final ElapsedTime timer = new ElapsedTime();
+            boolean initialized = false;
+            double timeMarker = -500;
+            boolean recovering = false;
+
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+
+                // Phase 1: Wait for ball2 (the start signal)
+                if (!initialized) {
+                    timer.reset();
+                    initialized = true;
+                }
+                double currentTime = timer.milliseconds();
+
+                if (!launcher.atTargetRPM(launcher.getGoalRPM(), toleranceRPM)){
+                    pulley.state = Pulley.State.Off;
+                    intake.state = State.STOPPED;
+                    red = true;
+                    green = false;
+
+                    // only mark once
+                    if (!recovering) {
+                        timeMarker = currentTime;
+                        recovering = true;
+                    }
+                }
+
+                if (launcher.atTargetRPM(launcher.getGoalRPM(), toleranceRPM)
+                        && currentTime-timeMarker >=500) {
+
+                    pulley.state = Pulley.State.On;
+                    intake.state = State.INTAKING;
+                    green = true;
+                    red = false;
+
+                    recovering = false;
+                }
+
+                if(timer.milliseconds()>=pulleyShootTime+400){
+                    pulley.state = Pulley.State.Off;
+                    intake.state = State.STOPPED;
+                    holder.state = Servo.State.STOP1;
+                    red = false;
+                    green = false;
+
+                    return false;
+                }
+                return true;
+            }
+        };
+    }
+    public Action ShootOne() {
+        return new Action() {
+            final ElapsedTime timer = new ElapsedTime();
+            final ElapsedTime timer2 = new ElapsedTime();
+            boolean initialized = false;
+
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+
+                // Phase 1: Wait for ball2 (the start signal)
+                if (!initialized) {
+                    timer.reset();
+                    initialized = true;
+                    pulley.state = Pulley.State.On;
+                    intake.state = State.INTAKING;
+                    green = true;
+                    red = false;
+                }
+
+                if(timer.milliseconds()>=500){
+                    pulley.state = Pulley.State.Off;
+                    intake.state = State.STOPPED;
+                    holder.state = Servo.State.STOP1;
+                    red = false;
+                    green = false;
+
+                    return false;
+                }
+                return true;
+            }
+        };
+    }
+
     double toleranceRPM = 150;
 
     public Action WaitForLauncher() {
@@ -449,18 +534,18 @@ public class InterleagueActions {
         };
     }
 
-    public SequentialAction ExpelOne() {
+    public SequentialAction EjectOne() {
         return new SequentialAction(
             ReverseIntake,
-            WaitAction(100),
+            WaitAction(30),
             StopIntake
         );
     }
 
-    public SequentialAction ExpelTwo() {
+    public SequentialAction EjectTwo() {
         return new SequentialAction(
                 ReverseIntake,
-                WaitAction(200),
+                WaitAction(130),
                 StopIntake
         );
     }
@@ -472,7 +557,7 @@ public class InterleagueActions {
                 ReleaseBall,
                 WaitAction(servoReleaseTime),
                 WaitForLauncher(),
-                CycleShootShort()
+                CycleShootClose()
         );
     }
 
@@ -563,6 +648,28 @@ public class InterleagueActions {
                 return true;
             }
         };
+
+    public SequentialAction ShootSlow() {
+        return new SequentialAction(
+                StartShooter,
+                StopIntake,
+                ReleaseBall,
+                WaitAction(servoReleaseTime),
+                WaitForLauncher(),
+                ControlledShot()
+        );
+    }
+
+
+    public SequentialAction ShootFast() {
+        return new SequentialAction(
+                StartShooter,
+                StopIntake,
+                ReleaseBall,
+                WaitAction(servoReleaseTime),
+                WaitForLauncher(),
+                ShootOne()
+        );
     }
 
 }

@@ -7,7 +7,6 @@ import com.acmerobotics.roadrunner.ftc.runBlocking
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.acmerobotics.roadrunner.Action
-import org.firstinspires.ftc.teamcode.Competition_Code.Actions.Comp2Actions
 import org.firstinspires.ftc.teamcode.Competition_Code.Actions.InterleagueActions
 import org.firstinspires.ftc.teamcode.Competition_Code.AllianceColor
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoGlobals
@@ -65,15 +64,15 @@ class Red9Gate : LinearOpMode() {
                 SequentialAction(
                     robot.StartShooter,
                     robot.StartIntake,
-                    AutoPoints.PreLaunchRed.runToExact(),
+                    AutoPoints.MovingLaunchRed.runToExact(),
                     ParallelAction(
                         AutoPoints.LaunchRedSlow.runToExact(),
                         robot.Shoot()
                     ),
 
-                    AutoPoints.PreIntakePPGRed.runToFast(),
+                    AutoPoints.PrePPGRed.runToFast(),
                     robot.StartIntake,
-                    AutoPoints.PPGIntakeRed.runToExact(),
+                    AutoPoints.PPGRed.runToExact(),
 
                     AutoPoints.PreGateRed.runToExact(),
                     AutoPoints.GateRed.runToExact(),
@@ -82,9 +81,9 @@ class Red9Gate : LinearOpMode() {
                     AutoPoints.LaunchRed.runToExact(),
                     robot.Shoot(),
 
-                    AutoPoints.PreIntakePGPRed.runToFast(),
+                    AutoPoints.PrePGPRed.runToFast(),
                     robot.StartIntake,
-                    AutoPoints.PGPIntakeRed.runToExact(),
+                    AutoPoints.PGPRed.runToExact(),
 
                     AutoPoints.GateMidRed.runToFast(),
                     AutoPoints.PreGateRed.runToExact(),
