@@ -13,6 +13,7 @@ class MotifSequences(val robot: InterleagueActions) {
             AutoPoints.PrePPGBlue.runToFast(),
             robot.StartIntake,
             AutoPoints.PPGBlue.runToExact(),
+            robot.WaitAction(200.0),
 
             AutoPoints.EjectBlue.runToExact(),
             robot.EjectOne(),
@@ -22,6 +23,7 @@ class MotifSequences(val robot: InterleagueActions) {
             AutoPoints.PreGPPBlue.runToFast(),
             robot.StartIntake,
             AutoPoints.GPPBlue.runToExact(),
+            robot.WaitAction(200.0),
             AutoPoints.GPPBackBlue.runToFast(),
 
             AutoPoints.EjectBlue.runToExact(),
@@ -32,6 +34,7 @@ class MotifSequences(val robot: InterleagueActions) {
             AutoPoints.PrePGPBlue.runToFast(),
             robot.StartIntake,
             AutoPoints.PGPBlue.runToExact(),
+            robot.WaitAction(200.0),
 
             AutoPoints.LaunchBlue.runToExact(),
             robot.ShootSlow(),
@@ -47,6 +50,7 @@ class MotifSequences(val robot: InterleagueActions) {
             AutoPoints.PrePGPBlue.runToFast(),
             robot.StartIntake,
             AutoPoints.PGPBlue.runToExact(),
+            robot.WaitAction(200.0),
             AutoPoints.PGPBackBlue.runToFast(),
 
             AutoPoints.LaunchBlue.runToExact(),
@@ -55,6 +59,8 @@ class MotifSequences(val robot: InterleagueActions) {
             AutoPoints.PrePPGBlue.runToFast(),
             robot.StartIntake,
             AutoPoints.PPGBlue.runToExact(),
+            robot.WaitAction(200.0),
+
 
             AutoPoints.EjectBlue.runToExact(),
             robot.EjectTwo(),
@@ -64,6 +70,7 @@ class MotifSequences(val robot: InterleagueActions) {
             AutoPoints.PreGPPBlue.runToFast(),
             robot.StartIntake,
             AutoPoints.GPPBlue.runToExact(),
+            robot.WaitAction(200.0),
 
             AutoPoints.LaunchBlue.runToExact(),
             robot.ShootSlow(),
@@ -79,6 +86,7 @@ class MotifSequences(val robot: InterleagueActions) {
             AutoPoints.PreGPPBlue.runToFast(),
             robot.StartIntake,
             AutoPoints.GPPBlue.runToExact(),
+            robot.WaitAction(200.0),
             AutoPoints.GPPBackBlue.runToFast(),
 
             AutoPoints.EjectBlue.runToExact(),
@@ -90,6 +98,7 @@ class MotifSequences(val robot: InterleagueActions) {
             AutoPoints.PrePGPBlue.runToFast(),
             robot.StartIntake,
             AutoPoints.PGPBlue.runToExact(),
+            robot.WaitAction(200.0),
             AutoPoints.PGPBackBlue.runToFast(),
 
 
@@ -99,11 +108,123 @@ class MotifSequences(val robot: InterleagueActions) {
             AutoPoints.PrePPGBlue.runToFast(),
             robot.StartIntake,
             AutoPoints.PPGBlue.runToExact(),
+            robot.WaitAction(200.0),
 
             AutoPoints.LaunchBlue.runToExact(),
             robot.ShootSlow(),
 
             AutoPoints.EndBlue.runToExact()
+        )
+    }
+
+    fun RPPG(): SequentialAction {
+        return SequentialAction(
+            AutoPoints.LaunchRed.runToExact(),
+            robot.Shoot(),
+
+            AutoPoints.PrePPGRed.runToFast(),
+            robot.StartIntake,
+            AutoPoints.PPGRed.runToExact(),
+            robot.WaitAction(200.0),
+
+            AutoPoints.EjectRed.runToExact(),
+            robot.EjectOne(),
+            AutoPoints.LaunchRed.runToExact(),
+            robot.Shoot(),
+
+            AutoPoints.PreGPPRed.runToFast(),
+            robot.StartIntake,
+            AutoPoints.GPPRed.runToExact(),
+            robot.WaitAction(200.0),
+            AutoPoints.GPPBackRed.runToFast(),
+
+            AutoPoints.EjectRed.runToExact(),
+            robot.EjectOne(),
+            AutoPoints.LaunchRed.runToExact(),
+            robot.ShootSlow(),
+
+            AutoPoints.PrePGPRed.runToFast(),
+            robot.StartIntake,
+            AutoPoints.PGPRed.runToExact(),
+            robot.WaitAction(200.0),
+
+            AutoPoints.LaunchRed.runToExact(),
+            robot.ShootSlow(),
+
+            AutoPoints.EndRed.runToExact()
+        )
+    }
+    fun RPGP(): SequentialAction {
+        return SequentialAction(
+            AutoPoints.LaunchRed.runToExact(),
+            robot.Shoot(),
+
+            AutoPoints.PrePGPRed.runToFast(),
+            robot.StartIntake,
+            AutoPoints.PGPRed.runToExact(),
+            robot.WaitAction(200.0),
+            AutoPoints.PGPBackRed.runToFast(),
+
+            AutoPoints.LaunchRed.runToExact(),
+            robot.ShootSlow(),
+
+            AutoPoints.PrePPGRed.runToFast(),
+            robot.StartIntake,
+            AutoPoints.PPGRed.runToExact(),
+            robot.WaitAction(200.0),
+
+            AutoPoints.EjectRed.runToExact(),
+            robot.EjectTwo(),
+            AutoPoints.LaunchRed.runToExact(),
+            robot.ShootFast(),
+
+            AutoPoints.PreGPPRed.runToFast(),
+            robot.StartIntake,
+            AutoPoints.GPPRed.runToExact(),
+            robot.WaitAction(200.0),
+
+            AutoPoints.LaunchRed.runToExact(),
+            robot.ShootSlow(),
+
+            AutoPoints.EndRed.runToExact()
+        )
+    }
+    fun RGPP(): SequentialAction {
+        return SequentialAction(
+            AutoPoints.LaunchRed.runToExact(),
+            robot.Shoot(),
+
+            AutoPoints.PreGPPRed.runToFast(),
+            robot.StartIntake,
+            AutoPoints.GPPRed.runToExact(),
+            robot.WaitAction(200.0),
+            AutoPoints.GPPBackRed.runToFast(),
+
+            AutoPoints.EjectRed.runToExact(),
+            robot.EjectOne(),
+            AutoPoints.LaunchRed.runToExact(),
+
+            robot.ShootSlow(),
+
+            AutoPoints.PrePGPRed.runToFast(),
+            robot.StartIntake,
+            AutoPoints.PGPRed.runToExact(),
+            robot.WaitAction(200.0),
+            AutoPoints.PGPBackRed.runToFast(),
+
+
+            AutoPoints.LaunchRed.runToExact(),
+            robot.ShootSlow(),
+
+            AutoPoints.PrePPGRed.runToFast(),
+            robot.StartIntake,
+            AutoPoints.PPGRed.runToExact(),
+            robot.WaitAction(200.0),
+
+            AutoPoints.LaunchRed.runToExact(),
+            robot.ShootSlow(),
+
+            AutoPoints.EndRed.runToExact()
         )
     }
 }

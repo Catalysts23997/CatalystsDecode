@@ -74,7 +74,7 @@ class ShowTele(opmode: LinearOpMode, color: AllianceColor) {
         } else {
             TeleGlobals.currentPosition = when (color) {
                 AllianceColor.Blue -> AutoPoints.OldStartBlue.pose
-                AllianceColor.Red -> AutoPoints.StartRed.pose
+                AllianceColor.Red -> AutoPoints.OldStartRed.pose
             }
         }
 

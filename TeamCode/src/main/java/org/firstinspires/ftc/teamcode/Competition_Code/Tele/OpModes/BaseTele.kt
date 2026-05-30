@@ -23,7 +23,10 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.goalAngle
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.goalAngleAdjusted
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.launcherSpeed
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.launcherSpeedAdjusted
+import java.lang.Math.sqrt
 import kotlin.math.PI
+import kotlin.math.pow
+import kotlin.math.sqrt
 
 /**
  * This class is **NOT** an OpMode, it is used to store common code that
@@ -234,6 +237,10 @@ class BaseTele(opmode: LinearOpMode, color: AllianceColor) {
         //reset rpm for launcher
         if(resetRPM.pressed(gamepad1.x)){
             rpmScaling = !rpmScaling
+        }
+
+        if (gamepad1.right_stick_x>=0.7){
+            driveShouldRotate=false
         }
     }
     fun updateActions(){

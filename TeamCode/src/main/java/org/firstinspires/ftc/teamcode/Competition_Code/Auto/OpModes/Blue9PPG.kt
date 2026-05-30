@@ -1,24 +1,26 @@
-package org.firstinspires.ftc.teamcode.Competition_Code.Auto.Competition;
+package org.firstinspires.ftc.teamcode.Competition_Code.Auto.OpModes
 
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket
+import com.acmerobotics.roadrunner.Action
 import com.acmerobotics.roadrunner.ParallelAction
 import com.acmerobotics.roadrunner.SequentialAction
 import com.acmerobotics.roadrunner.ftc.runBlocking
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
+import com.qualcomm.robotcore.eventloop.opmode.Disabled
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
-import com.acmerobotics.roadrunner.Action
 import org.firstinspires.ftc.teamcode.Competition_Code.Actions.InterleagueActions
 import org.firstinspires.ftc.teamcode.Competition_Code.AllianceColor
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoGlobals
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoPoints
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.RunToExactForever
-import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Drivetrain
 import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localizer
+import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Drivetrain
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Servo
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
 
-@Autonomous(name = "Blue9PGP", group = "Auto")
-class Blue9PGP : LinearOpMode() {
+@Disabled
+@Autonomous(name = "Blue9PPG", group = "Auto")
+class Blue9PPG : LinearOpMode() {
 
     override fun runOpMode() {
         AutoGlobals.targetRobotPositon = AutoPoints.FastStartBlue.pose
@@ -47,11 +49,21 @@ class Blue9PGP : LinearOpMode() {
 
                         localizer.update()
                         RunToExactForever(AutoGlobals.targetRobotPositon)
-                        AutoGlobals.locationOfRobot = Poses(Localizer.pose.x, Localizer.pose.y, Localizer.pose.heading)
+                        AutoGlobals.locationOfRobot = Poses(
+                            Localizer.Companion.pose.x,
+                            Localizer.Companion.pose.y,
+                            Localizer.Companion.pose.heading
+                        )
 
-                        telemetry.addData("Target Position", AutoGlobals.targetRobotPositon.toString())
-                        telemetry.addData("Current Pose", Localizer.pose.toString())
-                        telemetry.addData("Location of robot being transferred", AutoGlobals.locationOfRobot.toString())
+                        telemetry.addData(
+                            "Target Position",
+                            AutoGlobals.targetRobotPositon.toString()
+                        )
+                        telemetry.addData("Current Pose", Localizer.Companion.pose.toString())
+                        telemetry.addData(
+                            "Location of robot being transferred",
+                            AutoGlobals.locationOfRobot.toString()
+                        )
                         telemetry.addData("Drive speed", AutoGlobals.driveSpeed)
                         telemetry.update()
                         robot.update()
@@ -65,32 +77,32 @@ class Blue9PGP : LinearOpMode() {
                     AutoPoints.LaunchBlue.runToExact(),
                     robot.Shoot(),
 
-                    AutoPoints.PrePGPBlue.runToFast(),
-                    robot.StartIntake,
-                    AutoPoints.PGPBlue.runToExact(),
-                    AutoPoints.PGPBackBlue.runToFast(),
-
-                    AutoPoints.LaunchBlue.runToExact(),
-                    robot.ShootSlow(),
-
                     AutoPoints.PrePPGBlue.runToFast(),
                     robot.StartIntake,
                     AutoPoints.PPGBlue.runToExact(),
 
                     AutoPoints.EjectBlue.runToExact(),
-                    robot.EjectTwo(),
+                    robot.EjectOne(),
                     AutoPoints.LaunchBlue.runToExact(),
-                    robot.ShootFast(),
+                    robot.Shoot(),
 
                     AutoPoints.PreGPPBlue.runToFast(),
                     robot.StartIntake,
                     AutoPoints.GPPBlue.runToExact(),
+                    AutoPoints.GPPBackBlue.runToFast(),
 
+                    AutoPoints.EjectBlue.runToExact(),
+                    robot.EjectOne(),
                     AutoPoints.LaunchBlue.runToExact(),
                     robot.ShootSlow(),
 
-                    AutoPoints.EndBlue.runToExact()
+                    AutoPoints.PrePGPBlue.runToFast(),
+                    robot.StartIntake,
+                    AutoPoints.PGPBlue.runToExact(),
 
+                    AutoPoints.LaunchBlue.runToExact(),
+                    robot.ShootSlow(),
+                    AutoPoints.EndBlue.runToExact()
                 )
             )
         )

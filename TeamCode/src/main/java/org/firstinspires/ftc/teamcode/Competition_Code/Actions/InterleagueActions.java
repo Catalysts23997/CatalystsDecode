@@ -39,16 +39,14 @@ public class InterleagueActions {
 
     public Lights blinkin;
 
-    Boolean green = false;
-    Boolean red = false;
+    boolean green = false;
+    boolean red = false;
 
     Telemetry telemetry;
     ElapsedTime timer;
 
     public void update() {
         aprilTag.update();
-
-        ;
 
         intake.update();
         pulley.update();
@@ -96,9 +94,8 @@ public class InterleagueActions {
     }
 
     public InterleagueActions(HardwareMap hardwareMap, Telemetry telemetry) {
-        if (!AutoGlobals.INSTANCE.getAutonomousRan()){
-            aprilTag = new AprilTag(hardwareMap);
-        }
+        aprilTag = new AprilTag(hardwareMap);
+
 
         ball1 = new ColorSensors(hardwareMap, "ball1");
         ball2 = new ColorSensors(hardwareMap, "ball2");
@@ -422,7 +419,7 @@ public class InterleagueActions {
                     recovering = false;
                 }
 
-                if(timer.milliseconds()>=pulleyShootTime+400){
+                if(timer.milliseconds()>=pulleyShootTime+800){
                     pulley.state = Pulley.State.Off;
                     intake.state = State.STOPPED;
                     holder.state = Servo.State.STOP1;
@@ -438,7 +435,6 @@ public class InterleagueActions {
     public Action ShootOne() {
         return new Action() {
             final ElapsedTime timer = new ElapsedTime();
-            final ElapsedTime timer2 = new ElapsedTime();
             boolean initialized = false;
 
             @Override
@@ -498,7 +494,7 @@ public class InterleagueActions {
     public SequentialAction EjectOne() {
         return new SequentialAction(
             ReverseIntake,
-            WaitAction(30),
+            WaitAction(10),
             StopIntake
         );
     }
