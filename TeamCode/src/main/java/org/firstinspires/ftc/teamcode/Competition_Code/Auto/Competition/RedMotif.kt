@@ -64,7 +64,6 @@ class RedMotif : LinearOpMode() {
                 },
                 SequentialAction(
                     robot.StartShooter,
-                    robot.StartIntake,
                     AutoPoints.AprilTagRed.runToExact(),
                     robot.CheckMotif(),
                     robot.OffCamera(),

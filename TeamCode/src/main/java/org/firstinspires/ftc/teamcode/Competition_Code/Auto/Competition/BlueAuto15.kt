@@ -7,6 +7,7 @@ import com.acmerobotics.roadrunner.ParallelAction
 import com.acmerobotics.roadrunner.SequentialAction
 import com.acmerobotics.roadrunner.ftc.runBlocking
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
+import com.qualcomm.robotcore.eventloop.opmode.Disabled
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import org.firstinspires.ftc.teamcode.Competition_Code.Actions.InterleagueActions
 import org.firstinspires.ftc.teamcode.Competition_Code.AllianceColor
@@ -18,6 +19,7 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Drivetrain
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Servo
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
 
+@Disabled
 @Autonomous(name = "Blue15", group = "Auto")
 class BlueAuto15 : LinearOpMode() {
 
@@ -79,7 +81,6 @@ class BlueAuto15 : LinearOpMode() {
                 },
                 SequentialAction(
                     robot.StartShooter,
-                    robot.StartIntake,
 
                     AutoPoints.LaunchBlue.runToExact(),
                     robot.Shoot(),
@@ -87,6 +88,8 @@ class BlueAuto15 : LinearOpMode() {
                     AutoPoints.PrePGPBlue.runToFast(),
                     robot.StartIntake,
                     AutoPoints.PGPBlue.runToExact(),
+                    robot.WaitAction(200.0),
+                    robot.StopIntake,
                     AutoPoints.PGPBackBlue.runToFast(),
 
                     AutoPoints.LaunchBlue.runToExact(),
@@ -101,7 +104,7 @@ class BlueAuto15 : LinearOpMode() {
                     AutoPoints.GateIntakeBlue2.runToFast(),
                     robot.WaitAction(600.0),
                     AutoPoints.PGPBackBlue.runToFast(),
-
+                    robot.StopIntake,
 
                     AutoPoints.LaunchBlue.runToExact(),
                     robot.Shoot(),
@@ -109,6 +112,8 @@ class BlueAuto15 : LinearOpMode() {
                     AutoPoints.PrePPGBlue.runToFast(),
                     robot.StartIntake,
                     AutoPoints.PPGBlue.runToExact(),
+                    robot.WaitAction(200.0),
+                    robot.StopIntake,
 
                     AutoPoints.LaunchBlue.runToExact(),
                     robot.Shoot(),
@@ -117,6 +122,8 @@ class BlueAuto15 : LinearOpMode() {
                     AutoPoints.PreGPPBlue.runToFast(),
                     robot.StartIntake,
                     AutoPoints.GPPBlue.runToExact(),
+                    robot.WaitAction(200.0),
+                    robot.StopIntake,
 
                     AutoPoints.LaunchBlue.runToExact(),
                     robot.Shoot(),

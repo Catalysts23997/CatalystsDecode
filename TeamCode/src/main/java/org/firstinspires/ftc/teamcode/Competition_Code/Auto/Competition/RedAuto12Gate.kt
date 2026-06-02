@@ -79,14 +79,14 @@ class RedAuto12Gate : LinearOpMode() {
                 },
                 SequentialAction(
                     robot.StartShooter,
-                    robot.StartIntake,
                     AutoPoints.LaunchRed.runToExact(),
                     robot.Shoot(),
-
 
                     AutoPoints.PrePPGRed.runToFast(),
                     robot.StartIntake,
                     AutoPoints.PPGRed.runToExact(),
+                    robot.WaitAction(200.0),
+                    robot.StopIntake,
 
                     AutoPoints.PreGateRed.runToExact(),
                     AutoPoints.GateRed.runToExact(),
@@ -99,6 +99,8 @@ class RedAuto12Gate : LinearOpMode() {
                     AutoPoints.PrePGPRed.runToFast(),
                     robot.StartIntake,
                     AutoPoints.PGPRed.runToExact(),
+                    robot.WaitAction(200.0),
+                    robot.StopIntake,
                     AutoPoints.PGPMidRed.runToFast(),
 
                     AutoPoints.LaunchRed.runToExact(),
@@ -107,6 +109,8 @@ class RedAuto12Gate : LinearOpMode() {
                     AutoPoints.PreGPPRed.runToFast(),
                     robot.StartIntake,
                     AutoPoints.GPPRed.runToExact(),
+                    robot.WaitAction(200.0),
+                    robot.StopIntake,
 
                     AutoPoints.LaunchRed.runToExact(),
                     robot.Shoot(),

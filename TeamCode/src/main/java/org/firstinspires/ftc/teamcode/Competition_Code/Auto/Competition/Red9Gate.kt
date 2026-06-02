@@ -63,16 +63,16 @@ class Red9Gate : LinearOpMode() {
                 },
                 SequentialAction(
                     robot.StartShooter,
-                    robot.StartIntake,
-                    AutoPoints.MovingLaunchRed.runToExact(),
-                    ParallelAction(
-                        AutoPoints.LaunchRedSlow.runToExact(),
-                        robot.Shoot()
-                    ),
+
+                    AutoPoints.LaunchRed.runToExact(),
+                    robot.Shoot(),
+
 
                     AutoPoints.PrePPGRed.runToFast(),
                     robot.StartIntake,
                     AutoPoints.PPGRed.runToExact(),
+                    robot.WaitAction(200.0),
+                    robot.StopIntake,
 
                     AutoPoints.PreGateRed.runToExact(),
                     AutoPoints.GateRed.runToExact(),
@@ -84,6 +84,8 @@ class Red9Gate : LinearOpMode() {
                     AutoPoints.PrePGPRed.runToFast(),
                     robot.StartIntake,
                     AutoPoints.PGPRed.runToExact(),
+                    robot.WaitAction(200.0),
+                    robot.StopIntake,
 
                     AutoPoints.GateMidRed.runToFast(),
                     AutoPoints.PreGateRed.runToExact(),

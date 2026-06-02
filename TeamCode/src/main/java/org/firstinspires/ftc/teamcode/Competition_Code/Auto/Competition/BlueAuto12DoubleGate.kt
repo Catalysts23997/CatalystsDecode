@@ -76,13 +76,14 @@ class BlueAuto12DoubleGate : LinearOpMode() {
                 },
                 SequentialAction(
                     robot.StartShooter,
-                    robot.StartIntake,
                     AutoPoints.LaunchBlue.runToExact(),
                     robot.Shoot(),
 
                     AutoPoints.PrePPGBlue.runToFast(),
                     robot.StartIntake,
                     AutoPoints.PPGBlue.runToExact(),
+                    robot.WaitAction(200.0),
+                    robot.StopIntake,
 
                     AutoPoints.PreGateBlue.runToExact(),
                     AutoPoints.GateBlue.runToExact(),
@@ -94,6 +95,8 @@ class BlueAuto12DoubleGate : LinearOpMode() {
                     AutoPoints.PrePGPBlue.runToFast(),
                     robot.StartIntake,
                     AutoPoints.PGPBlue.runToExact(),
+                    robot.WaitAction(200.0),
+                    robot.StopIntake,
 
                     AutoPoints.GateMidBlue.runToFast(),
                     AutoPoints.PreGateBlue.runToExact(),
@@ -106,6 +109,8 @@ class BlueAuto12DoubleGate : LinearOpMode() {
                     AutoPoints.PreGPPBlue.runToFast(),
                     robot.StartIntake,
                     AutoPoints.GPPBlue.runToExact(),
+                    robot.WaitAction(200.0),
+                    robot.StopIntake,
 
                     AutoPoints.LaunchBlue.runToExact(),
                     robot.Shoot(),

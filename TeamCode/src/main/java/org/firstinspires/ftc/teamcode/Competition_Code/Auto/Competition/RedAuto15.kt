@@ -7,6 +7,7 @@ import com.acmerobotics.roadrunner.ParallelAction
 import com.acmerobotics.roadrunner.SequentialAction
 import com.acmerobotics.roadrunner.ftc.runBlocking
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
+import com.qualcomm.robotcore.eventloop.opmode.Disabled
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import org.firstinspires.ftc.teamcode.Competition_Code.Actions.InterleagueActions
 import org.firstinspires.ftc.teamcode.Competition_Code.AllianceColor
@@ -18,6 +19,7 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Drivetrain
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Servo
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
 
+@Disabled
 @Autonomous(name = "Red15", group = "Auto")
 class RedAuto15 : LinearOpMode() {
 
@@ -49,7 +51,6 @@ class RedAuto15 : LinearOpMode() {
                         }
 
 
-
                         localizer.update()
                         RunToExactForever(AutoGlobals.targetRobotPositon)
                         AutoGlobals.locationOfRobot = Poses(
@@ -79,13 +80,14 @@ class RedAuto15 : LinearOpMode() {
                 },
                 SequentialAction(
                     robot.StartShooter,
-                    robot.StartIntake,
                     AutoPoints.LaunchRed.runToExact(),
                     robot.Shoot(),
 
                     AutoPoints.PrePGPRed.runToFast(),
                     robot.StartIntake,
                     AutoPoints.PGPRed.runToExact(),
+                    robot.WaitAction(200.0),
+                    robot.StopIntake,
                     AutoPoints.PGPBackRed.runToFast(),
 
                     AutoPoints.LaunchRed.runToExact(),
@@ -99,6 +101,7 @@ class RedAuto15 : LinearOpMode() {
                     robot.WaitAction(600.0),
                     AutoPoints.GateIntakeRed2.runToExact(),
                     robot.WaitAction(600.0),
+                    robot.StopIntake,
 
 
                     AutoPoints.PGPBackRed.runToFast(),
@@ -109,6 +112,8 @@ class RedAuto15 : LinearOpMode() {
                     AutoPoints.PrePPGRed.runToFast(),
                     robot.StartIntake,
                     AutoPoints.PPGRed.runToExact(),
+                    robot.WaitAction(200.0),
+                    robot.StopIntake,
 
                     AutoPoints.LaunchRed.runToExact(),
                     robot.Shoot(),
@@ -117,6 +122,8 @@ class RedAuto15 : LinearOpMode() {
                     AutoPoints.PreGPPRed.runToFast(),
                     robot.StartIntake,
                     AutoPoints.GPPRed.runToExact(),
+                    robot.WaitAction(200.0),
+                    robot.StopIntake,
 
                     AutoPoints.LaunchRed.runToExact(),
                     robot.Shoot(),

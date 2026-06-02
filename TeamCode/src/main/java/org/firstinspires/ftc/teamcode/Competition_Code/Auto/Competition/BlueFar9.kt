@@ -17,7 +17,7 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Drivetrain
 import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localizer
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Servo
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
-@Autonomous(name = "BlueFarPython", group = "Auto")
+@Autonomous(name = "BlueFar9", group = "Auto")
 class BlueFar9 : LinearOpMode() {
 
 
@@ -62,8 +62,6 @@ class BlueFar9 : LinearOpMode() {
                 },
                 SequentialAction(
                     robot.StartShooter,
-                    robot.WaitAction(12000.0),
-                    robot.StartIntake,
 
                     AutoPoints.LaunchFarBlue.runToExact(),
 
@@ -72,7 +70,17 @@ class BlueFar9 : LinearOpMode() {
                     AutoPoints.PreGPPFarBlue.runToExact(),
                     robot.StartIntake,
                     AutoPoints.GPPFarBlue.runToExact(),
+                    robot.WaitAction(200.0),
+                    robot.StopIntake,
 
+                    AutoPoints.LaunchFarBlue.runToExact(),
+                    robot.ShootFar(),
+
+                    robot.StartIntake,
+                    AutoPoints.PreCornerBlue.runToExact(),
+                    AutoPoints.CornerBlue.runToExact(),
+                    robot.WaitAction(200.0),
+                    robot.StopIntake,
                     AutoPoints.LaunchFarBlue.runToExact(),
                     robot.ShootFar(),
 

@@ -63,7 +63,6 @@ class BlueFar12 : LinearOpMode() {
                 },
                 SequentialAction(
                     robot.StartShooter,
-                    robot.StartIntake,
 
                     AutoPoints.LaunchFarBlue.runToExact(),
 
@@ -72,6 +71,8 @@ class BlueFar12 : LinearOpMode() {
                     AutoPoints.PreGPPFarBlue.runToExact(),
                     robot.StartIntake,
                     AutoPoints.GPPFarBlue.runToExact(),
+                    robot.WaitAction(200.0),
+                    robot.StopIntake,
 
                     AutoPoints.LaunchFarBlue.runToExact(),
                     robot.ShootFar(),
@@ -79,15 +80,16 @@ class BlueFar12 : LinearOpMode() {
                     robot.StartIntake,
                     AutoPoints.PreCornerBlue.runToExact(),
                     AutoPoints.CornerBlue.runToExact(),
-                    robot.WaitAction(125.0),
-
+                    robot.WaitAction(200.0),
+                    robot.StopIntake,
                     AutoPoints.LaunchFarBlue.runToExact(),
                     robot.ShootFar(),
 
                     robot.StartIntake,
                     AutoPoints.PreCornerBlue.runToExact(),
                     AutoPoints.CornerBlue.runToExact(),
-                    robot.WaitAction(125.0),
+                    robot.WaitAction(200.0),
+                    robot.StopIntake,
 
                     AutoPoints.LaunchFarBlue.runToExact(),
                     robot.ShootFar(),

@@ -63,7 +63,6 @@ class BlueFarLoop : LinearOpMode() {
                 },
                 SequentialAction(
                     robot.StartShooter,
-                    robot.StartIntake,
 
                     AutoPoints.LaunchFarBlue.runToExact(),
                     robot.ShootFar(),
@@ -71,39 +70,42 @@ class BlueFarLoop : LinearOpMode() {
                     robot.StartIntake,
                     AutoPoints.PreCornerBlue.runToExact(),
                     AutoPoints.CornerBlue.runToExact(),
-                    robot.WaitAction(125.0),
-
+                    robot.WaitAction(200.0),
+                    robot.StopIntake,
                     AutoPoints.LaunchFarBlue.runToExact(),
                     robot.ShootFar(),
 
                     robot.StartIntake,
                     AutoPoints.PreCornerBlue.runToExact(),
                     AutoPoints.CornerBlue.runToExact(),
-                    robot.WaitAction(125.0),
-
+                    robot.WaitAction(200.0),
+                    robot.StopIntake,
                     AutoPoints.LaunchFarBlue.runToExact(),
                     robot.ShootFar(),
 
                     robot.StartIntake,
                     AutoPoints.PreCornerBlue.runToExact(),
                     AutoPoints.CornerBlue.runToExact(),
-                    robot.WaitAction(125.0),
-
+                    robot.WaitAction(200.0),
+                    robot.StopIntake,
                     AutoPoints.LaunchFarBlue.runToExact(),
                     robot.ShootFar(),
 
                     robot.StartIntake,
                     AutoPoints.PreCornerBlue.runToExact(),
                     AutoPoints.CornerBlue.runToExact(),
-                    robot.WaitAction(125.0),
-
+                    robot.WaitAction(200.0),
+                    robot.StopIntake,
                     AutoPoints.LaunchFarBlue.runToExact(),
                     robot.ShootFar(),
 
                     robot.StartIntake,
                     AutoPoints.PreCornerBlue.runToExact(),
                     AutoPoints.CornerBlue.runToExact(),
-                    robot.WaitAction(125.0),                )
+                    robot.WaitAction(200.0),
+                    robot.StopIntake,
+                    AutoPoints.LaunchFarBlue.runToExact(),
+                    robot.ShootFar(),          )
             )
         )
 

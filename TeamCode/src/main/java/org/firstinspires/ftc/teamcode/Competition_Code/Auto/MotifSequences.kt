@@ -14,6 +14,7 @@ class MotifSequences(val robot: InterleagueActions) {
             robot.StartIntake,
             AutoPoints.PPGBlue.runToExact(),
             robot.WaitAction(200.0),
+            robot.StopIntake,
 
             AutoPoints.EjectBlue.runToExact(),
             robot.EjectOne(),
@@ -24,6 +25,7 @@ class MotifSequences(val robot: InterleagueActions) {
             robot.StartIntake,
             AutoPoints.GPPBlue.runToExact(),
             robot.WaitAction(200.0),
+            robot.StopIntake,
             AutoPoints.GPPBackBlue.runToFast(),
 
             AutoPoints.EjectBlue.runToExact(),
@@ -35,6 +37,7 @@ class MotifSequences(val robot: InterleagueActions) {
             robot.StartIntake,
             AutoPoints.PGPBlue.runToExact(),
             robot.WaitAction(200.0),
+            robot.StopIntake,
 
             AutoPoints.LaunchBlue.runToExact(),
             robot.ShootSlow(),
@@ -51,6 +54,7 @@ class MotifSequences(val robot: InterleagueActions) {
             robot.StartIntake,
             AutoPoints.PGPBlue.runToExact(),
             robot.WaitAction(200.0),
+            robot.StopIntake,
             AutoPoints.PGPBackBlue.runToFast(),
 
             AutoPoints.LaunchBlue.runToExact(),
@@ -60,7 +64,7 @@ class MotifSequences(val robot: InterleagueActions) {
             robot.StartIntake,
             AutoPoints.PPGBlue.runToExact(),
             robot.WaitAction(200.0),
-
+            robot.StopIntake,
 
             AutoPoints.EjectBlue.runToExact(),
             robot.EjectTwo(),
@@ -71,6 +75,7 @@ class MotifSequences(val robot: InterleagueActions) {
             robot.StartIntake,
             AutoPoints.GPPBlue.runToExact(),
             robot.WaitAction(200.0),
+            robot.StopIntake,
 
             AutoPoints.LaunchBlue.runToExact(),
             robot.ShootSlow(),
@@ -87,6 +92,7 @@ class MotifSequences(val robot: InterleagueActions) {
             robot.StartIntake,
             AutoPoints.GPPBlue.runToExact(),
             robot.WaitAction(200.0),
+            robot.StopIntake,
             AutoPoints.GPPBackBlue.runToFast(),
 
             AutoPoints.EjectBlue.runToExact(),
@@ -99,6 +105,7 @@ class MotifSequences(val robot: InterleagueActions) {
             robot.StartIntake,
             AutoPoints.PGPBlue.runToExact(),
             robot.WaitAction(200.0),
+            robot.StopIntake,
             AutoPoints.PGPBackBlue.runToFast(),
 
 
@@ -109,6 +116,7 @@ class MotifSequences(val robot: InterleagueActions) {
             robot.StartIntake,
             AutoPoints.PPGBlue.runToExact(),
             robot.WaitAction(200.0),
+            robot.StopIntake,
 
             AutoPoints.LaunchBlue.runToExact(),
             robot.ShootSlow(),
@@ -126,6 +134,7 @@ class MotifSequences(val robot: InterleagueActions) {
             robot.StartIntake,
             AutoPoints.PPGRed.runToExact(),
             robot.WaitAction(200.0),
+            robot.StopIntake,
 
             AutoPoints.EjectRed.runToExact(),
             robot.EjectOne(),
@@ -136,6 +145,7 @@ class MotifSequences(val robot: InterleagueActions) {
             robot.StartIntake,
             AutoPoints.GPPRed.runToExact(),
             robot.WaitAction(200.0),
+            robot.StopIntake,
             AutoPoints.GPPBackRed.runToFast(),
 
             AutoPoints.EjectRed.runToExact(),
@@ -147,6 +157,7 @@ class MotifSequences(val robot: InterleagueActions) {
             robot.StartIntake,
             AutoPoints.PGPRed.runToExact(),
             robot.WaitAction(200.0),
+            robot.StopIntake,
 
             AutoPoints.LaunchRed.runToExact(),
             robot.ShootSlow(),
@@ -163,6 +174,7 @@ class MotifSequences(val robot: InterleagueActions) {
             robot.StartIntake,
             AutoPoints.PGPRed.runToExact(),
             robot.WaitAction(200.0),
+            robot.StopIntake,
             AutoPoints.PGPBackRed.runToFast(),
 
             AutoPoints.LaunchRed.runToExact(),
@@ -172,6 +184,7 @@ class MotifSequences(val robot: InterleagueActions) {
             robot.StartIntake,
             AutoPoints.PPGRed.runToExact(),
             robot.WaitAction(200.0),
+            robot.StopIntake,
 
             AutoPoints.EjectRed.runToExact(),
             robot.EjectTwo(),
@@ -182,6 +195,7 @@ class MotifSequences(val robot: InterleagueActions) {
             robot.StartIntake,
             AutoPoints.GPPRed.runToExact(),
             robot.WaitAction(200.0),
+            robot.StopIntake,
 
             AutoPoints.LaunchRed.runToExact(),
             robot.ShootSlow(),
@@ -198,6 +212,7 @@ class MotifSequences(val robot: InterleagueActions) {
             robot.StartIntake,
             AutoPoints.GPPRed.runToExact(),
             robot.WaitAction(200.0),
+            robot.StopIntake,
             AutoPoints.GPPBackRed.runToFast(),
 
             AutoPoints.EjectRed.runToExact(),
@@ -210,6 +225,7 @@ class MotifSequences(val robot: InterleagueActions) {
             robot.StartIntake,
             AutoPoints.PGPRed.runToExact(),
             robot.WaitAction(200.0),
+            robot.StopIntake,
             AutoPoints.PGPBackRed.runToFast(),
 
 
@@ -220,6 +236,7 @@ class MotifSequences(val robot: InterleagueActions) {
             robot.StartIntake,
             AutoPoints.PPGRed.runToExact(),
             robot.WaitAction(200.0),
+            robot.StopIntake,
 
             AutoPoints.LaunchRed.runToExact(),
             robot.ShootSlow(),

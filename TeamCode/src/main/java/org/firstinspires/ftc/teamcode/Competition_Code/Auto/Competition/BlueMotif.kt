@@ -64,7 +64,6 @@ class BlueMotif : LinearOpMode() {
                 },
                 SequentialAction(
                     robot.StartShooter,
-                    robot.StartIntake,
                     AutoPoints.AprilTagBlue.runToExact(),
                     robot.CheckMotif(),
                     robot.OffCamera(),

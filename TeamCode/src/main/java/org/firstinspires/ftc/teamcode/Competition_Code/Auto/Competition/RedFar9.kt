@@ -68,9 +68,7 @@ class RedFar9 : LinearOpMode() {
                 },
                 SequentialAction(
                     robot.StartShooter,
-                    robot.WaitAction(12000.0),
 
-                    robot.StartIntake,
 
                     AutoPoints.LaunchFarRed.runToExact(),
                     robot.ShootFar(),
@@ -78,6 +76,17 @@ class RedFar9 : LinearOpMode() {
                     AutoPoints.PreGPPFarRed.runToFast(),
                     robot.StartIntake,
                     AutoPoints.GPPFarRed.runToExact(),
+                    robot.WaitAction(200.0),
+                    robot.StopIntake,
+
+                    AutoPoints.LaunchFarRed.runToExact(),
+                    robot.ShootFar(),
+
+                    robot.StartIntake,
+                    AutoPoints.PreCornerRed.runToExact(),
+                    AutoPoints.CornerRed.runToExact(),
+                    robot.WaitAction(200.0),
+                    robot.StopIntake,
 
                     AutoPoints.LaunchFarRed.runToExact(),
                     robot.ShootFar(),
