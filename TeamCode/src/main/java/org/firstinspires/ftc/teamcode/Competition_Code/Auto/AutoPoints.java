@@ -98,8 +98,12 @@ public enum AutoPoints {
 
     StartFarRed(new Vector2d(15,-63), Math.PI),
     StartFarBlue(new Vector2d(-15,-63), Math.PI),
+
     MoveFarRed(new Vector2d(35,-60), Math.PI),
     MoveFarBlue(new Vector2d(-60,-59), -0.3),
+
+    BallDetectorWaitRed(new Vector2d(60,-59), 0.3),
+    BallDetectorWaitBlue(new Vector2d(-60,-59), -0.3),
 
     EndgameBlue(new Vector2d(34,-38), 0.0),
     EndgameRed(new Vector2d(-34,-38), 0.0),

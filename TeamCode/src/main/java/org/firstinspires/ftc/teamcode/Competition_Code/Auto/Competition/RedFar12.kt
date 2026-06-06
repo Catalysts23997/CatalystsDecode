@@ -8,6 +8,7 @@ import com.acmerobotics.roadrunner.ftc.runBlocking
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.acmerobotics.roadrunner.Action
+import net.mccoder.ftvision.processors.ScanDirection
 import org.firstinspires.ftc.teamcode.Competition_Code.Actions.InterleagueActions
 import org.firstinspires.ftc.teamcode.Competition_Code.AllianceColor
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoGlobals
@@ -39,11 +40,14 @@ class RedFar12 : LinearOpMode() {
         robot.update()
         robot.launcher.baseRPM = 3300.0
 
+        // start camera
+        robot.initFTVision(ScanDirection.Right)
+        robot.ftvision.scanner.isDebug = true // TODO: remove
+
         waitForStart()
 
         AutoGlobals.FarAuto = true
         AutoGlobals.AutonomousRan = true
-
 
         runBlocking(
             ParallelAction(
@@ -87,15 +91,15 @@ class RedFar12 : LinearOpMode() {
                     AutoPoints.LaunchFarRed.runToExact(),
                     robot.ShootFar(),
 
-                    robot.StartIntake,
-                    AutoPoints.PGPPreFarRed.runToExact(),
-                    AutoPoints.PGPFarRed.runToExact(),
-                    robot.WaitAction(125.0),
+                    // ball detector
+                    robot.BallDetector { point -> point.x >= 198.0 && point.y >= 180 },
 
-                    AutoPoints.LaunchFarRed.runToExact(),
+                    AutoPoints.BallDetectorWaitRed.runToExact(),
                     robot.ShootFar(),
 
-                    AutoPoints.MoveFarRed.runToExact()
+                    // move out of the way
+                    // we don't care if this is skipped
+                    AutoPoints.BallDetectorWaitRed.runToExact()
                 )
             )
         )

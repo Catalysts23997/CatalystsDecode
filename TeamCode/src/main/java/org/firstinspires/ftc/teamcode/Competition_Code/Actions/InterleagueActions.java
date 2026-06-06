@@ -32,6 +32,7 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.SingleLauncher
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
 import java.util.concurrent.TimeUnit;
+import java.util.function.Predicate;
 
 public class InterleagueActions {
     AprilTag aprilTag;
@@ -500,7 +501,9 @@ public class InterleagueActions {
         );
     }
 
-    public Action BallDetector() {
+    public Action BallDetector(
+        Predicate<Vec2> isPointValid
+    ) {
         return new Action() {
 
             private DetectionStage stage = DetectionStage.Waiting;
@@ -533,7 +536,7 @@ public class InterleagueActions {
                             Vec2 point = ftvision.scanner.detection.point;
 
                             telemetryPacket.addLine("Detection!" + point.x);
-                            if (point.x <= 122.0 && point.y >= 180) {
+                            if (isPointValid.test(point)) {
                                 // start the intake
                                 StartIntake.run(telemetryPacket);
 

@@ -23,8 +23,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import net.mccoder.ftvision.processors.ColorScanner;
-import net.mccoder.ftvision.processors.MLScanner;
-import net.mccoder.ftvision.processors.TestingScanner;
+import net.mccoder.ftvision.processors.ScanDirection;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.ExposureControl;
@@ -50,7 +49,10 @@ public class BallDetectorTesting extends LinearOpMode {
                         hardwareMap.get(WebcamName.class, "Arducam"), cameraMonitorViewId);
 
         //camera.setPipeline(new MLScanner(hardwareMap, telemetry));
-        camera.setPipeline(new ColorScanner(275, 100));
+        ColorScanner scanner = new ColorScanner(ScanDirection.Left);
+        scanner.isDebug = true;
+
+        camera.setPipeline(scanner);
 
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
         {

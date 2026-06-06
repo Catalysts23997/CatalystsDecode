@@ -66,7 +66,6 @@ class BlueFar12 : LinearOpMode() {
                     robot.StartIntake,
 
                     AutoPoints.LaunchFarBlue.runToExact(),
-
                     robot.ShootFar(),
 
                     AutoPoints.PreIntakeGPPFar.runToExact(),
@@ -78,15 +77,17 @@ class BlueFar12 : LinearOpMode() {
 
                     // BEGIN BALL DETECTOR
                     robot.StopShooter,
-                    AutoPoints.MoveFarBlue.runToExact(),
+                    AutoPoints.BallDetectorWaitBlue.runToExact(),
 
                     // ball detector
-                    robot.BallDetector(),
+                    robot.BallDetector { point -> point.x <= 122.0 && point.y >= 180 },
 
                     AutoPoints.LaunchFarBlue.runToExact(),
                     robot.ShootFar(),
 
-                    AutoPoints.MoveFarBlue.runToExact()
+                    // move out of the way
+                    // we don't care if this is skipped
+                    AutoPoints.BallDetectorWaitBlue.runToExact()
                 )
             )
         )
