@@ -12,13 +12,11 @@ import org.firstinspires.ftc.teamcode.Competition_Code.AllianceColor
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoGlobals
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoPoints
 import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localizer
-import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Drivetrain
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.DrivetrainOverride
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Intake
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.LauncherPoint
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Servo
 import org.firstinspires.ftc.teamcode.Competition_Code.Tele.TeleGlobals
-import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.goalAngle
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.launcherSpeed
 
 /**
@@ -75,7 +73,7 @@ class ShowTele(opmode: LinearOpMode, color: AllianceColor) {
             TeleGlobals.currentPosition = AutoGlobals.locationOfRobot!!
         } else {
             TeleGlobals.currentPosition = when (color) {
-                AllianceColor.Blue -> AutoPoints.StartBlue.pose
+                AllianceColor.Blue -> AutoPoints.OldStartBlue.pose
                 AllianceColor.Red -> AutoPoints.StartRed.pose
             }
         }

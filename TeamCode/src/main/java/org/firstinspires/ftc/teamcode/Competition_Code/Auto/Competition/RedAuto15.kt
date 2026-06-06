@@ -5,7 +5,6 @@ import com.acmerobotics.dashboard.telemetry.TelemetryPacket
 import com.acmerobotics.roadrunner.Action
 import com.acmerobotics.roadrunner.ParallelAction
 import com.acmerobotics.roadrunner.SequentialAction
-import com.acmerobotics.roadrunner.ftc.OTOS_ERROR_MSG
 import com.acmerobotics.roadrunner.ftc.runBlocking
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
@@ -18,7 +17,6 @@ import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localiz
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Drivetrain
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Servo
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
-import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.launcherSpeedAdjusted
 
 @Autonomous(name = "Red15", group = "Auto")
 class RedAuto15 : LinearOpMode() {
@@ -85,40 +83,40 @@ class RedAuto15 : LinearOpMode() {
                     AutoPoints.LaunchRed.runToExact(),
                     robot.Shoot(),
 
-                    AutoPoints.PreIntakePGPRed.runToFast(),
+                    AutoPoints.PrePGPRed.runToFast(),
                     robot.StartIntake,
-                    AutoPoints.PGPIntakeRed.runToExact(),
-                    AutoPoints.PGPFarMidPointRed.runToFast(),
+                    AutoPoints.PGPRed.runToExact(),
+                    AutoPoints.PGPBackRed.runToFast(),
 
                     AutoPoints.LaunchRed.runToExact(),
                     robot.Shoot(),
 
-                    AutoPoints.PreIntakePGPRed.runToFast(),
+                    AutoPoints.PrePGPRed.runToFast(),
                     robot.StartIntake,
-                    AutoPoints.GatePrepRed.runToExact(),
+                    AutoPoints.GateIntakePrepRed.runToExact(),
                     robot.WaitAction(250.0),
-                    AutoPoints.GateIntakeRed.runToExact(),
+                    AutoPoints.GateIntakeRed1.runToExact(),
                     robot.WaitAction(600.0),
                     AutoPoints.GateIntakeRed2.runToExact(),
                     robot.WaitAction(600.0),
 
 
-                    AutoPoints.PGPFarMidPointRed.runToFast(),
+                    AutoPoints.PGPBackRed.runToFast(),
 
                     AutoPoints.LaunchRed.runToExact(),
                     robot.Shoot(),
 
-                    AutoPoints.PreIntakePPGRed.runToFast(),
+                    AutoPoints.PrePPGRed.runToFast(),
                     robot.StartIntake,
-                    AutoPoints.PPGIntakeRed.runToExact(),
+                    AutoPoints.PPGRed.runToExact(),
 
                     AutoPoints.LaunchRed.runToExact(),
                     robot.Shoot(),
 
 
-                    AutoPoints.PreIntakeGPPRed.runToFast(),
+                    AutoPoints.PreGPPRed.runToFast(),
                     robot.StartIntake,
-                    AutoPoints.GPPIntakeRed.runToExact(),
+                    AutoPoints.GPPRed.runToExact(),
 
                     AutoPoints.LaunchRed.runToExact(),
                     robot.Shoot(),
