@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Competition_Code.Auto.Competition;
 
+import com.acmerobotics.dashboard.FtcDashboard
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket
 import com.acmerobotics.roadrunner.ParallelAction
 import com.acmerobotics.roadrunner.SequentialAction
@@ -18,27 +19,30 @@ import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localiz
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Servo
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.Poses
 
-@Autonomous(name = "BlueFar12", group = "Auto")
-class BlueFar12 : LinearOpMode() {
+@Autonomous(name = "RedFarPartner", group = "Auto")
+class RedFarPartner : LinearOpMode() {
 
 
     override fun runOpMode() {
-        AutoGlobals.targetRobotPositon = AutoPoints.StartFarBlue.pose
+
+        val dash: FtcDashboard = FtcDashboard.getInstance()
+        telemetry = dash.telemetry
+
+        AutoGlobals.targetRobotPositon = AutoPoints.StartFarRed.pose
 
         val localizer = Localizer(hardwareMap, AutoGlobals.targetRobotPositon)
-        val drive = Drivetrain(hardwareMap, AllianceColor.Blue)
+        val drive = Drivetrain(hardwareMap, AllianceColor.Red)
         val robot = InterleagueActions(hardwareMap, telemetry)
 
 
         robot.holder.state = Servo.State.STOP1
         robot.update()
-        robot.launcher.baseRPM = 3300.0
+        robot.launcher.baseRPM = 3150.0
 
         waitForStart()
 
         AutoGlobals.FarAuto = true
         AutoGlobals.AutonomousRan = true
-
 
 
         runBlocking(
@@ -64,37 +68,36 @@ class BlueFar12 : LinearOpMode() {
                 SequentialAction(
                     robot.StartShooter,
 
-                    AutoPoints.LaunchFarBlue.runToExact(),
-
+                    AutoPoints.LaunchFarRed.runToExact(),
                     robot.ShootFar(),
 
-                    AutoPoints.PreGPPFarBlue.runToExact(),
+                    AutoPoints.PreGPPFarRed.runToFast(),
                     robot.StartIntake,
-                    AutoPoints.GPPFarBlue.runToExact(),
-                    robot.WaitAction(200.0),
+                    AutoPoints.GPPFarRed.runToExact(),
                     robot.StopIntake,
 
-                    AutoPoints.LaunchFarBlue.runToExact(),
+                    AutoPoints.LaunchFarRed.runToExact(),
                     robot.ShootFar(),
 
                     robot.StartIntake,
-                    AutoPoints.PreCornerBlue.runToExact(),
-                    AutoPoints.CornerBlue.runToExact(),
-                    robot.WaitAction(200.0),
-                    robot.StopIntake,
-                    AutoPoints.LaunchFarBlue.runToExact(),
+                    AutoPoints.CornerRed.runToExact(),
+
+                    AutoPoints.LaunchFarRed.runToExact(),
                     robot.ShootFar(),
 
                     robot.StartIntake,
-                    AutoPoints.PreCornerBlue.runToExact(),
-                    AutoPoints.CornerBlue.runToExact(),
-                    robot.WaitAction(200.0),
-                    robot.StopIntake,
+                    AutoPoints.CornerRed.runToExact(),
 
-                    AutoPoints.LaunchFarBlue.runToExact(),
+                    AutoPoints.LaunchFarRed.runToExact(),
                     robot.ShootFar(),
 
-                    AutoPoints.EndFarBlue.runToExact()
+                    robot.StartIntake,
+                    AutoPoints.CornerRed.runToExact(),
+
+                    AutoPoints.LaunchFarRed.runToExact(),
+                    robot.ShootFar(),
+
+                    AutoPoints.EndFarRed.runToExact()
                 )
             )
         )

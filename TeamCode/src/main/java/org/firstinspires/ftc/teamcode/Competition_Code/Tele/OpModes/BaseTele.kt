@@ -15,6 +15,7 @@ import org.firstinspires.ftc.teamcode.Competition_Code.PinpointLocalizer.Localiz
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Drivetrain
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.DrivetrainOverride
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Intake
+import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Kickstand
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.LauncherPoint
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Servo
 import org.firstinspires.ftc.teamcode.Competition_Code.Tele.TeleGlobals
@@ -25,6 +26,7 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.launcherSpeed
 import org.firstinspires.ftc.teamcode.Competition_Code.Utilities.launcherSpeedAdjusted
 import java.lang.Math.sqrt
 import kotlin.math.PI
+import kotlin.math.abs
 import kotlin.math.pow
 import kotlin.math.sqrt
 
@@ -71,6 +73,7 @@ class BaseTele(opmode: LinearOpMode, color: AllianceColor) {
     val resetRPM: Button
     val driveTo: Button
     val rotateTo: Button
+    val kickstand: Button
 
 
 
@@ -133,6 +136,7 @@ class BaseTele(opmode: LinearOpMode, color: AllianceColor) {
         resetRPM = Button()
         driveTo = Button()
         rotateTo = Button()
+        kickstand = Button()
 
         robot = InterleagueActions(hardwareMap, telemetry)
 
@@ -182,18 +186,16 @@ class BaseTele(opmode: LinearOpMode, color: AllianceColor) {
             shootingActions.add(robot.ShootTele())
         }
 
-        //intake toggle
-        if(startIntake.pressed(gamepad1.left_trigger >= 0.5)){
-            runningActions.add(
-                if (!intaking) robot.StartIntake else robot.StopIntake
-            )
+        //intake control
+        if(startIntake.held(gamepad1.left_trigger >= 0.5) && !intaking){
+            runningActions.add(robot.StartIntake)
         }
+        else if (reverseIntake.held(gamepad1.dpad_down) && !reversing) {
+            runningActions.add(robot.ReverseIntake)
 
-        //reverse intake toggle
-        if (reverseIntake.pressed(gamepad1.dpad_down)) {
-            runningActions.add(
-                if (!reversing) robot.ReverseIntake else robot.StopIntake
-            )
+        }
+        else if ((intaking||reversing) && (!startIntake.held(gamepad1.left_trigger >= 0.5) && !reverseIntake.held(gamepad1.dpad_down))){
+            runningActions.add(robot.StopIntake)
         }
 
         //shot power adjustments
@@ -211,11 +213,17 @@ class BaseTele(opmode: LinearOpMode, color: AllianceColor) {
         if(decreaseOffset.pressed(gamepad1.dpad_left)){
             turnOffset -= 0.02
         }
-
-        //drivetrain override
-        if (driveTo.pressed(gamepad1.y)) {
-            driveOverride.beginOverriding(currentLaunchPoint.pose)
+        if(kickstand.pressed(gamepad1.y)){
+            runningActions.add(robot.Kickstand())
         }
+        else if(kickstand.released(gamepad1.y)) {
+            runningActions.add(robot.Reset())
+        }
+
+//        //drivetrain override
+//        if (driveTo.pressed(gamepad1.y)) {
+//            driveOverride.beginOverriding(currentLaunchPoint.pose)
+//        }
 
         //rotational overide
         if (rotateTo.pressed(gamepad1.right_stick_button)) {
@@ -239,8 +247,8 @@ class BaseTele(opmode: LinearOpMode, color: AllianceColor) {
             rpmScaling = !rpmScaling
         }
 
-        if (gamepad1.right_stick_x>=0.7){
-            driveShouldRotate=false
+        if (abs(gamepad1.right_stick_x)>=0.5){
+            driveShouldRotate = false
         }
     }
     fun updateActions(){

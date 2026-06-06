@@ -32,7 +32,7 @@ class BlueFarLoop : LinearOpMode() {
 
         robot.holder.state = Servo.State.STOP1
         robot.update()
-        robot.launcher.baseRPM = 3300.0
+        robot.launcher.baseRPM = 3150.0
 
         waitForStart()
 
@@ -68,44 +68,27 @@ class BlueFarLoop : LinearOpMode() {
                     robot.ShootFar(),
 
                     robot.StartIntake,
-                    AutoPoints.PreCornerBlue.runToExact(),
                     AutoPoints.CornerBlue.runToExact(),
-                    robot.WaitAction(200.0),
-                    robot.StopIntake,
                     AutoPoints.LaunchFarBlue.runToExact(),
                     robot.ShootFar(),
 
                     robot.StartIntake,
-                    AutoPoints.PreCornerBlue.runToExact(),
                     AutoPoints.CornerBlue.runToExact(),
-                    robot.WaitAction(200.0),
-                    robot.StopIntake,
                     AutoPoints.LaunchFarBlue.runToExact(),
                     robot.ShootFar(),
 
                     robot.StartIntake,
-                    AutoPoints.PreCornerBlue.runToExact(),
                     AutoPoints.CornerBlue.runToExact(),
-                    robot.WaitAction(200.0),
-                    robot.StopIntake,
                     AutoPoints.LaunchFarBlue.runToExact(),
                     robot.ShootFar(),
 
                     robot.StartIntake,
-                    AutoPoints.PreCornerBlue.runToExact(),
                     AutoPoints.CornerBlue.runToExact(),
-                    robot.WaitAction(200.0),
-                    robot.StopIntake,
                     AutoPoints.LaunchFarBlue.runToExact(),
                     robot.ShootFar(),
 
-                    robot.StartIntake,
-                    AutoPoints.PreCornerBlue.runToExact(),
-                    AutoPoints.CornerBlue.runToExact(),
-                    robot.WaitAction(200.0),
-                    robot.StopIntake,
-                    AutoPoints.LaunchFarBlue.runToExact(),
-                    robot.ShootFar(),          )
+                    AutoPoints.EndFarBlue.runToExact()
+                    )
             )
         )
 

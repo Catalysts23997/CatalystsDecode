@@ -23,7 +23,7 @@ public class Servo {
     }
 
     public enum State {
-        STOP1(0.5),
+        STOP1(0.55),
         STOP2(0.27),
         RESET(0.1);
         public final double servoPos;

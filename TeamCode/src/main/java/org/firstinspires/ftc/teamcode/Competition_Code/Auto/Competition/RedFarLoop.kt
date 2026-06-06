@@ -37,7 +37,7 @@ class RedFarLoop : LinearOpMode() {
 
         robot.holder.state = Servo.State.STOP1
         robot.update()
-        robot.launcher.baseRPM = 3300.0
+        robot.launcher.baseRPM = 3150.0
 
         waitForStart()
 
@@ -72,44 +72,29 @@ class RedFarLoop : LinearOpMode() {
                     robot.ShootFar(),
 
                     robot.StartIntake,
-                    AutoPoints.PreCornerRed.runToExact(),
                     AutoPoints.CornerRed.runToExact(),
-                    robot.WaitAction(200.0),
-                    robot.StopIntake,
 
                     AutoPoints.LaunchFarRed.runToExact(),
                     robot.ShootFar(),
 
                     robot.StartIntake,
-                    AutoPoints.PreCornerRed.runToExact(),
                     AutoPoints.CornerRed.runToExact(),
-                    robot.WaitAction(200.0),
-                    robot.StopIntake,
+                    AutoPoints.LaunchFarRed.runToExact(),
+                    robot.ShootFar(),
+
+                    robot.StartIntake,
+                    AutoPoints.CornerRed.runToExact(),
 
                     AutoPoints.LaunchFarRed.runToExact(),
                     robot.ShootFar(),
 
                     robot.StartIntake,
-                    AutoPoints.PreCornerRed.runToExact(),
                     AutoPoints.CornerRed.runToExact(),
-                    robot.WaitAction(200.0),
-                    robot.StopIntake,
 
                     AutoPoints.LaunchFarRed.runToExact(),
                     robot.ShootFar(),
 
-                    robot.StartIntake,
-                    AutoPoints.PreCornerRed.runToExact(),
-                    AutoPoints.CornerRed.runToExact(),
-                    robot.WaitAction(200.0),
-                    robot.StopIntake,
-
-                    AutoPoints.LaunchFarRed.runToExact(),
-                    robot.ShootFar(),
-
-                    robot.StartIntake,
-                    AutoPoints.PreCornerRed.runToExact(),
-                    AutoPoints.CornerRed.runToExact()
+                    AutoPoints.EndFarRed.runToExact()
                 )
             )
         )

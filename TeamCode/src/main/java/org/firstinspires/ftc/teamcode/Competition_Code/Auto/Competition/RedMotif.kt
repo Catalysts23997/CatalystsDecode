@@ -52,6 +52,7 @@ class RedMotif : LinearOpMode() {
                         RunToExactForever(AutoGlobals.targetRobotPositon)
                         AutoGlobals.locationOfRobot = Poses(Localizer.pose.x, Localizer.pose.y, Localizer.pose.heading)
 
+
                         telemetry.addData("Target Position", AutoGlobals.targetRobotPositon.toString())
                         telemetry.addData("Current Pose", Localizer.pose.toString())
                         telemetry.addData("Location of robot being transferred", AutoGlobals.locationOfRobot.toString())

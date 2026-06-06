@@ -24,6 +24,7 @@ public class Intake {
         intake1 = hardwareMap.get(DcMotor.class, "intake1");
         // Make sure we know+ -the default state of our motor
         intake1.setDirection(DcMotorSimple.Direction.FORWARD);
+        intake1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         intake1.setPower(0);
     }
 
