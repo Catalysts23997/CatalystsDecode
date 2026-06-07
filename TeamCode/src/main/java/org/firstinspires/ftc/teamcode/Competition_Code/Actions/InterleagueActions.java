@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Competition_Code.Actions;
 
 import androidx.annotation.NonNull;
 
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.SequentialAction;
@@ -10,8 +11,16 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
+import net.mccoder.ftvision.FTVision;
+import net.mccoder.ftvision.processors.ScanDirection;
+import net.mccoder.ftvision.transform.Vec2;
+
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.ExposureControl;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.GainControl;
 import org.firstinspires.ftc.teamcode.Competition_Code.Auto.AutoGlobals;
+import org.firstinspires.ftc.teamcode.Competition_Code.Auto.BallDetector.BallDetectorGlobals;
+import org.firstinspires.ftc.teamcode.Competition_Code.Auto.BallDetector.DetectionStage;
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.AprilTag;
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.ColorSensors;
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Intake;
@@ -21,6 +30,10 @@ import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Pulley;
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Servo;
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.Intake.State;
 import org.firstinspires.ftc.teamcode.Competition_Code.Subsystems.SingleLauncher;
+import org.openftc.easyopencv.OpenCvCameraRotation;
+
+import java.util.concurrent.TimeUnit;
+import java.util.function.Predicate;
 
 public class InterleagueActions {
     AprilTag aprilTag;
@@ -46,6 +59,32 @@ public class InterleagueActions {
 
     Telemetry telemetry;
     ElapsedTime timer;
+
+    HardwareMap hardwareMap;
+    public FTVision ftvision = null;
+
+    public void initFTVision(ScanDirection direction) throws IllegalStateException {
+        if (ftvision != null) {
+            throw new IllegalStateException("Can only start one instance of FTVision!");
+        }
+
+        ftvision = new FTVision(
+                hardwareMap,
+                "Arducam",
+                camera -> {
+                    ExposureControl exposureControl = camera.getExposureControl();
+                    exposureControl.setMode(ExposureControl.Mode.Manual);
+                    exposureControl.setExposure(30000, TimeUnit.MICROSECONDS);
+
+                    GainControl gainControl = camera.getGainControl();
+                    gainControl.setGain(30);
+
+                    camera.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
+                    FtcDashboard.getInstance().startCameraStream(camera, 0.0);
+                },
+                direction
+        );
+    }
 
     public void update() {
         aprilTag.update();
@@ -116,6 +155,7 @@ public class InterleagueActions {
         timer = new ElapsedTime();
 
         this.telemetry = telemetry;
+        this.hardwareMap = hardwareMap;
     }
     public Action Kickstand() {
         return new Action() {
@@ -588,4 +628,69 @@ public class InterleagueActions {
         );
     }
 
+    public Action BallDetector(
+            Predicate<Vec2> isPointValid
+    ) {
+        return new Action() {
+
+            private DetectionStage stage = DetectionStage.Waiting;
+            private Action driveTarget;
+
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                telemetryPacket.addLine("Stage: " + stage.toString());
+
+                // if we are done, stop looping
+                if (stage == DetectionStage.Done) return false;
+
+                // if we are currently driving, continue driving
+                if (driveTarget != null) {
+                    if (!driveTarget.run(telemetryPacket)) {
+                        // we are done driving
+                        driveTarget = null; // stop looping
+                        stage = stage.nextStage(); // go to next stage
+                    } else {
+                        // skip the next code
+                        return true;
+                    }
+                }
+
+                // stage code
+                switch (stage) {
+                    case Waiting: {
+                        if (ftvision.scanner.detection != null && ftvision.scanner.detection.point != null) {
+                            Vec2 point = ftvision.scanner.detection.point;
+
+                            telemetryPacket.addLine("Detection!" + point.x);
+                            if (isPointValid.test(point)) {
+                                // start the intake
+                                StartIntake.run(telemetryPacket);
+
+                                // start driving
+                                driveTarget = BallDetectorGlobals.LOCATION_PICKUP_FIRST.Drive();
+                            }
+                        }
+
+                        break; // stop switch here
+                    }
+                    case DrivingFirst:
+                        // start driving
+                        // we have no other logic here
+                        driveTarget = BallDetectorGlobals.LOCATION_PICKUP_SECOND.Drive();
+                        break; // stop switch here
+                    case DrivingSecond:
+                        // stop the intake
+                        StopIntake.run(telemetryPacket);
+
+                        stage = DetectionStage.Done; // fallback
+                        // we do not have a break so that we fall into the return statement below
+                    case Done:
+                        return false; // stop looping
+                }
+
+                // keep looping
+                return true;
+            }
+        };
+    }
 }

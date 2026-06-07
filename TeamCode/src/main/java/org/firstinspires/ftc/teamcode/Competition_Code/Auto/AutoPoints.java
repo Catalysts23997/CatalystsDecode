@@ -96,6 +96,10 @@ public enum AutoPoints {
     EndgameBlue(new Vector2d(34,-38), 0.0),
     EndgameRed(new Vector2d(-34,-38), 0.0),
 
+    // ball detector
+    BallDetectorWaitRed(new Vector2d(60,-59), 0.3),
+    BallDetectorWaitBlue(new Vector2d(-60,-59), -0.3),
+
     //testing
     Test1(new Vector2d(-34,63), 0.0),
     Test2(new Vector2d(-39,68), Math.PI / 2),
